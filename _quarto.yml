@@ -1,22 +1,35 @@
 project:
   type: website
-  dir: docs
+  output-dir: docs
 
 website:
   title: "AgnessChisale"
   navbar:
+    pinned: true
+    background: primary
+    search: true
     left:
       - href: index.qmd
         text: Home
-      - about.qmd
+      - href: projects.qmd
+        text: Projects
+      - href: experience.qmd
+        text: Experience
+      - href: education.qmd
+        text: Education
+      - href: certifications.qmd
+        text: Certifications
+
 
 format:
   html:
     theme:
-      - cosmo
-      - brand
+      - slate
     css: styles.css
     toc: true
+    include-in-header: 
+      text: |
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 
 

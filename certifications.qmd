@@ -1,0 +1,19 @@
+---
+title: "Certifications"
+---
+
+::: {.card-grid-stacked}
+
+::: {.card}
+### Graduate
+#### University of British Columbia · July 2025 - April 2026 
+**Master of Geomatics for Environmental Management**
+:::
+
+::: {.card}
+### Undergraduate
+#### University of Malawi · March 2018 - December 2022
+**BSc Environmental Science and Technology · Environmental Management **
+:::
+
+:::

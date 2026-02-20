@@ -1,7 +1,63 @@
 ---
-title: "AgnessChisale"
+title: "Agness Chisale"
+subtitle: "Miss Malawi"
+format:
+  html:
+    other-links:
+      - text: GitHub
+        href: https://github.com/AgnessChisale/AgnessChisale.github.io
+      - text: LinkedIn
+        href: https://www.linkedin.com/in/agness-chisale-ab4199188/
 ---
 
-This is a Quarto website.
+::: {.contact-bar}
+<span><i class="fa-solid fa-location-dot"></i> Vancouver, BC</span> <a href="mailto:agnesschisale8@gmail.com"><i class="fa-solid fa-envelope"></i> </a> <a href="https://github.com/AgnessChisale" target="_blank"><i class="fa-brands fa-github"></i></a> <a href="https://www.linkedin.com/in/agness-chisale-ab4199188/" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
+:::
 
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+:::: {.hero-section}
+
+::: {.hero-text}
+
+## About Me
+
+I am a geospatial analyst and environmental scientist passionate about using spatial data, GIS and remote sensing 
+to support environmental management and data-driven decision-making. 
+I am currently pursuing a Master’s degree in Geomatics for Environmental Management at the University of British Columbia, 
+where I am strengthening my expertise in spatial analysis, remote sensing, GIS workflows, and environmental applications of geospatial data. 
+I also hold a Bachelor’s degree in Environmental Science and Technology (Environmental Management) from the University of Malawi, earned with distinction. 
+I am technically fluent in ArcGIS Pro, QGIS, PostgreSQL/Post GIS, Python and R requiring hands on experience in spatial data management, geoprocessing workflows, environmental mapping 
+and the integration of remotely sensed and field-collected datasets.
+:::
+
+::: {.hero-image}
+<div class="image-circle">
+![](./images/Aggie.jpg)
+</div>
+:::
+
+::::
+
+## Skills
+
+
+::: {.card-grid}
+
+::: {.card}
+### Programming Languages
+`Python` `SQL` `R` `MQL`
+:::
+
+::: {.card}
+### Quant
+- Time Series
+- Options Pricing
+- Portfolio Management
+:::
+
+::: {.card}
+### Data Science & ML
+`Scikit-learn` `ggplot2` `Python` `R`
+:::
+
+:::
+
