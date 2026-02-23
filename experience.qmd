@@ -2,3 +2,35 @@
 title: "Experiences"
 ---
 
+::: {.card-grid-stacked}
+
+::: {.card}
+### Geospatial Analyst (Volunteer)
+#### Tayo Climate Partners • 2025 - Present • Remote
+**Voluntary geospatial role supporting blue carbon and coastal restoration projects. 
+Work covers data pre-processing, spatial analysis workflows, 
+and site suitability assessments to evaluate the potential of sites for mangrove and other ecosystem restoration initiatives.**
+
+**Tools: GIS, ArcGIS, Python, R**
+:::
+
+::: {.card}
+### Environmental Officer
+#### Lilongwe City Council • July 2024 - May 2025 • Lilongwe, Malawi
+**Hands-on environmental planning role focused on urban development compliance and impact assessment. 
+Work covered spatial data analysis, environmental auditing, stakeholder engagement, 
+and regulatory monitoring across infrastructure and waste projects.**
+
+**Tools: GIS, ArcGIS, ESMPs, Environmental Auditing, Stakeholder Consultation**
+:::
+
+::: {.card}
+### Environmental Consultant
+#### Water, Waste and Environmental Consultants • August 2022 - June 2024 • Lilongwe, Malawi
+**Consulting role focused on environmental and social impact assessment across energy and infrastructure projects. 
+Work covered field data collection, geospatial analysis, and statistical modelling to inform compliance decisions and mitigation strategies.**
+
+**Tools: GIS, ArcGIS, SPSS, STATA**
+:::
+
+:::
