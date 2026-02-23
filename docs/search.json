@@ -1,19 +1,5 @@
 [
   {
-    "objectID": "certifications.html",
-    "href": "certifications.html",
-    "title": "Certifications",
-    "section": "",
-    "text": "Graduate\n\nUniversity of British Columbia · July 2025 - April 2026\nMaster of Geomatics for Environmental Management\n\n\n\nUndergraduate\n\nUniversity of Malawi · March 2018 - December 2022\nBSc Environmental Science and Technology · Environmental Management"
-  },
-  {
-    "objectID": "education.html",
-    "href": "education.html",
-    "title": "Education",
-    "section": "",
-    "text": "Graduate\n\nUniversity of British Columbia\n\n\nJuly 2025 - April 2026\nMaster of Geomatics for Environmental Management\n\n\n\nUndergraduate\n\nUniversity of Malawi\n\n\nMarch 2018 - December 2022\nBSc Environmental Science and Technology · Environmental Management"
-  },
-  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "Agness Chisale",
@@ -35,10 +21,24 @@
     "text": "Skills\n\n\nProgramming Languages\nPython SQL R MQL\n\n\nQuant\n\nTime Series\nOptions Pricing\nPortfolio Management\n\n\n\nData Science & ML\nScikit-learn ggplot2 Python R"
   },
   {
+    "objectID": "education.html",
+    "href": "education.html",
+    "title": "Education",
+    "section": "",
+    "text": "Graduate\n\nUniversity of British Columbia\n\n\nJuly 2025 - April 2026\nMaster of Geomatics for Environmental Management\n\n\n\nUndergraduate\n\nUniversity of Malawi\n\n\nMarch 2018 - December 2022\nBSc Environmental Science and Technology · Environmental Management"
+  },
+  {
     "objectID": "experience.html",
     "href": "experience.html",
     "title": "Experiences",
     "section": "",
-    "text": "Graduate Education\n\nUniversity of British Columbia\nMaster of Geomatics for Environmental Management\n\n\n\nUndergraduate Education\n\nUniversity of Malawi\nBSc Environmental Science and Technology · Environmental Management"
+    "text": "Geospatial Analyst (Volunteer)\n\nTayo Climate Partners • 2025 - Present • Remote\nVoluntary geospatial role supporting blue carbon and coastal restoration projects. Work covers data pre-processing, spatial analysis workflows, and site suitability assessments to evaluate the potential of sites for mangrove and other ecosystem restoration initiatives.\nTools: GIS, ArcGIS, Python, R\n\n\n\nEnvironmental Officer\n\nLilongwe City Council • July 2024 - May 2025 • Lilongwe, Malawi\nHands-on environmental planning role focused on urban development compliance and impact assessment. Work covered spatial data analysis, environmental auditing, stakeholder engagement, and regulatory monitoring across infrastructure and waste projects.\nTools: GIS, ArcGIS, ESMPs, Environmental Auditing, Stakeholder Consultation\n\n\n\nEnvironmental Consultant\n\nWater, Waste and Environmental Consultants • August 2022 - June 2024 • Lilongwe, Malawi\nConsulting role focused on environmental and social impact assessment across energy and infrastructure projects. Work covered field data collection, geospatial analysis, and statistical modelling to inform compliance decisions and mitigation strategies.\nTools: GIS, ArcGIS, SPSS, STATA"
+  },
+  {
+    "objectID": "leadership_and_training.html",
+    "href": "leadership_and_training.html",
+    "title": "Certifications",
+    "section": "",
+    "text": "Graduate\n\nUniversity of British Columbia · July 2025 - April 2026\nMaster of Geomatics for Environmental Management\n\n\n\nUndergraduate\n\nUniversity of Malawi · March 2018 - December 2022\nBSc Environmental Science and Technology · Environmental Management"
   }
 ]

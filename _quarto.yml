@@ -17,8 +17,8 @@ website:
         text: Experience
       - href: education.qmd
         text: Education
-      - href: certifications.qmd
-        text: Certifications
+      - href: leadership_and_training.qmd
+        text: Leadership and Training
 
 
 format:

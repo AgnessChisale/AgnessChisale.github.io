@@ -1,0 +1,35 @@
+---
+title: "Leadership and training"
+---
+
+::: {.card-grid-stacked}
+
+::: {.card}
+### Mastercard Foundation Graduate Scholar at UBC, 2025
+:::
+
+::: {.card}
+### Nominee, Total Energies Start-upper of the year, 2024
+:::
+
+::: {.card}
+### Finalist, YALI RLC-SA Innovation Challenge 2024
+:::
+
+::: {.card}
+### African Drone and Data Academy, Certificate in Drone & Data Technology, 2023
+:::
+
+::: {.card}
+### Dean's List Award, University of Malawi, 2022
+:::
+
+::: {.card}
+### Young African Leaders Initiative (YALI) Civic Leadership Certificate, 2021
+:::
+
+::: {.card}
+### Pollination Project Grant Awardee, $1,000 social impact grant, 2021
+:::
+
+:::
