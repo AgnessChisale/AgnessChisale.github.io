@@ -1,6 +1,6 @@
 ---
 title: "Agness Chisale"
-subtitle: "Miss Malawi"
+subtitle: "Geospatial Analyst"
 format:
   html:
     other-links:
@@ -44,20 +44,24 @@ and the integration of remotely sensed and field-collected datasets.
 
 ::: {.card}
 ### Programming Languages
-`Python` `SQL` `R` `MQL`
+`Python` `SQL` `R` 
 :::
 
 ::: {.card}
-### Quant
-- Time Series
-- Options Pricing
-- Portfolio Management
+### GIS & Remote Sensing
+`ArcGIS Pro` `QGIS` `ENVI` 
+- LIDAR & RADAR Analysis
+- UAV Data Collection
 :::
 
 ::: {.card}
-### Data Science & ML
-`Scikit-learn` `ggplot2` `Python` `R`
+### Statistical Analysis
+`SPSS` `Stata` 
 :::
 
+::: {.card}
+### Environmental Analysis
+- Environmetal Impact Assessment
+- Cartography
+-Fragstats
 :::
-
