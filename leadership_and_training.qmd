@@ -1,5 +1,5 @@
 ---
-title: "Leadership and training"
+title: "Leadership and Training"
 ---
 
 ::: {.card-grid-stacked}
