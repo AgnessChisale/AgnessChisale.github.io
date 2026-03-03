@@ -1,6 +1,6 @@
 ---
 title: "Agness Chisale"
-subtitle: "Geospatial Analyst" Testingggg
+subtitle: "Geospatial Analyst"
 format:
   html:
     other-links:
