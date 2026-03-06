@@ -1,67 +1,186 @@
 ---
 title: "Agness Chisale"
-subtitle: "Geospatial Analyst"
-format:
-  html:
-    other-links:
-      - text: GitHub
-        href: https://github.com/AgnessChisale/AgnessChisale.github.io
-      - text: LinkedIn
-        href: https://www.linkedin.com/in/agness-chisale-ab4199188/
+subtitle: "Environmental Scientist | Geospatial Analyst"
+toc: false
 ---
 
-::: {.contact-bar}
-<span><i class="fa-solid fa-location-dot"></i> Vancouver, BC</span> <a href="mailto:agnesschisale8@gmail.com"><i class="fa-solid fa-envelope"></i> </a> <a href="https://github.com/AgnessChisale" target="_blank"><i class="fa-brands fa-github"></i></a> <a href="https://www.linkedin.com/in/agness-chisale-ab4199188/" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
-:::
-
-:::: {.hero-section}
-
-::: {.hero-text}
-
-## About Me
-
-I am a geospatial analyst and environmental scientist passionate about using spatial data, GIS and remote sensing 
-to support environmental management and data-driven decision-making. 
-I am currently pursuing a Master’s degree in Geomatics for Environmental Management at the University of British Columbia, 
-where I am strengthening my expertise in spatial analysis, remote sensing, GIS workflows, and environmental applications of geospatial data. 
-I also hold a Bachelor’s degree in Environmental Science and Technology (Environmental Management) from the University of Malawi, earned with distinction. 
-I am technically fluent in ArcGIS Pro, QGIS, PostgreSQL/Post GIS, Python and R requiring hands on experience in spatial data management, geoprocessing workflows, environmental mapping 
-and the integration of remotely sensed and field-collected datasets.
-:::
-
-::: {.hero-image}
-<div class="image-circle">
-![](./images/Aggie.jpg)
+<!-- CONTACT BAR -->
+<div class="contact-bar">
+  <span><i class="fa-solid fa-location-dot"></i> Vancouver, BC</span>
+  <a href="mailto:agnesschisale8@gmail.com"><i class="fa-solid fa-envelope"></i> agnesschisale8@gmail.com</a>
+  <a href="https://github.com/AgnessChisale" target="_blank"><i class="fa-brands fa-github"></i> GitHub</a>
+  <a href="https://www.linkedin.com/in/agness-chisale-ab4199188/" target="_blank"><i class="fa-brands fa-linkedin"></i> LinkedIn</a>
 </div>
-:::
 
-::::
+<!-- ABOUT SECTION -->
+<section id="about">
+<div class="hero-section">
+  <div class="hero-text">
 
-## Skills
+## <i class="fa-solid fa-user"></i> About Me
 
+I am a geospatial analyst and environmental scientist passionate about using spatial data, GIS and remote sensing to support environmental management and data-driven decision-making. I am currently pursuing a Master's degree in Geomatics for Environmental Management at the University of British Columbia. I also hold a Bachelor's degree in Environmental Science and Technology from the University of Malawi, earned with distinction. I am technically fluent in ArcGIS Pro, QGIS, PostgreSQL/PostGIS, Python and R.
 
-::: {.card-grid}
+  </div>
+  <div class="hero-image">
+    <div class="image-circle">
+      ![](./images/Aggie.jpg)
+    </div>
+  </div>
+</div>
+</section>
 
-::: {.card}
-### Programming Languages
-`Python` `SQL` `R` 
-:::
+---
 
-::: {.card}
-### GIS & Remote Sensing
-`ArcGIS Pro` `QGIS` `ENVI` 
-- LIDAR & RADAR Analysis
-- UAV Data Collection
-:::
+<!-- SKILLS SECTION -->
+<section id="skills">
 
-::: {.card}
-### Statistical Analysis
-`SPSS` `Stata` 
-:::
+## <i class="fa-solid fa-screwdriver-wrench"></i> Skills
 
-::: {.card}
-### Environmental Analysis
-- Environmetal Impact Assessment
-- Cartography
--Fragstats
-:::
+<div class="card-grid">
+
+<div class="card">
+<h3><i class="fa-solid fa-map"></i> GIS & Spatial Analysis</h3>
+`ArcGIS Pro` `QGIS` `PostGIS` `PostgreSQL` `GDAL` `Kart` `Leaflet`
+</div>
+
+<div class="card">
+<h3><i class="fa-solid fa-satellite"></i> Remote Sensing</h3>
+`LiDAR` `ENVI` `Google Earth Engine` `PDAL` `lidR` `Hyperspectral Analysis`
+</div>
+
+<div class="card">
+<h3><i class="fa-solid fa-code"></i> Programming</h3>
+`Python` `R` `SQL` `ArcPy` `GeoPandas` `Rasterio` `ggplot2`
+</div>
+
+<div class="card">
+<h3><i class="fa-solid fa-leaf"></i> Environmental Analysis</h3>
+`Environmental Impact Assessment` `Habitat Modelling` `Riparian Management` `Field Data Collection`
+</div>
+
+</div>
+</section>
+
+---
+
+<!-- PROJECTS SECTION -->
+<section id="projects">
+
+## <i class="fa-solid fa-folder-open"></i> Projects
+
+<div class="card-grid">
+
+<div class="card">
+<h3>🗺️ GIS & Cartography</h3>
+<p>Geocoding, feature digitization, old growth forest mapping, and cartographic modelling projects using ArcGIS Pro and QGIS.</p>
+<a href="./projects.html#gis-cartography" class="see-more-btn">See Projects →</a>
+</div>
+
+<div class="card">
+<h3>🌿 Ecological & Terrain Analysis</h3>
+<p>Riparian management, salmon habitat modelling, least cost path analysis for wildlife corridors, and wildfire evacuation routing.</p>
+<a href="./projects.html#ecological-terrain-analysis" class="see-more-btn">See Projects →</a>
+</div>
+
+<div class="card">
+<h3>📡 Remote Sensing & LiDAR</h3>
+<p>LiDAR data interpolation, hyperspectral analysis, object-based image classification, and Google Earth Engine workflows.</p>
+<a href="./projects.html#remote-sensing-lidar" class="see-more-btn">See Projects →</a>
+</div>
+
+<div class="card">
+<h3>🐍 Python & Geospatial Analysis</h3>
+<p>Python scripting for spatial workflows using ArcPy, GeoPandas, Rasterio, and machine learning applied to geospatial data.</p>
+<a href="./projects.html#python-geospatial-data-analysis" class="see-more-btn">See Projects →</a>
+</div>
+
+</div>
+</section>
+
+---
+
+<!-- EXPERIENCE SECTION -->
+<section id="experience">
+
+## <i class="fa-solid fa-briefcase"></i> Experience
+
+<div class="card-grid-stacked">
+
+<div class="card">
+<h3>Geospatial Analyst (Volunteer)</h3>
+<h4>Tayo Climate Partners · 2025 – Present · Remote</h4>
+<p>Supporting blue carbon and coastal restoration projects through spatial analysis and site suitability assessments.</p>
+</div>
+
+<div class="card">
+<h3>Environmental Officer</h3>
+<h4>Lilongwe City Council · July 2024 – May 2025 · Malawi</h4>
+<p>Urban development compliance, environmental auditing, and stakeholder engagement across infrastructure projects.</p>
+</div>
+
+<div class="card">
+<h3>Environmental Consultant</h3>
+<h4>Water, Waste and Environmental Consultants · 2022 – 2024 · Malawi</h4>
+<p>Environmental and social impact assessment across energy and infrastructure projects.</p>
+</div>
+
+</div>
+
+<a href="./experience.html" class="see-more-btn" style="margin-top: 1rem; display: inline-block;">See Full Experience →</a>
+
+</section>
+
+---
+
+<!-- EDUCATION SECTION -->
+<section id="education">
+
+## <i class="fa-solid fa-graduation-cap"></i> Education
+
+<div class="card-grid-stacked">
+
+<div class="card">
+<h3>University of British Columbia</h3>
+<h4>Master of Geomatics for Environmental Management · 2025 – 2026</h4>
+</div>
+
+<div class="card">
+<h3>University of Malawi</h3>
+<h4>BSc Environmental Science and Technology · 2018 – 2022</h4>
+<p>Graduated with Distinction ⭐</p>
+</div>
+
+</div>
+
+<a href="./education.html" class="see-more-btn" style="margin-top: 1rem; display: inline-block;">See Full Education →</a>
+
+</section>
+
+---
+
+<!-- LEADERSHIP SECTION -->
+<section id="leadership">
+
+## <i class="fa-solid fa-award"></i> Leadership & Certifications
+
+<div class="card-grid-stacked">
+
+<div class="card">
+<h3>🏅 Mastercard Foundation Graduate Scholar at UBC, 2025</h3>
+</div>
+<div class="card">
+<h3>🏅 Finalist, YALI RLC-SA Innovation Challenge, 2024</h3>
+</div>
+<div class="card">
+<h3>🏅 African Drone and Data Academy — Certificate in Drone & Data Technology, 2023</h3>
+</div>
+<div class="card">
+<h3>🏅 Dean's List Award, University of Malawi, 2022</h3>
+</div>
+
+</div>
+
+<a href="./leadership_and_training.html" class="see-more-btn" style="margin-top: 1rem; display: inline-block;">See All Awards & Training →</a>
+
+</section>

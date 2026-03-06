@@ -11,21 +11,49 @@
     "href": "index.html",
     "title": "Agness Chisale",
     "section": "",
-    "text": "Vancouver, BC"
+    "text": "Vancouver, BC  agnesschisale8@gmail.com  GitHub  LinkedIn"
   },
   {
     "objectID": "index.html#about-me",
     "href": "index.html#about-me",
     "title": "Agness Chisale",
-    "section": "About Me",
-    "text": "About Me\nI am a geospatial analyst and environmental scientist passionate about using spatial data, GIS and remote sensing to support environmental management and data-driven decision-making. I am currently pursuing a Master’s degree in Geomatics for Environmental Management at the University of British Columbia, where I am strengthening my expertise in spatial analysis, remote sensing, GIS workflows, and environmental applications of geospatial data. I also hold a Bachelor’s degree in Environmental Science and Technology (Environmental Management) from the University of Malawi, earned with distinction. I am technically fluent in ArcGIS Pro, QGIS, PostgreSQL/Post GIS, Python and R requiring hands on experience in spatial data management, geoprocessing workflows, environmental mapping and the integration of remotely sensed and field-collected datasets."
+    "section": " About Me",
+    "text": "About Me\nI am a geospatial analyst and environmental scientist passionate about using spatial data, GIS and remote sensing to support environmental management and data-driven decision-making. I am currently pursuing a Master’s degree in Geomatics for Environmental Management at the University of British Columbia. I also hold a Bachelor’s degree in Environmental Science and Technology from the University of Malawi, earned with distinction. I am technically fluent in ArcGIS Pro, QGIS, PostgreSQL/PostGIS, Python and R."
   },
   {
     "objectID": "index.html#skills",
     "href": "index.html#skills",
     "title": "Agness Chisale",
-    "section": "Skills",
-    "text": "Skills\n\n\nProgramming Languages\nPython SQL R MQL\n\n\nQuant\n\nTime Series\nOptions Pricing\nPortfolio Management\n\n\n\nData Science & ML\nScikit-learn ggplot2 Python R"
+    "section": " Skills",
+    "text": "Skills\n\n\n\n GIS & Spatial Analysis\n\nArcGIS Pro QGIS PostGIS PostgreSQL GDAL Kart Leaflet\n\n\n\n Remote Sensing\n\nLiDAR ENVI Google Earth Engine PDAL lidR Hyperspectral Analysis\n\n\n\n Programming\n\nPython R SQL ArcPy GeoPandas Rasterio ggplot2\n\n\n\n Environmental Analysis\n\nEnvironmental Impact Assessment Habitat Modelling Riparian Management Field Data Collection"
+  },
+  {
+    "objectID": "index.html#projects",
+    "href": "index.html#projects",
+    "title": "Agness Chisale",
+    "section": " Projects",
+    "text": "Projects\n\n\n\n🗺️ GIS & Cartography\n\n\nGeocoding, feature digitization, old growth forest mapping, and cartographic modelling projects using ArcGIS Pro and QGIS.\n\nSee Projects →\n\n\n\n🌿 Ecological & Terrain Analysis\n\n\nRiparian management, salmon habitat modelling, least cost path analysis for wildlife corridors, and wildfire evacuation routing.\n\nSee Projects →\n\n\n\n📡 Remote Sensing & LiDAR\n\n\nLiDAR data interpolation, hyperspectral analysis, object-based image classification, and Google Earth Engine workflows.\n\nSee Projects →\n\n\n\n🐍 Python & Geospatial Analysis\n\n\nPython scripting for spatial workflows using ArcPy, GeoPandas, Rasterio, and machine learning applied to geospatial data.\n\nSee Projects →"
+  },
+  {
+    "objectID": "index.html#experience",
+    "href": "index.html#experience",
+    "title": "Agness Chisale",
+    "section": " Experience",
+    "text": "Experience\n\n\n\nGeospatial Analyst (Volunteer)\n\n\nTayo Climate Partners · 2025 – Present · Remote\n\n\nSupporting blue carbon and coastal restoration projects through spatial analysis and site suitability assessments.\n\n\n\n\nEnvironmental Officer\n\n\nLilongwe City Council · July 2024 – May 2025 · Malawi\n\n\nUrban development compliance, environmental auditing, and stakeholder engagement across infrastructure projects.\n\n\n\n\nEnvironmental Consultant\n\n\nWater, Waste and Environmental Consultants · 2022 – 2024 · Malawi\n\n\nEnvironmental and social impact assessment across energy and infrastructure projects.\n\n\n\nSee Full Experience →"
+  },
+  {
+    "objectID": "index.html#education",
+    "href": "index.html#education",
+    "title": "Agness Chisale",
+    "section": " Education",
+    "text": "Education\n\n\n\nUniversity of British Columbia\n\n\nMaster of Geomatics for Environmental Management · 2025 – 2026\n\n\n\n\nUniversity of Malawi\n\n\nBSc Environmental Science and Technology · 2018 – 2022\n\n\nGraduated with Distinction ⭐\n\n\n\nSee Full Education →"
+  },
+  {
+    "objectID": "index.html#leadership-certifications",
+    "href": "index.html#leadership-certifications",
+    "title": "Agness Chisale",
+    "section": " Leadership & Certifications",
+    "text": "Leadership & Certifications\n\n\n\n🏅 Mastercard Foundation Graduate Scholar at UBC, 2025\n\n\n\n\n🏅 Finalist, YALI RLC-SA Innovation Challenge, 2024\n\n\n\n\n🏅 African Drone and Data Academy — Certificate in Drone & Data Technology, 2023\n\n\n\n\n🏅 Dean’s List Award, University of Malawi, 2022\n\n\n\nSee All Awards & Training →"
   },
   {
     "objectID": "education.html",
