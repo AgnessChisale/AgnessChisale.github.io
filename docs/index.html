@@ -345,6 +345,24 @@
     });
   });
 </script>
+<div id="cursor-glow"></div>
+<style>
+  #cursor-glow {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 0;
+    background: radial-gradient(600px circle at var(--x, -999px) var(--y, -999px), rgba(167,139,250,0.08), transparent 70%);
+  }
+</style>
+<script>
+  document.addEventListener('mousemove', (e) => {
+    document.getElementById('cursor-glow').style.setProperty('--x', e.clientX + 'px');
+    document.getElementById('cursor-glow').style.setProperty('--y', e.clientY + 'px');
+  });
+</script>
 
 </body>
 </html>
