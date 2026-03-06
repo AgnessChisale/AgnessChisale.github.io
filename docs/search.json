@@ -11,7 +11,7 @@
     "href": "index.html",
     "title": "Agness Chisale",
     "section": "",
-    "text": "Vancouver, BC  agnesschisale8@gmail.com  GitHub  LinkedIn"
+    "text": "Vancouver, BC"
   },
   {
     "objectID": "index.html#about-me",
@@ -25,35 +25,35 @@
     "href": "index.html#skills",
     "title": "Agness Chisale",
     "section": " Skills",
-    "text": "Skills\n\n\n\n GIS & Spatial Analysis\n\nArcGIS Pro QGIS PostGIS PostgreSQL GDAL Kart Leaflet\n\n\n\n Remote Sensing\n\nLiDAR ENVI Google Earth Engine PDAL lidR Hyperspectral Analysis\n\n\n\n Programming\n\nPython R SQL ArcPy GeoPandas Rasterio ggplot2\n\n\n\n Environmental Analysis\n\nEnvironmental Impact Assessment Habitat Modelling Riparian Management Field Data Collection"
+    "text": "Skills\n\n\n\n GIS & Spatial Analysis\n\nArcGIS Pro QGIS PostGIS PostgreSQL GDAL Kart Leaflet\n\n\n\n Remote Sensing\n\nLiDAR ENVI Google Earth Engine PDAL lidR Hyperspectral Analysis\n\n\n\n Programming & Data Science\n\nPython R SQL ArcPy GeoPandas Rasterio ggplot2 Scikit-learn Machine Learning"
   },
   {
     "objectID": "index.html#projects",
     "href": "index.html#projects",
     "title": "Agness Chisale",
     "section": " Projects",
-    "text": "Projects\n\n\n\n🗺️ GIS & Cartography\n\n\nGeocoding, feature digitization, old growth forest mapping, and cartographic modelling projects using ArcGIS Pro and QGIS.\n\nSee Projects →\n\n\n\n🌿 Ecological & Terrain Analysis\n\n\nRiparian management, salmon habitat modelling, least cost path analysis for wildlife corridors, and wildfire evacuation routing.\n\nSee Projects →\n\n\n\n📡 Remote Sensing & LiDAR\n\n\nLiDAR data interpolation, hyperspectral analysis, object-based image classification, and Google Earth Engine workflows.\n\nSee Projects →\n\n\n\n🐍 Python & Geospatial Analysis\n\n\nPython scripting for spatial workflows using ArcPy, GeoPandas, Rasterio, and machine learning applied to geospatial data.\n\nSee Projects →"
+    "text": "Projects\n\n\n\n\n GIS & Cartography\n\n\nGeocoding, feature digitization, old growth forest mapping, and cartographic modelling using ArcGIS Pro and QGIS.\n\n\n\n\n\n\n Hydrology & Wildlife Analysis\n\n\nSalmon stream network analysis, riparian area management, and least cost path modelling for grizzly bear habitat corridors.\n\n\n\n\n\n\n Forest & Ecosystem Analysis\n\n\nLiDAR-derived forest products, individual tree detection, and old growth forest stand characterization across BC.\n\n\n\n\n\n\n Remote Sensing & Earth Observation\n\n\nHyperspectral data processing, object-based image classification, and land cover analysis using Google Earth Engine.\n\n\n\n\n\n\n Python & Geospatial Scripting\n\n\nAutomated geospatial workflows using Python, ArcPy, GeoPandas, Rasterio and machine learning for spatial analysis.\n\n\n\n\n\n\n Wildfire Evacuation Routing — Mudge Island\n\n\nCapstone project: optimal evacuation route modelling for a wildfire scenario on Mudge Island, BC using least cost path analysis.\n\nCapstone"
   },
   {
     "objectID": "index.html#experience",
     "href": "index.html#experience",
     "title": "Agness Chisale",
     "section": " Experience",
-    "text": "Experience\n\n\n\nGeospatial Analyst (Volunteer)\n\n\nTayo Climate Partners · 2025 – Present · Remote\n\n\nSupporting blue carbon and coastal restoration projects through spatial analysis and site suitability assessments.\n\n\n\n\nEnvironmental Officer\n\n\nLilongwe City Council · July 2024 – May 2025 · Malawi\n\n\nUrban development compliance, environmental auditing, and stakeholder engagement across infrastructure projects.\n\n\n\n\nEnvironmental Consultant\n\n\nWater, Waste and Environmental Consultants · 2022 – 2024 · Malawi\n\n\nEnvironmental and social impact assessment across energy and infrastructure projects.\n\n\n\nSee Full Experience →"
+    "text": "Experience\n\n\n\n\n\n\n&lt;h3&gt;Geospatial Analyst (Volunteer)&lt;/h3&gt;\n&lt;h4&gt;Tayo Climate Partners · 2025 – Present · Remote&lt;/h4&gt;\n&lt;p&gt;Supporting blue carbon and coastal restoration projects through spatial analysis and site suitability assessments for mangrove ecosystem restoration.&lt;/p&gt;\n&lt;p class=\"exp-tools\"&gt;`GIS` `ArcGIS` `Python` `R`&lt;/p&gt;\n\n\n\n\n\n\n\n&lt;h3&gt;Environmental Officer&lt;/h3&gt;\n&lt;h4&gt;Lilongwe City Council · July 2024 – May 2025 · Lilongwe, Malawi&lt;/h4&gt;\n&lt;p&gt;Urban development compliance, environmental auditing, and stakeholder engagement across infrastructure and waste projects.&lt;/p&gt;\n&lt;p class=\"exp-tools\"&gt;`GIS` `ArcGIS` `ESMPs` `Environmental Auditing`&lt;/p&gt;\n\n\n\n\n\n\n\n&lt;h3&gt;Environmental Consultant&lt;/h3&gt;\n&lt;h4&gt;Water, Waste and Environmental Consultants · 2022 – 2024 · Lilongwe, Malawi&lt;/h4&gt;\n&lt;p&gt;Environmental and social impact assessment across energy and infrastructure projects. Field data collection, geospatial analysis and statistical modelling.&lt;/p&gt;\n&lt;p class=\"exp-tools\"&gt;`GIS` `ArcGIS` `SPSS` `STATA`&lt;/p&gt;"
   },
   {
     "objectID": "index.html#education",
     "href": "index.html#education",
     "title": "Agness Chisale",
     "section": " Education",
-    "text": "Education\n\n\n\nUniversity of British Columbia\n\n\nMaster of Geomatics for Environmental Management · 2025 – 2026\n\n\n\n\nUniversity of Malawi\n\n\nBSc Environmental Science and Technology · 2018 – 2022\n\n\nGraduated with Distinction ⭐\n\n\n\nSee Full Education →"
+    "text": "Education\n\n\n\n\n\n\n\n&lt;h3&gt;University of British Columbia&lt;/h3&gt;\n&lt;h4&gt;Master of Geomatics for Environmental Management&lt;/h4&gt;\n&lt;p class=\"edu-date\"&gt;&lt;i class=\"fa-regular fa-calendar\"&gt;&lt;/i&gt; July 2025 – April 2026 · Vancouver, Canada&lt;/p&gt;\n&lt;p class=\"edu-skills\"&gt;`Spatial Analysis` `Remote Sensing` `GIS` `Python` `R` `Environmental Management`&lt;/p&gt;\n\n\n\n\n\n\n\n\n\n\n&lt;h3&gt;University of Malawi&lt;/h3&gt;\n&lt;h4&gt;BSc Environmental Science and Technology — Environmental Management&lt;/h4&gt;\n&lt;p class=\"edu-date\"&gt;&lt;i class=\"fa-regular fa-calendar\"&gt;&lt;/i&gt; March 2018 – December 2022 · Malawi&lt;/p&gt;\n&lt;p class=\"edu-skills\"&gt;`Environmental Management` `GIS` `Field Methods` `Statistics` `Research Methods`&lt;/p&gt;"
   },
   {
-    "objectID": "index.html#leadership-certifications",
-    "href": "index.html#leadership-certifications",
+    "objectID": "index.html#certifications",
+    "href": "index.html#certifications",
     "title": "Agness Chisale",
-    "section": " Leadership & Certifications",
-    "text": "Leadership & Certifications\n\n\n\n🏅 Mastercard Foundation Graduate Scholar at UBC, 2025\n\n\n\n\n🏅 Finalist, YALI RLC-SA Innovation Challenge, 2024\n\n\n\n\n🏅 African Drone and Data Academy — Certificate in Drone & Data Technology, 2023\n\n\n\n\n🏅 Dean’s List Award, University of Malawi, 2022\n\n\n\nSee All Awards & Training →"
+    "section": " Certifications",
+    "text": "Certifications\n\n\n\n\n\n\n\n&lt;h3&gt;Young African Leaders Initiative (YALI)&lt;/h3&gt;\n&lt;h4&gt;Certificate of Civic Leadership&lt;/h4&gt;\n&lt;p class=\"edu-date\"&gt;&lt;i class=\"fa-regular fa-calendar\"&gt;&lt;/i&gt; 2021&lt;/p&gt;\n&lt;p class=\"edu-skills\"&gt;`Civic Leadership` `Community Development` `Policy` `Governance`&lt;/p&gt;\n\n\n\n\n\n\n\n\n\n\n&lt;h3&gt;African Drone and Data Academy&lt;/h3&gt;\n&lt;h4&gt;Certificate in Drone & Data Technology&lt;/h4&gt;\n&lt;p class=\"edu-date\"&gt;&lt;i class=\"fa-regular fa-calendar\"&gt;&lt;/i&gt; 2023&lt;/p&gt;\n&lt;p class=\"edu-skills\"&gt;`Drone Operations` `Data Collection` `Remote Sensing` `Geospatial Data`&lt;/p&gt;\n\n\n\n\n\n\n\n\n\n\n&lt;h3&gt;YALI RLC-SA Innovation Challenge&lt;/h3&gt;\n&lt;h4&gt;Finalist&lt;/h4&gt;\n&lt;p class=\"edu-date\"&gt;&lt;i class=\"fa-regular fa-calendar\"&gt;&lt;/i&gt; 2024&lt;/p&gt;\n&lt;p class=\"edu-skills\"&gt;`Innovation` `Entrepreneurship` `Leadership`&lt;/p&gt;"
   },
   {
     "objectID": "education.html",
