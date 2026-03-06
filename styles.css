@@ -185,40 +185,11 @@ code {
   display: block;
 }
 
-/* ── Contact Bar ────────────────────────────────── */
-.contact-bar {
-  display: flex;
-  flex-direction: row;          /* force horizontal */
-  align-items: center;
-  gap: 2rem;
-  margin-top: 1rem;
-  margin-bottom: 1.5rem;
-  width: 100%;                  /* takes full available width */
-}
-
-.contact-bar span,
-.contact-bar a {
-  color: #a0c4c4 !important;
-  font-size: 0.95rem;
-  text-decoration: none;
-  display: inline-flex;         /* changed from flex to inline-flex */
-  align-items: center;
-  gap: 0.4rem;
-  white-space: nowrap;          /* prevents text from wrapping */
-}
-
-.contact-bar a:hover {
-  color: #ffffff !important;
-}
-
-.contact-bar i {
-  font-size: 1.2rem;
-}
 
 /* ── Contact Bar (icons only, centered) ─────────── */
 .contact-bar {
-  display: flex;
-  flex-direction: row;
+  display: flex !important;
+  flex-direction: row !important;
   align-items: center;
   justify-content: center;
   gap: 2rem;
@@ -235,14 +206,21 @@ code {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  white-space: nowrap;
 }
 
 .contact-bar a:hover {
   color: #ffffff !important;
 }
 
-/* ── Project Cards (whole card clickable) ────────── */
+/* ── Projects Grid (3 columns, 2 rows) ───────────── */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+/* ── Project Cards ───────────────────────────────── */
 .project-card-link {
   text-decoration: none !important;
   color: inherit !important;
@@ -283,8 +261,8 @@ code {
 
 /* ── Experience Cards ────────────────────────────── */
 .exp-card {
-  display: flex;
-  flex-direction: row;
+  display: flex !important;
+  flex-direction: row !important;
   align-items: flex-start;
   gap: 1.2rem;
 }
@@ -319,12 +297,7 @@ code {
   font-size: 0.9rem;
 }
 
-.exp-tools code {
-  background-color: #2e4a7a !important;
-  font-size: 0.78rem;
-}
-
-/* ── Education Cards (clickable) ─────────────────── */
+/* ── Education & Cert Cards (clickable) ──────────── */
 .edu-card-link {
   text-decoration: none !important;
   color: inherit !important;
@@ -338,8 +311,8 @@ code {
 }
 
 .edu-card {
-  display: flex;
-  flex-direction: row;
+  display: flex !important;
+  flex-direction: row !important;
   align-items: flex-start;
   gap: 1.2rem;
 }
@@ -378,11 +351,6 @@ code {
   font-size: 0.85rem;
 }
 
-.edu-skills code {
-  background-color: #2e4a7a !important;
-  font-size: 0.78rem;
-}
-
 .edu-arrow {
   color: #a78bfa !important;
   font-size: 0.9rem;
@@ -390,26 +358,8 @@ code {
   margin-top: 4px;
 }
 
-/* ── Section headings with icons ─────────────────── */
+/* ── Section heading icons ───────────────────────── */
 h2 i {
   color: #a78bfa;
   margin-right: 0.4rem;
-}
-
-/* ── See More Button ─────────────────────────────── */
-.see-more-btn {
-  display: inline-block;
-  margin-top: 1rem;
-  color: #a78bfa !important;
-  text-decoration: none;
-  font-size: 0.9rem;
-  border: 1px solid #a78bfa;
-  padding: 6px 16px;
-  border-radius: 999px;
-  transition: all 0.2s ease;
-}
-
-.see-more-btn:hover {
-  background-color: #a78bfa;
-  color: #ffffff !important;
 }

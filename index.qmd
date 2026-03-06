@@ -2,39 +2,41 @@
 title: "Agness Chisale"
 subtitle: "Environmental Scientist | Geospatial Analyst"
 toc: false
+format:
+  html:
+    include-in-header:
+      text: |
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 ---
 
-<!-- CONTACT BAR -->
 <div class="contact-bar">
   <a href="mailto:agnesschisale8@gmail.com" title="Email"><i class="fa-solid fa-envelope"></i></a>
   <a href="https://github.com/AgnessChisale" target="_blank" title="GitHub"><i class="fa-brands fa-github"></i></a>
   <a href="https://www.linkedin.com/in/agness-chisale-ab4199188/" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
-  <span title="Location"><i class="fa-solid fa-location-dot"></i> Vancouver, BC</span>
+  <span><i class="fa-solid fa-location-dot"></i> Vancouver, BC</span>
 </div>
 
 ---
 
-<!-- ABOUT SECTION -->
 <section id="about">
-<div class="hero-section">
-  <div class="hero-text">
 
 ## <i class="fa-regular fa-user"></i> About Me
 
+<div class="hero-section">
+<div class="hero-text">
 I am a geospatial analyst and environmental scientist passionate about using spatial data, GIS and remote sensing to support environmental management and data-driven decision-making. I am currently pursuing a Master's degree in Geomatics for Environmental Management at the University of British Columbia. I also hold a Bachelor's degree in Environmental Science and Technology from the University of Malawi, earned with distinction. I am technically fluent in ArcGIS Pro, QGIS, PostgreSQL/PostGIS, Python and R.
-
-  </div>
-  <div class="hero-image">
-    <div class="image-circle">
-      <img src="./images/Aggie.jpg" alt="Agness Chisale">
-    </div>
-  </div>
 </div>
+<div class="hero-image">
+<div class="image-circle">
+<img src="./images/Aggie.jpg" alt="Agness Chisale">
+</div>
+</div>
+</div>
+
 </section>
 
 ---
 
-<!-- SKILLS SECTION -->
 <section id="skills">
 
 ## <i class="fa-regular fa-lightbulb"></i> Skills
@@ -42,81 +44,81 @@ I am a geospatial analyst and environmental scientist passionate about using spa
 <div class="card-grid">
 
 <div class="card">
-<h3><i class="fa-solid fa-map"></i> GIS & Spatial Analysis</h3>
-`ArcGIS Pro` `QGIS` `PostGIS` `PostgreSQL` `GDAL` `Kart` `Leaflet`
+<h3><i class="fa-solid fa-map"></i> GIS &amp; Spatial Analysis</h3>
+<p><code>ArcGIS Pro</code> <code>QGIS</code> <code>PostGIS</code> <code>PostgreSQL</code> <code>GDAL</code> <code>Kart</code> <code>Leaflet</code></p>
 </div>
 
 <div class="card">
 <h3><i class="fa-solid fa-satellite"></i> Remote Sensing</h3>
-`LiDAR` `ENVI` `Google Earth Engine` `PDAL` `lidR` `Hyperspectral Analysis`
+<p><code>LiDAR</code> <code>ENVI</code> <code>Google Earth Engine</code> <code>PDAL</code> <code>lidR</code> <code>Hyperspectral Analysis</code></p>
 </div>
 
 <div class="card">
-<h3><i class="fa-solid fa-code"></i> Programming & Data Science</h3>
-`Python` `R` `SQL` `ArcPy` `GeoPandas` `Rasterio` `ggplot2` `Scikit-learn` `Machine Learning`
+<h3><i class="fa-solid fa-code"></i> Programming &amp; Data Science</h3>
+<p><code>Python</code> <code>R</code> <code>SQL</code> <code>ArcPy</code> <code>GeoPandas</code> <code>Rasterio</code> <code>ggplot2</code> <code>Scikit-learn</code> <code>Machine Learning</code></p>
 </div>
 
 </div>
+
 </section>
 
 ---
 
-<!-- PROJECTS SECTION -->
 <section id="projects">
 
 ## <i class="fa-regular fa-folder-open"></i> Projects
 
-<div class="card-grid">
+<div class="projects-grid">
 
 <a href="./projects.html#gis-cartography" class="project-card-link">
 <div class="card project-card">
-<h3><i class="fa-solid fa-map"></i> GIS & Cartography</h3>
+<h3><i class="fa-solid fa-map"></i> GIS &amp; Cartography</h3>
 <p>Geocoding, feature digitization, old growth forest mapping, and cartographic modelling using ArcGIS Pro and QGIS.</p>
 </div>
 </a>
 
 <a href="./projects.html#hydrology-wildlife" class="project-card-link">
 <div class="card project-card">
-<h3><i class="fa-solid fa-water"></i> Hydrology & Wildlife Analysis</h3>
+<h3><i class="fa-solid fa-water"></i> Hydrology &amp; Wildlife Analysis</h3>
 <p>Salmon stream network analysis, riparian area management, and least cost path modelling for grizzly bear habitat corridors.</p>
 </div>
 </a>
 
 <a href="./projects.html#forest-ecosystem" class="project-card-link">
 <div class="card project-card">
-<h3><i class="fa-solid fa-tree"></i> Forest & Ecosystem Analysis</h3>
+<h3><i class="fa-solid fa-tree"></i> Forest &amp; Ecosystem Analysis</h3>
 <p>LiDAR-derived forest products, individual tree detection, and old growth forest stand characterization across BC.</p>
 </div>
 </a>
 
 <a href="./projects.html#remote-sensing" class="project-card-link">
 <div class="card project-card">
-<h3><i class="fa-solid fa-satellite-dish"></i> Remote Sensing & Earth Observation</h3>
+<h3><i class="fa-solid fa-satellite-dish"></i> Remote Sensing &amp; Earth Observation</h3>
 <p>Hyperspectral data processing, object-based image classification, and land cover analysis using Google Earth Engine.</p>
 </div>
 </a>
 
 <a href="./projects.html#python-scripting" class="project-card-link">
 <div class="card project-card">
-<h3><i class="fa-solid fa-terminal"></i> Python & Geospatial Scripting</h3>
+<h3><i class="fa-solid fa-terminal"></i> Python &amp; Geospatial Scripting</h3>
 <p>Automated geospatial workflows using Python, ArcPy, GeoPandas, Rasterio and machine learning for spatial analysis.</p>
 </div>
 </a>
 
 <a href="./projects.html#capstone" class="project-card-link">
 <div class="card project-card capstone-card">
-<h3><i class="fa-solid fa-fire"></i> Wildfire Evacuation Routing — Mudge Island</h3>
-<p>Capstone project: optimal evacuation route modelling for a wildfire scenario on Mudge Island, BC using least cost path analysis.</p>
+<h3><i class="fa-solid fa-fire"></i> Wildfire Evacuation Routing</h3>
+<p>Capstone: optimal evacuation route modelling for a wildfire scenario on Mudge Island, BC using least cost path analysis.</p>
 <span class="capstone-badge">Capstone</span>
 </div>
 </a>
 
 </div>
+
 </section>
 
 ---
 
-<!-- EXPERIENCE SECTION -->
 <section id="experience">
 
 ## <i class="fa-regular fa-briefcase"></i> Experience
@@ -124,41 +126,41 @@ I am a geospatial analyst and environmental scientist passionate about using spa
 <div class="card-grid-stacked">
 
 <div class="card exp-card">
-  <div class="exp-logo-placeholder"><i class="fa-solid fa-earth-africa"></i></div>
-  <div class="exp-content">
-    <h3>Geospatial Analyst (Volunteer)</h3>
-    <h4>Tayo Climate Partners · 2025 – Present · Remote</h4>
-    <p>Supporting blue carbon and coastal restoration projects through spatial analysis and site suitability assessments for mangrove ecosystem restoration.</p>
-    <p class="exp-tools">`GIS` `ArcGIS` `Python` `R`</p>
-  </div>
+<div class="exp-logo-placeholder"><i class="fa-solid fa-earth-africa"></i></div>
+<div class="exp-content">
+<h3>Geospatial Analyst (Volunteer)</h3>
+<h4>Tayo Climate Partners &nbsp;&bull;&nbsp; 2025 – Present &nbsp;&bull;&nbsp; Remote</h4>
+<p>Supporting blue carbon and coastal restoration projects through spatial analysis and site suitability assessments for mangrove ecosystem restoration.</p>
+<p><code>GIS</code> <code>ArcGIS</code> <code>Python</code> <code>R</code></p>
+</div>
 </div>
 
 <div class="card exp-card">
-  <div class="exp-logo-placeholder"><i class="fa-solid fa-city"></i></div>
-  <div class="exp-content">
-    <h3>Environmental Officer</h3>
-    <h4>Lilongwe City Council · July 2024 – May 2025 · Lilongwe, Malawi</h4>
-    <p>Urban development compliance, environmental auditing, and stakeholder engagement across infrastructure and waste projects.</p>
-    <p class="exp-tools">`GIS` `ArcGIS` `ESMPs` `Environmental Auditing`</p>
-  </div>
+<div class="exp-logo-placeholder"><i class="fa-solid fa-city"></i></div>
+<div class="exp-content">
+<h3>Environmental Officer</h3>
+<h4>Lilongwe City Council &nbsp;&bull;&nbsp; July 2024 – May 2025 &nbsp;&bull;&nbsp; Lilongwe, Malawi</h4>
+<p>Urban development compliance, environmental auditing, and stakeholder engagement across infrastructure and waste projects.</p>
+<p><code>GIS</code> <code>ArcGIS</code> <code>ESMPs</code> <code>Environmental Auditing</code></p>
+</div>
 </div>
 
 <div class="card exp-card">
-  <div class="exp-logo-placeholder"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
-  <div class="exp-content">
-    <h3>Environmental Consultant</h3>
-    <h4>Water, Waste and Environmental Consultants · 2022 – 2024 · Lilongwe, Malawi</h4>
-    <p>Environmental and social impact assessment across energy and infrastructure projects. Field data collection, geospatial analysis and statistical modelling.</p>
-    <p class="exp-tools">`GIS` `ArcGIS` `SPSS` `STATA`</p>
-  </div>
+<div class="exp-logo-placeholder"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
+<div class="exp-content">
+<h3>Environmental Consultant</h3>
+<h4>Water, Waste and Environmental Consultants &nbsp;&bull;&nbsp; 2022 – 2024 &nbsp;&bull;&nbsp; Lilongwe, Malawi</h4>
+<p>Environmental and social impact assessment across energy and infrastructure projects. Field data collection, geospatial analysis and statistical modelling.</p>
+<p><code>GIS</code> <code>ArcGIS</code> <code>SPSS</code> <code>STATA</code></p>
+</div>
 </div>
 
 </div>
+
 </section>
 
 ---
 
-<!-- EDUCATION SECTION -->
 <section id="education">
 
 ## <i class="fa-solid fa-graduation-cap"></i> Education
@@ -167,36 +169,36 @@ I am a geospatial analyst and environmental scientist passionate about using spa
 
 <a href="https://www.ubc.ca/" target="_blank" class="edu-card-link">
 <div class="card edu-card">
-  <div class="edu-logo-placeholder"><i class="fa-solid fa-graduation-cap"></i></div>
-  <div class="edu-content">
-    <h3>University of British Columbia</h3>
-    <h4>Master of Geomatics for Environmental Management</h4>
-    <p class="edu-date"><i class="fa-regular fa-calendar"></i> July 2025 – April 2026 · Vancouver, Canada</p>
-    <p class="edu-skills">`Spatial Analysis` `Remote Sensing` `GIS` `Python` `R` `Environmental Management`</p>
-  </div>
-  <i class="fa-solid fa-arrow-up-right-from-square edu-arrow"></i>
+<div class="edu-logo-placeholder"><i class="fa-solid fa-graduation-cap"></i></div>
+<div class="edu-content">
+<h3>University of British Columbia</h3>
+<h4>Master of Geomatics for Environmental Management</h4>
+<p class="edu-date"><i class="fa-regular fa-calendar"></i> July 2025 – April 2026 &nbsp;&bull;&nbsp; Vancouver, Canada</p>
+<p><code>Spatial Analysis</code> <code>Remote Sensing</code> <code>GIS</code> <code>Python</code> <code>R</code> <code>Environmental Management</code></p>
+</div>
+<i class="fa-solid fa-arrow-up-right-from-square edu-arrow"></i>
 </div>
 </a>
 
 <a href="https://www.unima.ac.mw/" target="_blank" class="edu-card-link">
 <div class="card edu-card">
-  <div class="edu-logo-placeholder"><i class="fa-solid fa-university"></i></div>
-  <div class="edu-content">
-    <h3>University of Malawi</h3>
-    <h4>BSc Environmental Science and Technology — Environmental Management</h4>
-    <p class="edu-date"><i class="fa-regular fa-calendar"></i> March 2018 – December 2022 · Malawi</p>
-    <p class="edu-skills">`Environmental Management` `GIS` `Field Methods` `Statistics` `Research Methods`</p>
-  </div>
-  <i class="fa-solid fa-arrow-up-right-from-square edu-arrow"></i>
+<div class="edu-logo-placeholder"><i class="fa-solid fa-university"></i></div>
+<div class="edu-content">
+<h3>University of Malawi</h3>
+<h4>BSc Environmental Science and Technology — Environmental Management</h4>
+<p class="edu-date"><i class="fa-regular fa-calendar"></i> March 2018 – December 2022 &nbsp;&bull;&nbsp; Malawi</p>
+<p><code>Environmental Management</code> <code>GIS</code> <code>Field Methods</code> <code>Statistics</code> <code>Research Methods</code></p>
+</div>
+<i class="fa-solid fa-arrow-up-right-from-square edu-arrow"></i>
 </div>
 </a>
 
 </div>
+
 </section>
 
 ---
 
-<!-- CERTIFICATIONS SECTION -->
 <section id="certifications">
 
 ## <i class="fa-solid fa-certificate"></i> Certifications
@@ -205,42 +207,43 @@ I am a geospatial analyst and environmental scientist passionate about using spa
 
 <a href="https://yalichallenge.org/" target="_blank" class="edu-card-link">
 <div class="card edu-card">
-  <div class="edu-logo-placeholder"><i class="fa-solid fa-globe"></i></div>
-  <div class="edu-content">
-    <h3>Young African Leaders Initiative (YALI)</h3>
-    <h4>Certificate of Civic Leadership</h4>
-    <p class="edu-date"><i class="fa-regular fa-calendar"></i> 2021</p>
-    <p class="edu-skills">`Civic Leadership` `Community Development` `Policy` `Governance`</p>
-  </div>
-  <i class="fa-solid fa-arrow-up-right-from-square edu-arrow"></i>
+<div class="edu-logo-placeholder"><i class="fa-solid fa-globe"></i></div>
+<div class="edu-content">
+<h3>Young African Leaders Initiative (YALI)</h3>
+<h4>Certificate of Civic Leadership</h4>
+<p class="edu-date"><i class="fa-regular fa-calendar"></i> 2021</p>
+<p><code>Civic Leadership</code> <code>Community Development</code> <code>Policy</code> <code>Governance</code></p>
+</div>
+<i class="fa-solid fa-arrow-up-right-from-square edu-arrow"></i>
 </div>
 </a>
 
 <a href="https://www.africadronedataacademy.com/" target="_blank" class="edu-card-link">
 <div class="card edu-card">
-  <div class="edu-logo-placeholder"><i class="fa-solid fa-plane"></i></div>
-  <div class="edu-content">
-    <h3>African Drone and Data Academy</h3>
-    <h4>Certificate in Drone & Data Technology</h4>
-    <p class="edu-date"><i class="fa-regular fa-calendar"></i> 2023</p>
-    <p class="edu-skills">`Drone Operations` `Data Collection` `Remote Sensing` `Geospatial Data`</p>
-  </div>
-  <i class="fa-solid fa-arrow-up-right-from-square edu-arrow"></i>
+<div class="edu-logo-placeholder"><i class="fa-solid fa-plane"></i></div>
+<div class="edu-content">
+<h3>African Drone and Data Academy</h3>
+<h4>Certificate in Drone &amp; Data Technology</h4>
+<p class="edu-date"><i class="fa-regular fa-calendar"></i> 2023</p>
+<p><code>Drone Operations</code> <code>Data Collection</code> <code>Remote Sensing</code> <code>Geospatial Data</code></p>
+</div>
+<i class="fa-solid fa-arrow-up-right-from-square edu-arrow"></i>
 </div>
 </a>
 
 <a href="https://yali.state.gov/" target="_blank" class="edu-card-link">
 <div class="card edu-card">
-  <div class="edu-logo-placeholder"><i class="fa-solid fa-trophy"></i></div>
-  <div class="edu-content">
-    <h3>YALI RLC-SA Innovation Challenge</h3>
-    <h4>Finalist</h4>
-    <p class="edu-date"><i class="fa-regular fa-calendar"></i> 2024</p>
-    <p class="edu-skills">`Innovation` `Entrepreneurship` `Leadership`</p>
-  </div>
-  <i class="fa-solid fa-arrow-up-right-from-square edu-arrow"></i>
+<div class="edu-logo-placeholder"><i class="fa-solid fa-trophy"></i></div>
+<div class="edu-content">
+<h3>YALI RLC-SA Innovation Challenge</h3>
+<h4>Finalist</h4>
+<p class="edu-date"><i class="fa-regular fa-calendar"></i> 2024</p>
+<p><code>Innovation</code> <code>Entrepreneurship</code> <code>Leadership</code></p>
+</div>
+<i class="fa-solid fa-arrow-up-right-from-square edu-arrow"></i>
 </div>
 </a>
 
 </div>
+
 </section>
