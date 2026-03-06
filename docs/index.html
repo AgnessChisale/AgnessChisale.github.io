@@ -11,15 +11,12 @@
 <link href="site_libs/bootstrap/bootstrap-cdbc1b868453ca64f53715862e8134a1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="dark">
 <link rel="stylesheet" href="styles.css">
 <style>
-  /* ── Page centering ── */
   #quarto-content {
     max-width: 1100px !important;
     margin: 0 auto !important;
     padding: 0 2rem !important;
     float: none !important;
   }
-
-  /* ── Big gradient name ── */
   .hero-name {
     font-size: clamp(2.5rem, 6vw, 5rem);
     font-weight: 800;
@@ -30,23 +27,48 @@
     line-height: 1.1;
     margin-bottom: 0.3rem;
   }
-
   .hero-subtitle {
     text-align: center;
     color: #a78bfa;
     font-size: 1.2rem;
     margin-bottom: 0.5rem;
   }
-
-  /* ── Projects 3x2 grid ── */
   .projects-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1.5rem;
     margin-top: 1.5rem;
   }
-
-  /* ── School logos ── */
+  .projects-grid .project-card-link {
+    display: flex;
+  }
+  .projects-grid .card.project-card {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .projects-grid .card.project-card p {
+    flex: 1;
+  }
+  .image-circle {
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid #a78bfa;
+    flex-shrink: 0;
+  }
+  .image-circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+  }
+  .nav-link.active-section {
+    color: #a78bfa !important;
+    font-weight: 600;
+  }
   .edu-logo-img {
     width: 48px;
     height: 48px;
@@ -54,12 +76,6 @@
     border-radius: 8px;
     filter: brightness(0) invert(1) opacity(0.85);
     flex-shrink: 0;
-  }
-
-  /* ── Active nav link ── */
-  .nav-link.active-section {
-    color: #a78bfa !important;
-    font-weight: 600;
   }
 </style>
 </head>
@@ -101,11 +117,11 @@
 </div>
 
 <!-- CONTACT BAR -->
-<div class="contact-bar">
-  <a href="mailto:agnesschisale8@gmail.com" title="Email"><i class="fa-solid fa-envelope"></i></a>
-  <a href="https://github.com/AgnessChisale" target="_blank" title="GitHub"><i class="fa-brands fa-github"></i></a>
-  <a href="https://www.linkedin.com/in/agness-chisale-ab4199188/" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
-  <span><i class="fa-solid fa-location-dot"></i> Vancouver, BC</span>
+<div style="display:flex; justify-content:center; align-items:center; gap:2rem; margin: 1rem auto 1.5rem auto; width:100%;">
+  <a href="mailto:agnesschisale8@gmail.com" title="Email" style="color:#a0c4c4; font-size:1.4rem; text-decoration:none;"><i class="fa-solid fa-envelope"></i></a>
+  <a href="https://github.com/AgnessChisale" target="_blank" title="GitHub" style="color:#a0c4c4; font-size:1.4rem; text-decoration:none;"><i class="fa-brands fa-github"></i></a>
+  <a href="https://www.linkedin.com/in/agness-chisale-ab4199188/" target="_blank" title="LinkedIn" style="color:#a0c4c4; font-size:1.4rem; text-decoration:none;"><i class="fa-brands fa-linkedin"></i></a>
+  <span style="color:#a0c4c4; font-size:1rem;"><i class="fa-solid fa-location-dot"></i> Vancouver, BC</span>
 </div>
 
 <hr>
@@ -114,12 +130,12 @@
 <section id="about">
   <div class="hero-section">
     <div class="hero-text">
-      <h2><i class="fa-regular fa-user"></i> About Me</h2>
+      <h2>About Me</h2>
       <p>I am a geospatial analyst and environmental scientist passionate about using spatial data, GIS and remote sensing to support environmental management and data-driven decision-making. I am currently pursuing a Master's degree in Geomatics for Environmental Management at the University of British Columbia. I also hold a Bachelor's degree in Environmental Science and Technology from the Malawi University of Business and Applied Sciences, earned with distinction. I am technically fluent in ArcGIS Pro, QGIS, PostgreSQL/PostGIS, Python and R.</p>
     </div>
     <div class="hero-image">
       <div class="image-circle">
-        <img src="./images/Aggie_.jpg" alt="Agness Chisale">
+        <img src="./images/Aggie.jpg" alt="Agness Chisale" style="width:100%; height:100%; object-fit:cover; object-position:center top; display:block;">
       </div>
     </div>
   </div>
@@ -129,7 +145,7 @@
 
 <!-- SKILLS -->
 <section id="skills">
-  <h2><i class="fa-regular fa-lightbulb"></i> Skills</h2>
+  <h2>Skills</h2>
   <div class="card-grid">
     <div class="card">
       <h3><i class="fa-solid fa-map"></i> GIS &amp; Spatial Analysis</h3>
@@ -150,7 +166,7 @@
 
 <!-- PROJECTS -->
 <section id="projects">
-  <h2><i class="fa-regular fa-folder-open"></i> Projects</h2>
+  <h2>Projects</h2>
   <div class="projects-grid">
     <a href="./projects.html" class="project-card-link">
       <div class="card project-card">
@@ -195,11 +211,9 @@
 
 <!-- EXPERIENCE -->
 <section id="experience">
-  <h2><i class="fa-regular fa-briefcase"></i> Experience</h2>
+  <h2>Experience</h2>
   <div class="card-grid-stacked">
-
     <div class="card exp-card">
-      <div class="exp-logo-placeholder"><i class="fa-solid fa-seedling"></i></div>
       <div class="exp-content">
         <h3>Geospatial Analyst (Volunteer)</h3>
         <h4>Tayo Climate Partners &bull; 2025 – Present &bull; Remote</h4>
@@ -207,9 +221,7 @@
         <p><code>GIS</code> <code>ArcGIS</code> <code>Python</code> <code>R</code></p>
       </div>
     </div>
-
     <div class="card exp-card">
-      <div class="exp-logo-placeholder"><i class="fa-solid fa-building-columns"></i></div>
       <div class="exp-content">
         <h3>Environmental Officer</h3>
         <h4>Lilongwe City Council &bull; July 2024 – May 2025 &bull; Lilongwe, Malawi</h4>
@@ -217,9 +229,7 @@
         <p><code>GIS</code> <code>ArcGIS</code> <code>ESMPs</code> <code>Environmental Auditing</code></p>
       </div>
     </div>
-
     <div class="card exp-card">
-      <div class="exp-logo-placeholder"><i class="fa-solid fa-flask"></i></div>
       <div class="exp-content">
         <h3>Environmental Consultant</h3>
         <h4>Water, Waste and Environmental Consultants &bull; 2022 – 2024 &bull; Lilongwe, Malawi</h4>
@@ -227,7 +237,6 @@
         <p><code>GIS</code> <code>ArcGIS</code> <code>SPSS</code> <code>STATA</code></p>
       </div>
     </div>
-
   </div>
 </section>
 
@@ -235,9 +244,8 @@
 
 <!-- EDUCATION -->
 <section id="education">
-  <h2><i class="fa-solid fa-graduation-cap"></i> Education</h2>
+  <h2>Education</h2>
   <div class="card-grid-stacked">
-
     <a href="https://www.ubc.ca/" target="_blank" class="edu-card-link">
       <div class="card edu-card">
         <img src="./images/ubc_LOGO.png" alt="UBC" class="edu-logo-img">
@@ -250,7 +258,6 @@
         <i class="fa-solid fa-arrow-up-right-from-square edu-arrow"></i>
       </div>
     </a>
-
     <a href="https://www.mubas.ac.mw/" target="_blank" class="edu-card-link">
       <div class="card edu-card">
         <img src="./images/MUBAS_LOGO.png" alt="MUBAS" class="edu-logo-img">
@@ -263,7 +270,6 @@
         <i class="fa-solid fa-arrow-up-right-from-square edu-arrow"></i>
       </div>
     </a>
-
   </div>
 </section>
 
@@ -271,9 +277,8 @@
 
 <!-- CERTIFICATIONS -->
 <section id="certifications">
-  <h2><i class="fa-solid fa-certificate"></i> Certifications</h2>
+  <h2>Certifications</h2>
   <div class="card-grid-stacked">
-
     <a href="https://yalichallenge.org/" target="_blank" class="edu-card-link">
       <div class="card edu-card">
         <div class="edu-logo-placeholder"><i class="fa-solid fa-globe"></i></div>
@@ -286,7 +291,6 @@
         <i class="fa-solid fa-arrow-up-right-from-square edu-arrow"></i>
       </div>
     </a>
-
     <a href="https://www.africadronedataacademy.com/" target="_blank" class="edu-card-link">
       <div class="card edu-card">
         <div class="edu-logo-placeholder"><i class="fa-solid fa-satellite-dish"></i></div>
@@ -299,21 +303,19 @@
         <i class="fa-solid fa-arrow-up-right-from-square edu-arrow"></i>
       </div>
     </a>
-
   </div>
 </section>
 
 </main>
 </div>
 
-<!-- SCROLLSPY: highlights navbar link based on current section -->
 <script>
   window.addEventListener('scroll', function () {
     const sections = document.querySelectorAll('section[id]');
     const navLinks = document.querySelectorAll('#main-nav .nav-link');
     let current = '';
     sections.forEach(section => {
-      const sectionTop = section.offsetTop - 100;
+      const sectionTop = section.offsetTop - 120;
       if (window.scrollY >= sectionTop) {
         current = section.getAttribute('id');
       }
