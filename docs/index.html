@@ -33,6 +33,7 @@
     font-size: 1.2rem;
     margin-bottom: 0.5rem;
   }
+  /* Equal height project cards */
   .projects-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -50,6 +51,27 @@
   .projects-grid .card.project-card p {
     flex: 1;
   }
+  /* Certifications 2-column grid */
+  .certs-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+  }
+  .certs-grid .edu-card-link {
+    display: flex;
+  }
+  .certs-grid .card.edu-card {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  /* Fix left drift - center all stacked card sections */
+  .card-grid-stacked {
+    max-width: 100% !important;
+    margin: 1.5rem auto 0 auto !important;
+  }
+  /* Photo circle - crisp, face centered */
   .image-circle {
     width: 300px;
     height: 300px;
@@ -57,25 +79,25 @@
     overflow: hidden;
     border: 4px solid #a78bfa;
     flex-shrink: 0;
+    image-rendering: auto;
   }
   .image-circle img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center top;
+    object-position: center 15%;
     display: block;
+    image-rendering: auto;
+    -webkit-filter: none;
+    filter: none;
   }
   .nav-link.active-section {
     color: #a78bfa !important;
     font-weight: 600;
   }
-  .edu-logo-img {
-    width: 48px;
-    height: 48px;
-    object-fit: contain;
-    border-radius: 8px;
-    filter: brightness(0) invert(1) opacity(0.85);
-    flex-shrink: 0;
+  /* Remove edu-card left gap when no logo */
+  .edu-card {
+    gap: 0.8rem;
   }
 </style>
 </head>
@@ -135,7 +157,7 @@
     </div>
     <div class="hero-image">
       <div class="image-circle">
-        <img src="./images/Aggie.jpg" alt="Agness Chisale" style="width:100%; height:100%; object-fit:cover; object-position:center top; display:block;">
+        <img src="./images/Aggie.jpg" alt="Agness Chisale">
       </div>
     </div>
   </div>
@@ -213,29 +235,23 @@
 <section id="experience">
   <h2>Experience</h2>
   <div class="card-grid-stacked">
-    <div class="card exp-card">
-      <div class="exp-content">
-        <h3>Geospatial Analyst (Volunteer)</h3>
-        <h4>Tayo Climate Partners &bull; 2025 – Present &bull; Remote</h4>
-        <p>Supporting blue carbon and coastal restoration projects through spatial analysis and site suitability assessments for mangrove ecosystem restoration.</p>
-        <p><code>GIS</code> <code>ArcGIS</code> <code>Python</code> <code>R</code></p>
-      </div>
+    <div class="card">
+      <h3>Geospatial Analyst (Volunteer)</h3>
+      <h4>Tayo Climate Partners &bull; 2025 – Present &bull; Remote</h4>
+      <p>Supporting blue carbon and coastal restoration projects through spatial analysis and site suitability assessments for mangrove ecosystem restoration.</p>
+      <p><code>GIS</code> <code>ArcGIS</code> <code>Python</code> <code>R</code></p>
     </div>
-    <div class="card exp-card">
-      <div class="exp-content">
-        <h3>Environmental Officer</h3>
-        <h4>Lilongwe City Council &bull; July 2024 – May 2025 &bull; Lilongwe, Malawi</h4>
-        <p>Urban development compliance, environmental auditing, and stakeholder engagement across infrastructure and waste projects.</p>
-        <p><code>GIS</code> <code>ArcGIS</code> <code>ESMPs</code> <code>Environmental Auditing</code></p>
-      </div>
+    <div class="card">
+      <h3>Environmental Officer</h3>
+      <h4>Lilongwe City Council &bull; July 2024 – May 2025 &bull; Lilongwe, Malawi</h4>
+      <p>Urban development compliance, environmental auditing, and stakeholder engagement across infrastructure and waste projects.</p>
+      <p><code>GIS</code> <code>ArcGIS</code> <code>ESMPs</code> <code>Environmental Auditing</code></p>
     </div>
-    <div class="card exp-card">
-      <div class="exp-content">
-        <h3>Environmental Consultant</h3>
-        <h4>Water, Waste and Environmental Consultants &bull; 2022 – 2024 &bull; Lilongwe, Malawi</h4>
-        <p>Environmental and social impact assessment across energy and infrastructure projects. Field data collection, geospatial analysis and statistical modelling.</p>
-        <p><code>GIS</code> <code>ArcGIS</code> <code>SPSS</code> <code>STATA</code></p>
-      </div>
+    <div class="card">
+      <h3>Environmental Consultant</h3>
+      <h4>Water, Waste and Environmental Consultants &bull; 2022 – 2024 &bull; Lilongwe, Malawi</h4>
+      <p>Environmental and social impact assessment across energy and infrastructure projects. Field data collection, geospatial analysis and statistical modelling.</p>
+      <p><code>GIS</code> <code>ArcGIS</code> <code>SPSS</code> <code>STATA</code></p>
     </div>
   </div>
 </section>
@@ -247,27 +263,29 @@
   <h2>Education</h2>
   <div class="card-grid-stacked">
     <a href="https://www.ubc.ca/" target="_blank" class="edu-card-link">
-      <div class="card edu-card">
-        <img src="./images/ubc_LOGO.png" alt="UBC" class="edu-logo-img">
-        <div class="edu-content">
-          <h3>University of British Columbia</h3>
-          <h4>Master of Geomatics for Environmental Management</h4>
-          <p class="edu-date"><i class="fa-regular fa-calendar"></i> July 2025 – April 2026 &bull; Vancouver, Canada</p>
-          <p><code>Spatial Analysis</code> <code>Remote Sensing</code> <code>GIS</code> <code>Python</code> <code>R</code> <code>Environmental Management</code></p>
+      <div class="card">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+          <div>
+            <h3>University of British Columbia</h3>
+            <h4>Master of Geomatics for Environmental Management</h4>
+            <p class="edu-date"><i class="fa-regular fa-calendar"></i> July 2025 – April 2026 &bull; Vancouver, Canada</p>
+            <p><code>Spatial Analysis</code> <code>Remote Sensing</code> <code>GIS</code> <code>Python</code> <code>R</code> <code>Environmental Management</code></p>
+          </div>
+          <i class="fa-solid fa-arrow-up-right-from-square edu-arrow" style="margin-left:1rem; flex-shrink:0;"></i>
         </div>
-        <i class="fa-solid fa-arrow-up-right-from-square edu-arrow"></i>
       </div>
     </a>
     <a href="https://www.mubas.ac.mw/" target="_blank" class="edu-card-link">
-      <div class="card edu-card">
-        <img src="./images/MUBAS_LOGO.png" alt="MUBAS" class="edu-logo-img">
-        <div class="edu-content">
-          <h3>Malawi University of Business and Applied Sciences</h3>
-          <h4>BSc Environmental Science and Technology — Environmental Management</h4>
-          <p class="edu-date"><i class="fa-regular fa-calendar"></i> March 2018 – December 2022 &bull; Blantyre, Malawi</p>
-          <p><code>Environmental Management</code> <code>GIS</code> <code>Field Methods</code> <code>Statistics</code> <code>Research Methods</code></p>
+      <div class="card">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+          <div>
+            <h3>Malawi University of Business and Applied Sciences</h3>
+            <h4>BSc Environmental Science and Technology — Environmental Management</h4>
+            <p class="edu-date"><i class="fa-regular fa-calendar"></i> March 2018 – December 2022 &bull; Blantyre, Malawi</p>
+            <p><code>Environmental Management</code> <code>GIS</code> <code>Field Methods</code> <code>Statistics</code> <code>Research Methods</code></p>
+          </div>
+          <i class="fa-solid fa-arrow-up-right-from-square edu-arrow" style="margin-left:1rem; flex-shrink:0;"></i>
         </div>
-        <i class="fa-solid fa-arrow-up-right-from-square edu-arrow"></i>
       </div>
     </a>
   </div>
@@ -278,29 +296,31 @@
 <!-- CERTIFICATIONS -->
 <section id="certifications">
   <h2>Certifications</h2>
-  <div class="card-grid-stacked">
+  <div class="certs-grid">
     <a href="https://yalichallenge.org/" target="_blank" class="edu-card-link">
       <div class="card edu-card">
-        <div class="edu-logo-placeholder"><i class="fa-solid fa-globe"></i></div>
-        <div class="edu-content">
-          <h3>Young African Leaders Initiative (YALI)</h3>
-          <h4>Certificate of Civic Leadership</h4>
-          <p class="edu-date"><i class="fa-regular fa-calendar"></i> 2021</p>
-          <p><code>Civic Leadership</code> <code>Community Development</code> <code>Policy</code> <code>Governance</code></p>
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; width:100%;">
+          <div>
+            <h3>Young African Leaders Initiative (YALI)</h3>
+            <h4>Certificate of Civic Leadership</h4>
+            <p class="edu-date"><i class="fa-regular fa-calendar"></i> 2021</p>
+            <p><code>Civic Leadership</code> <code>Community Development</code> <code>Policy</code> <code>Governance</code></p>
+          </div>
+          <i class="fa-solid fa-arrow-up-right-from-square edu-arrow" style="margin-left:1rem; flex-shrink:0;"></i>
         </div>
-        <i class="fa-solid fa-arrow-up-right-from-square edu-arrow"></i>
       </div>
     </a>
     <a href="https://www.africadronedataacademy.com/" target="_blank" class="edu-card-link">
       <div class="card edu-card">
-        <div class="edu-logo-placeholder"><i class="fa-solid fa-satellite-dish"></i></div>
-        <div class="edu-content">
-          <h3>African Drone and Data Academy</h3>
-          <h4>Certificate in Drone &amp; Data Technology</h4>
-          <p class="edu-date"><i class="fa-regular fa-calendar"></i> 2023</p>
-          <p><code>Drone Operations</code> <code>Data Collection</code> <code>Remote Sensing</code> <code>Geospatial Data</code></p>
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; width:100%;">
+          <div>
+            <h3>African Drone and Data Academy</h3>
+            <h4>Certificate in Drone &amp; Data Technology</h4>
+            <p class="edu-date"><i class="fa-regular fa-calendar"></i> 2023</p>
+            <p><code>Drone Operations</code> <code>Data Collection</code> <code>Remote Sensing</code> <code>Geospatial Data</code></p>
+          </div>
+          <i class="fa-solid fa-arrow-up-right-from-square edu-arrow" style="margin-left:1rem; flex-shrink:0;"></i>
         </div>
-        <i class="fa-solid fa-arrow-up-right-from-square edu-arrow"></i>
       </div>
     </a>
   </div>
