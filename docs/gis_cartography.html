@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GIS & Cartography | Agness Chisale</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-cdbc1b868453ca64f53715862e8134a1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="dark">
+<link rel="stylesheet" href="styles.css">
+<style>
+  body { background-color: #0f1923 !important; color: #e8eaf0 !important; }
+  #quarto-content {
+    max-width: 1100px !important;
+    margin: 0 auto !important;
+    padding: 2rem !important;
+    float: none !important;
+  }
+  .page-title {
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 800;
+    background: linear-gradient(90deg, #a78bfa, #60a5fa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.3rem;
+  }
+  .page-subtitle { color: #8899aa; font-size: 0.95rem; margin-bottom: 2rem; }
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: #a78bfa;
+    text-decoration: none;
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+  }
+  .back-link:hover { color: #ffffff; }
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  .project-card {
+    background: #1a2535;
+    border: 1px solid #ffffff15;
+    border-radius: 12px;
+    overflow: hidden;
+    text-decoration: none !important;
+    color: inherit !important;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.2s ease;
+  }
+  .project-card:hover {
+    border-color: #a78bfa;
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(167,139,250,0.15);
+  }
+  .card-image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    display: block;
+  }
+  .card-body {
+    padding: 1.2rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .card-body h3 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #ffffff !important;
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+  }
+  .card-body p {
+    font-size: 0.82rem;
+    color: #c8cdd8 !important;
+    flex: 1;
+    margin-bottom: 0.8rem;
+    line-height: 1.5;
+  }
+  .card-tools { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: auto; }
+  .tool-badge {
+    background: #2e4a7a;
+    color: #ffffff;
+    padding: 2px 10px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+  }
+
+  /* Honeycomb + glow */
+  #hex-canvas {
+    position: fixed; top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    pointer-events: none; z-index: 0; opacity: 0.15;
+  }
+  #cursor-glow {
+    position: fixed; top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    pointer-events: none; z-index: 1;
+    background: radial-gradient(600px circle at var(--x, -999px) var(--y, -999px), rgba(167,139,250,0.15), transparent 70%);
+  }
+</style>
+</head>
+<body>
+
+<div id="cursor-glow"></div>
+<canvas id="hex-canvas"></canvas>
+
+<div id="quarto-content" style="position:relative; z-index:2;">
+
+  <a href="./index.html#projects" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to Projects</a>
+
+  <div class="page-title"><i class="fa-solid fa-map"></i> GIS & Cartography</div>
+  <p class="page-subtitle">3 projects &bull; ArcGIS Pro &bull; QGIS &bull; Kart &bull; PostgreSQL</p>
+
+  <div class="cards-grid">
+
+    <a href="./project_old_growth.html" class="project-card">
+      <img class="card-image" src="https://images.unsplash.com/photo-1448375240586-882707db888b?w=600&auto=format&fit=crop" alt="Old Growth Forest">
+      <div class="card-body">
+        <h3>Cartographic Modelling of Old Growth Forests on Vancouver Island</h3>
+        <p>Analysis of old growth forest distribution using BC forest inventory data and the BC Cumulative Effects Framework. Results visualized as a cartographic map.</p>
+        <div class="card-tools">
+          <span class="tool-badge">ArcGIS Pro</span>
+          <span class="tool-badge">QGIS</span>
+          <span class="tool-badge">BC CEF</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="./project_digitization.html" class="project-card">
+      <img class="card-image" src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&auto=format&fit=crop" alt="Feature Digitization">
+      <div class="card-body">
+        <h3>Version Control and Feature Digitization for Geospatial Data</h3>
+        <p>Version control for geospatial data using Git and Kart. Campus tree locations and buildings digitized and validated against official UBC datasets.</p>
+        <div class="card-tools">
+          <span class="tool-badge">Kart</span>
+          <span class="tool-badge">QGIS</span>
+          <span class="tool-badge">ArcGIS Pro</span>
+          <span class="tool-badge">Git</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="./project_geocoding.html" class="project-card">
+      <img class="card-image" src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=600&auto=format&fit=crop" alt="Vancouver City">
+      <div class="card-body">
+        <h3>Geocoding and Spatial Data Creation in Vancouver</h3>
+        <p>Converting non-spatial data into geospatial datasets using ArcGIS Pro. Street tree addresses geocoded using a custom address locator built from a road network.</p>
+        <div class="card-tools">
+          <span class="tool-badge">ArcGIS Pro</span>
+          <span class="tool-badge">Geocoding</span>
+          <span class="tool-badge">Spatial Analysis</span>
+        </div>
+      </div>
+    </a>
+
+  </div>
+</div>
+
+<script>
+  document.addEventListener('mousemove', (e) => {
+    document.getElementById('cursor-glow').style.setProperty('--x', e.clientX + 'px');
+    document.getElementById('cursor-glow').style.setProperty('--y', e.clientY + 'px');
+  });
+  const canvas = document.getElementById('hex-canvas');
+  const ctx = canvas.getContext('2d');
+  function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; drawHex(); }
+  function drawHex() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const size = 30, w = size * 2, h = Math.sqrt(3) * size;
+    ctx.strokeStyle = 'rgba(167,139,250,0.6)'; ctx.lineWidth = 0.5;
+    for (let row = -1; row < canvas.height / h + 1; row++) {
+      for (let col = -1; col < canvas.width / w + 1; col++) {
+        const x = col * w * 0.75, y = row * h + (col % 2 === 0 ? 0 : h / 2);
+        ctx.beginPath();
+        for (let i = 0; i < 6; i++) {
+          const angle = (Math.PI / 180) * (60 * i - 30);
+          const px = x + size * Math.cos(angle), py = y + size * Math.sin(angle);
+          i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+        }
+        ctx.closePath(); ctx.stroke();
+      }
+    }
+  }
+  window.addEventListener('resize', resize); resize();
+</script>
+
+</body>
+</html>
