@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Supervised Land Cover Classification of Landsat Imagery | Agness Chisale</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-cdbc1b868453ca64f53715862e8134a1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="dark">
+<link rel="stylesheet" href="styles.css">
+<style>
+  body { background-color: #0f1923 !important; color: #e8eaf0 !important; }
+  #quarto-content { max-width: 900px !important; margin: 0 auto !important; padding: 2rem !important; float: none !important; }
+  .page-title { font-size: clamp(1.5rem, 3vw, 2.5rem); font-weight: 800; background: linear-gradient(90deg, #a78bfa, #60a5fa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 1.5rem; line-height: 1.2; }
+  .back-link { display: inline-flex; align-items: center; gap: 0.4rem; color: #a78bfa; text-decoration: none; font-size: 0.9rem; margin-bottom: 1.5rem; }
+  .back-link:hover { color: #ffffff; }
+  h2 { color: #a78bfa !important; font-size: 1.2rem; font-weight: 700; margin-top: 2rem; margin-bottom: 0.8rem; border-bottom: 1px solid #ffffff15; padding-bottom: 0.4rem; }
+  p, li { color: #c8cdd8 !important; line-height: 1.7; }
+  ul { padding-left: 1.5rem; }
+  li { margin-bottom: 0.3rem; }
+  .project-image { width: 100%; border-radius: 12px; margin: 1rem 0; border: 1px solid #ffffff15; }
+  .image-caption { font-size: 0.8rem; color: #8899aa !important; text-align: center; margin-top: -0.5rem; margin-bottom: 1.5rem; }
+  .image-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+  .image-row .image-wrap img { width: 100%; border-radius: 12px; border: 1px solid #ffffff15; }
+  .image-row .image-wrap p { font-size: 0.8rem; color: #8899aa !important; text-align: center; margin-top: 0.3rem; }
+  .accuracy-badge { display: inline-block; background: linear-gradient(90deg, #a78bfa, #60a5fa); color: #0f1923; font-weight: 800; font-size: 1.1rem; padding: 0.4rem 1.2rem; border-radius: 999px; margin: 0.5rem 0 1rem 0; }
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.88rem; }
+  th { background: #1a2535; color: #a78bfa !important; padding: 0.7rem 1rem; text-align: left; border: 1px solid #ffffff15; }
+  td { padding: 0.6rem 1rem; border: 1px solid #ffffff15; color: #c8cdd8 !important; vertical-align: top; }
+  tr:nth-child(even) td { background: #1a2535; }
+  tr:nth-child(odd) td { background: #141e2c; }
+  code { background: #2e4a7a !important; color: #ffffff !important; padding: 2px 8px; border-radius: 6px; font-size: 0.85rem; }
+  a { color: #a78bfa !important; }
+  a:hover { color: #ffffff !important; }
+  .methodology-link { display: inline-flex; align-items: center; gap: 0.5rem; background: #1a2535; border: 1px solid #a78bfa; color: #a78bfa !important; padding: 0.5rem 1.2rem; border-radius: 8px; text-decoration: none !important; font-size: 0.9rem; margin: 1rem 0; }
+  .methodology-link:hover { background: #a78bfa; color: #ffffff !important; }
+  #hex-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 0; opacity: 0.15; }
+  #cursor-glow { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 1; background: radial-gradient(600px circle at var(--x, -999px) var(--y, -999px), rgba(167,139,250,0.15), transparent 70%); }
+</style>
+</head>
+<body>
+<div id="cursor-glow"></div>
+<canvas id="hex-canvas"></canvas>
+
+<div id="quarto-content" style="position:relative; z-index:2;">
+
+  <a href="./remote_sensing.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to Remote Sensing & Earth Observation</a>
+
+  <div class="page-title">Supervised Land Cover Classification of Landsat Imagery</div>
+
+  <h2>Overview</h2>
+  <p>This project performs a supervised Maximum Likelihood Classification (MLC) of a Landsat 9 image to map seven land cover classes across a coastal study area in British Columbia. Training and validation polygons were manually delineated, spectral signatures were explored per class, and the classification was evaluated using a confusion matrix with overall, producer, and user accuracy metrics.</p>
+
+  <div style="margin: 1rem 0;">
+    <span style="color:#c8cdd8;">Overall Accuracy achieved:</span>
+    <span class="accuracy-badge">90.3%</span>
+  </div>
+
+  <h2>Objectives</h2>
+  <ul>
+    <li>Delineate training and validation polygons for seven land cover classes</li>
+    <li>Explore and visualize spectral signatures of each class across Landsat bands</li>
+    <li>Train a Maximum Likelihood Classifier using a 70/30 training/validation split</li>
+    <li>Evaluate classification accuracy using a confusion matrix</li>
+    <li>Interpret per-class producer and user accuracies and identify sources of misclassification</li>
+  </ul>
+
+  <h2>Data Sources & Tools</h2>
+  <table>
+    <tr><th>File</th><th>Description</th></tr>
+    <tr><td><code>LC09_L2SP_047026_20240716_..._SR_BSTACK.tif</code></td><td>Landsat 9 surface reflectance image — 6 bands (blue, green, red, NIR, SWIR1, SWIR2), 30 m resolution</td></tr>
+    <tr><td><code>classification_polygons_AC.shp</code></td><td>Manually delineated training and validation polygons for 7 land cover classes</td></tr>
+    <tr><td><code>bands_wavelength.csv</code></td><td>Lookup table of wavelength values for each Landsat band</td></tr>
+  </table>
+  <table>
+    <tr><th>Package</th><th>Purpose</th></tr>
+    <tr><td><code>terra</code></td><td>Reading and plotting raster imagery</td></tr>
+    <tr><td><code>sf</code></td><td>Reading and handling vector polygon data</td></tr>
+    <tr><td><code>RStoolbox</code></td><td>Maximum Likelihood Classification via <code>superClass()</code></td></tr>
+    <tr><td><code>tidyverse</code></td><td>Data wrangling, reshaping, and <code>ggplot2</code> visualization</td></tr>
+    <tr><td><code>caret</code></td><td>Model training support used by <code>RStoolbox</code></td></tr>
+  </table>
+
+  <h2>Methods</h2>
+  <p>A Landsat 9 image was loaded and 271 polygons were manually delineated across seven land cover classes: Broadleaf Forest, Coniferous Forest, Exposed Soil and Rocks, High Density Developed, Low Density Developed, Non-forest Vegetation, and Water. Polygons were split 70/30 into training and validation sets using stratified random sampling. Pixel values were extracted and spectral signatures (mean reflectance with 5th–95th percentile ribbons) were visualized per class across all six bands. The Maximum Likelihood Classifier was trained using <code>RStoolbox::superClass()</code> with 500 pixels sampled per class. Classification accuracy was assessed using a confusion matrix, with overall, producer, and user accuracies calculated from the matrix diagonal, row sums, and column sums.</p>
+
+  <a href="./GEM520_classification_AC.pdf" class="methodology-link" target="_blank"><i class="fa-solid fa-file-pdf"></i> For the full report including all plots and written answers, click here</a>
+
+  <h2>Outputs</h2>
+
+  <img src="./images/landsat_spectral_signatures.png" alt="Spectral Signatures by Land Cover Class" class="project-image">
+  <p class="image-caption">Spectral signatures showing mean reflectance and 5th–95th percentile uncertainty ribbons for all 7 land cover classes across Landsat 9 bands</p>
+
+  <div class="image-row">
+    <div class="image-wrap">
+      <img src="./images/landsat_classified_map.png" alt="Classified Land Cover Map">
+      <p>Classified land cover map showing 7 classes across the coastal BC study area</p>
+    </div>
+    <div class="image-wrap">
+      <img src="./images/landsat_confusion_matrix.png" alt="Confusion Matrix">
+      <p>Confusion matrix showing prediction vs reference classification results</p>
+    </div>
+  </div>
+
+  <h2>Key Findings</h2>
+  <ul>
+    <li>Water and Coniferous Forest achieved the highest accuracies due to their spectrally distinct signatures</li>
+    <li>Broadleaf Forest had the lowest user accuracy (36.5%), frequently confused with Non-forest Vegetation and Low Density Developed areas</li>
+    <li>Low Density Developed had the lowest producer accuracy (61.3%), likely due to its mixed spectral composition of vegetation, bare soil, and built surfaces</li>
+    <li>Balancing pixel samples per class is critical — unbalanced sampling can inflate overall accuracy and mask poor performance in minority classes</li>
+  </ul>
+
+  <h2>Skills Learned</h2>
+  <ul>
+    <li>Loading and visualizing multi-band Landsat imagery using <code>terra</code></li>
+    <li>Reading and validating vector polygon data with <code>sf</code></li>
+    <li>Stratified random sampling for training/validation splits using <code>dplyr</code></li>
+    <li>Extracting pixel values from rasters at polygon locations with <code>terra::extract</code></li>
+    <li>Summarizing and visualizing spectral signatures with <code>ggplot2</code> and <code>geom_ribbon</code></li>
+    <li>Training a Maximum Likelihood Classifier with <code>RStoolbox::superClass()</code></li>
+    <li>Computing overall, producer, and user accuracy from a confusion matrix using <code>diag()</code>, <code>rowSums()</code>, and <code>colSums()</code></li>
+    <li>Interpreting classification accuracy and identifying sources of misclassification</li>
+  </ul>
+
+</div>
+
+<script>
+  document.addEventListener('mousemove', (e) => {
+    document.getElementById('cursor-glow').style.setProperty('--x', e.clientX + 'px');
+    document.getElementById('cursor-glow').style.setProperty('--y', e.clientY + 'px');
+  });
+  const canvas = document.getElementById('hex-canvas');
+  const ctx = canvas.getContext('2d');
+  function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; drawHex(); }
+  function drawHex() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const size = 30, w = size * 2, h = Math.sqrt(3) * size;
+    ctx.strokeStyle = 'rgba(167,139,250,0.6)'; ctx.lineWidth = 0.5;
+    for (let row = -1; row < canvas.height / h + 1; row++) {
+      for (let col = -1; col < canvas.width / w + 1; col++) {
+        const x = col * w * 0.75, y = row * h + (col % 2 === 0 ? 0 : h / 2);
+        ctx.beginPath();
+        for (let i = 0; i < 6; i++) {
+          const angle = (Math.PI / 180) * (60 * i - 30);
+          const px = x + size * Math.cos(angle), py = y + size * Math.sin(angle);
+          i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+        }
+        ctx.closePath(); ctx.stroke();
+      }
+    }
+  }
+  window.addEventListener('resize', resize); resize();
+</script>
+</body>
+</html>
