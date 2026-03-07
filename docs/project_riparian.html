@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terrain Analysis and Riparian Area Management | Agness Chisale</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-cdbc1b868453ca64f53715862e8134a1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="dark">
+<link rel="stylesheet" href="styles.css">
+<style>
+  body { background-color: #0f1923 !important; color: #e8eaf0 !important; }
+  #quarto-content { max-width: 900px !important; margin: 0 auto !important; padding: 2rem !important; float: none !important; }
+  .page-title { font-size: clamp(1.5rem, 3vw, 2.5rem); font-weight: 800; background: linear-gradient(90deg, #a78bfa, #60a5fa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 1.5rem; line-height: 1.2; }
+  .back-link { display: inline-flex; align-items: center; gap: 0.4rem; color: #a78bfa; text-decoration: none; font-size: 0.9rem; margin-bottom: 1.5rem; }
+  .back-link:hover { color: #ffffff; }
+  h2 { color: #a78bfa !important; font-size: 1.2rem; font-weight: 700; margin-top: 2rem; margin-bottom: 0.8rem; border-bottom: 1px solid #ffffff15; padding-bottom: 0.4rem; }
+  p, li { color: #c8cdd8 !important; line-height: 1.7; }
+  ul { padding-left: 1.5rem; }
+  li { margin-bottom: 0.3rem; }
+  .project-image { width: 100%; border-radius: 12px; margin: 1rem 0; border: 1px solid #ffffff15; }
+  .image-caption { font-size: 0.8rem; color: #8899aa !important; text-align: center; margin-top: -0.5rem; margin-bottom: 1rem; }
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.88rem; }
+  th { background: #1a2535; color: #a78bfa !important; padding: 0.7rem 1rem; text-align: left; border: 1px solid #ffffff15; }
+  td { padding: 0.6rem 1rem; border: 1px solid #ffffff15; color: #c8cdd8 !important; vertical-align: top; }
+  tr:nth-child(even) td { background: #1a2535; }
+  tr:nth-child(odd) td { background: #141e2c; }
+  code { background: #2e4a7a !important; color: #ffffff !important; padding: 2px 8px; border-radius: 6px; font-size: 0.85rem; }
+  a { color: #a78bfa !important; }
+  a:hover { color: #ffffff !important; }
+  #hex-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 0; opacity: 0.15; }
+  #cursor-glow { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 1; background: radial-gradient(600px circle at var(--x, -999px) var(--y, -999px), rgba(167,139,250,0.15), transparent 70%); }
+</style>
+</head>
+<body>
+<div id="cursor-glow"></div>
+<canvas id="hex-canvas"></canvas>
+
+<div id="quarto-content" style="position:relative; z-index:2;">
+
+  <a href="./hydrology_wildlife.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to Hydrology & Wildlife</a>
+
+  <div class="page-title">Terrain Analysis and Riparian Area Management in the Nahmint Valley</div>
+
+  <h2>Overview</h2>
+  <p>This project defines riparian reserve and management zones within a topographically complex forested watershed in the Nahmint Valley, British Columbia, using a high-resolution Digital Elevation Model (DEM). Stream networks were derived and characterized by order, gradient, and width. BC government stream classification guidelines were applied to assign buffer distances for Riparian Management Areas (RMAs), and watersheds were delineated to assess how forest harvesting runoff could impact stream networks.</p>
+
+  <h2>Objectives</h2>
+  <ul>
+    <li>Derive and classify a stream network from a DEM using hydrology tools</li>
+    <li>Extract stream characteristics including gradient and width by stream order</li>
+    <li>Assign BC stream classes and calculate riparian reserve and management zone buffers</li>
+    <li>Delineate watershed catchments and generate contour lines</li>
+    <li>Evaluate the adequacy of mapped RMAs for stream protection</li>
+  </ul>
+
+  <h2>Data Sources & Tools</h2>
+  <table>
+    <tr><th>Layer</th><th>Description</th><th>Source</th></tr>
+    <tr><td><code>nahmint_dem</code></td><td>High-resolution DEM of the Nahmint watershed, BC</td><td>UBC PostgreSQL Server</td></tr>
+    <tr><td>ArcGIS satellite basemap</td><td>Used for visual stream width measurement</td><td>ESRI</td></tr>
+  </table>
+  <table>
+    <tr><th>Tool</th><th>Purpose</th></tr>
+    <tr><td>QGIS</td><td>Exporting the DEM from PostGIS to GeoTiff</td></tr>
+    <tr><td>ArcGIS Pro (Spatial Analyst)</td><td>Hydrology analysis, reclassification, zonal statistics, buffering</td></tr>
+    <tr><td>Python (ArcGIS Field Calculator)</td><td>Conditional field calculations for stream class and buffer distances</td></tr>
+  </table>
+
+  <h2>Methods</h2>
+  <p>The Nahmint DEM was preprocessed by filling sinks and computing flow direction and flow accumulation. A flow accumulation threshold was selected to define the stream network, which was then ordered using the Strahler method and converted to polyline features. Stream gradient was calculated per segment using elevation change and segment length from a zonal statistics workflow. Stream widths were measured manually from the satellite basemap for each stream order and averaged. BC stream classes (S2–S6) were assigned using Python expressions combining gradient and width thresholds, and reserve and management zone buffer distances were calculated accordingly. Watersheds were delineated using the flow direction and stream link rasters, and contour lines were generated to support terrain interpretation.</p>
+
+  <h2>Outputs</h2>
+  <img src="./images/map_riparian.png" alt="Riparian Management Areas in the Nahmint Watershed" class="project-image">
+  <p class="image-caption">Map showing watersheds, contour lines, stream network symbolized by stream class, an inset map of example RMAs, and total reserve/management zone area and stream network length</p>
+
+  <img src="./images/Table_Riparian.png" alt="Summary Statistics of Stream Characteristics" class="project-image">
+  <p class="image-caption">Summary statistics of stream links, average length, width, and percent gradient grouped by stream order</p>
+
+  <h2>Key Findings</h2>
+  <ul>
+    <li>Stream gradient and width increased with stream order, corresponding to broader and lower-gradient channels in higher-order streams</li>
+    <li>Riparian reserve and management zones covered a significant portion of the study area, particularly around higher-order fish-bearing streams</li>
+    <li>Watershed delineation highlighted areas where upslope harvesting activity could channel runoff directly into sensitive stream reaches</li>
+  </ul>
+
+  <h2>Skills Learned</h2>
+  <ul>
+    <li>Preprocessing a DEM by filling sinks for hydrological analysis</li>
+    <li>Deriving flow direction, flow accumulation, and stream networks from a DEM</li>
+    <li>Classifying streams using Strahler stream ordering</li>
+    <li>Extracting stream gradient using zonal statistics and field calculations</li>
+    <li>Measuring and averaging stream width from a satellite basemap</li>
+    <li>Assigning BC stream classes using Python conditional expressions in ArcGIS</li>
+    <li>Calculating riparian reserve and management zone buffer distances</li>
+    <li>Delineating watershed catchments using the Watershed tool</li>
+    <li>Generating contour lines for terrain visualization</li>
+  </ul>
+
+</div>
+
+<script>
+  document.addEventListener('mousemove', (e) => {
+    document.getElementById('cursor-glow').style.setProperty('--x', e.clientX + 'px');
+    document.getElementById('cursor-glow').style.setProperty('--y', e.clientY + 'px');
+  });
+  const canvas = document.getElementById('hex-canvas');
+  const ctx = canvas.getContext('2d');
+  function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; drawHex(); }
+  function drawHex() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const size = 30, w = size * 2, h = Math.sqrt(3) * size;
+    ctx.strokeStyle = 'rgba(167,139,250,0.6)'; ctx.lineWidth = 0.5;
+    for (let row = -1; row < canvas.height / h + 1; row++) {
+      for (let col = -1; col < canvas.width / w + 1; col++) {
+        const x = col * w * 0.75, y = row * h + (col % 2 === 0 ? 0 : h / 2);
+        ctx.beginPath();
+        for (let i = 0; i < 6; i++) {
+          const angle = (Math.PI / 180) * (60 * i - 30);
+          const px = x + size * Math.cos(angle), py = y + size * Math.sin(angle);
+          i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+        }
+        ctx.closePath(); ctx.stroke();
+      }
+    }
+  }
+  window.addEventListener('resize', resize); resize();
+</script>
+</body>
+</html>
