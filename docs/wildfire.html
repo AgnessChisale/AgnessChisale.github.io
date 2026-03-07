@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wildfire Evacuation Routing — Mudge Island | Agness Chisale</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-cdbc1b868453ca64f53715862e8134a1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="dark">
+<link rel="stylesheet" href="styles.css">
+<style>
+  body { background-color: #0f1923 !important; color: #e8eaf0 !important; }
+  #quarto-content { max-width: 900px !important; margin: 0 auto !important; padding: 2rem !important; float: none !important; }
+  .page-title { font-size: clamp(1.5rem, 3vw, 2.5rem); font-weight: 800; background: linear-gradient(90deg, #a78bfa, #60a5fa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.4rem; line-height: 1.2; }
+  .page-subtitle { color: #8899aa; font-size: 0.95rem; margin-bottom: 1.5rem; }
+  .back-link { display: inline-flex; align-items: center; gap: 0.4rem; color: #a78bfa; text-decoration: none; font-size: 0.9rem; margin-bottom: 1.5rem; }
+  .back-link:hover { color: #ffffff; }
+  .capstone-badge { display: inline-block; background: linear-gradient(90deg, #a78bfa, #60a5fa); color: #0f1923; font-weight: 800; font-size: 0.78rem; padding: 0.25rem 0.9rem; border-radius: 999px; margin-bottom: 1.5rem; letter-spacing: 0.05em; text-transform: uppercase; }
+  h2 { color: #a78bfa !important; font-size: 1.2rem; font-weight: 700; margin-top: 2rem; margin-bottom: 0.8rem; border-bottom: 1px solid #ffffff15; padding-bottom: 0.4rem; }
+  h3 { color: #c8cdd8 !important; font-size: 1rem; font-weight: 700; margin-top: 1.5rem; margin-bottom: 0.5rem; }
+  p, li { color: #c8cdd8 !important; line-height: 1.7; }
+  ul { padding-left: 1.5rem; }
+  li { margin-bottom: 0.3rem; }
+  .project-image { width: 100%; border-radius: 12px; margin: 1rem 0; border: 1px solid #ffffff15; }
+  .image-caption { font-size: 0.8rem; color: #8899aa !important; text-align: center; margin-top: -0.5rem; margin-bottom: 1.5rem; }
+  .image-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+  .image-row .image-wrap img { width: 100%; border-radius: 12px; border: 1px solid #ffffff15; }
+  .image-row .image-wrap p { font-size: 0.8rem; color: #8899aa !important; text-align: center; margin-top: 0.3rem; }
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.88rem; }
+  th { background: #1a2535; color: #a78bfa !important; padding: 0.7rem 1rem; text-align: left; border: 1px solid #ffffff15; }
+  td { padding: 0.6rem 1rem; border: 1px solid #ffffff15; color: #c8cdd8 !important; vertical-align: top; }
+  tr:nth-child(even) td { background: #1a2535; }
+  tr:nth-child(odd) td { background: #141e2c; }
+  code { background: #2e4a7a !important; color: #ffffff !important; padding: 2px 8px; border-radius: 6px; font-size: 0.85rem; }
+  .cost-formula { background: #1a2535; border-left: 4px solid #a78bfa; border-radius: 0 10px 10px 0; padding: 1rem 1.2rem; margin: 1rem 0; font-family: 'Courier New', monospace; color: #e8eaf0 !important; font-size: 0.95rem; }
+  a { color: #a78bfa !important; }
+  a:hover { color: #ffffff !important; }
+  #hex-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 0; opacity: 0.15; }
+  #cursor-glow { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 1; background: radial-gradient(600px circle at var(--x, -999px) var(--y, -999px), rgba(167,139,250,0.15), transparent 70%); }
+</style>
+</head>
+<body>
+<div id="cursor-glow"></div>
+<canvas id="hex-canvas"></canvas>
+
+<div id="quarto-content" style="position:relative; z-index:2;">
+
+  <a href="./index.html#projects" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to Projects</a>
+  <div class="capstone-badge">Capstone Project</div>
+
+  <div class="page-title">GIS-Based Least Cost Path Analysis for Wildfire Evacuation Planning on Mudge Island, BC</div>
+  <p class="page-subtitle">NAD 1983 UTM Zone 10N (EPSG: 26910) &nbsp;·&nbsp; ArcGIS Pro Spatial Analyst</p>
+
+  <h2>Overview</h2>
+  <p>This project applies GIS-based least cost path analysis to identify optimal wildfire evacuation routes on Mudge Island, BC. Three cost factors — terrain slope, land cover, and road proximity — were reclassified into discrete movement cost categories and combined into a weighted cost surface. The surface was then used to model cumulative evacuation difficulty and delineate the least cost path from each residential structure to its nearest evacuation dock. The analysis was conducted entirely in ArcGIS Pro using the Spatial Analyst toolbox.</p>
+
+  <img src="./images/workflow_diagram.png" alt="Analytical Workflow Diagram" class="project-image">
+  <p class="image-caption">Sequential analytical workflow used to model wildfire evacuation movement difficulty and delineate optimal escape routes from residential structures to evacuation docks on Mudge Island, BC</p>
+
+  <h2>Objectives</h2>
+  <ul>
+    <li>Pre-process and reclassify slope, land cover, and road proximity rasters into discrete movement cost categories</li>
+    <li>Construct a weighted evacuation cost surface integrating all three cost factors (slope 10%, land cover 30%, road proximity 60%)</li>
+    <li>Run distance accumulation analysis using evacuation docks as destination points</li>
+    <li>Delineate least cost evacuation paths from each residential structure to its nearest dock</li>
+    <li>Evaluate spatial patterns of evacuation difficulty across the island</li>
+  </ul>
+
+  <h2>Data Sources & Tools</h2>
+  <table>
+    <tr><th>File</th><th>Description</th></tr>
+    <tr><td>DEM (BC Data Catalogue)</td><td>Digital Elevation Model clipped to Mudge Island boundary, used to derive slope in degrees</td></tr>
+    <tr><td>ESA WorldCover</td><td>Land cover raster reprojected to NAD 1983 UTM Zone 10N and clipped to study area</td></tr>
+    <tr><td>Road Network (OpenStreetMap)</td><td>Road network with manually digitized missing southern segment added prior to analysis</td></tr>
+    <tr><td>Evacuation Docks (Regional District Nanaimo)</td><td>Validated dock point locations used as evacuation destinations</td></tr>
+    <tr><td>Residential Structures (OpenStreetMap)</td><td>Building polygons converted to centroids to represent individual house locations</td></tr>
+  </table>
+  <table>
+    <tr><th>Tool</th><th>Purpose</th></tr>
+    <tr><td>ArcGIS Pro — Spatial Analyst</td><td>Slope derivation, reclassification, Euclidean distance, Raster Calculator</td></tr>
+    <tr><td>ArcGIS Pro — Distance Accumulation</td><td>Cumulative cost surface and back direction raster generation</td></tr>
+    <tr><td>ArcGIS Pro — Optimal Path as Line</td><td>Least cost path delineation from house centroids to nearest dock</td></tr>
+  </table>
+
+  <h2>Methods</h2>
+  <p>A DEM was clipped to the Mudge Island boundary and used to derive a continuous slope raster in degrees, with values ranging up to 51.5 degrees. The slope raster was reclassified into five discrete cost categories. The ESA WorldCover raster was reprojected and clipped before land cover classes were assigned movement cost values reflecting relative difficulty under wildfire evacuation conditions. The road network was reviewed against aerial imagery — a missing segment on the southern portion of the island was manually digitized before Euclidean distance from the complete network was calculated and reclassified.</p>
+
+  <p>The three reclassified cost rasters were combined into a single weighted cost surface using the following expression:</p>
+  <div class="cost-formula">(Slope_cost × 0.10) + (Landcover_cost × 0.30) + (Road_proximity_cost × 0.60)</div>
+
+  <p>The weighted surface was input to the Distance Accumulation tool alongside the DEM and dock points to produce a cumulative cost raster and back direction raster. Least cost paths were then delineated for each residential structure using the Optimal Path as Line tool.</p>
+
+  <h3>Reclassification Schemes</h3>
+  <table>
+    <tr><th>Factor</th><th>Input Value / Range</th><th>Cost Value</th><th>Movement Difficulty</th></tr>
+    <tr><td>Slope</td><td>0 – 5°</td><td>1</td><td>Very Low</td></tr>
+    <tr><td>Slope</td><td>5 – 10°</td><td>2</td><td>Low</td></tr>
+    <tr><td>Slope</td><td>10 – 15°</td><td>4</td><td>Moderate</td></tr>
+    <tr><td>Slope</td><td>15 – 20°</td><td>8</td><td>High</td></tr>
+    <tr><td>Slope</td><td>&gt; 20°</td><td>16</td><td>Very High</td></tr>
+    <tr><td>Land cover</td><td>Built-up</td><td>2</td><td>Very Low</td></tr>
+    <tr><td>Land cover</td><td>Bare / Sparse</td><td>3</td><td>Low</td></tr>
+    <tr><td>Land cover</td><td>Grassland</td><td>5</td><td>Moderate</td></tr>
+    <tr><td>Land cover</td><td>Tree cover</td><td>10</td><td>Very High</td></tr>
+    <tr><td>Land cover</td><td>Water</td><td>NoData</td><td>Impassable</td></tr>
+    <tr><td>Road Proximity</td><td>0 – 100 m</td><td>1</td><td>Very Low</td></tr>
+    <tr><td>Road Proximity</td><td>100 – 200 m</td><td>5</td><td>Moderate</td></tr>
+    <tr><td>Road Proximity</td><td>&gt; 200 m</td><td>15</td><td>High</td></tr>
+  </table>
+
+  <h2>Outputs</h2>
+
+  <h3>Cost Rasters</h3>
+  <div class="image-row">
+    <div class="image-wrap">
+      <img src="./images/slope_cost_raster.png" alt="Slope Cost Raster">
+      <p>Reclassified slope-based movement cost raster. Steepest terrain along the southern and southeastern coastal margins carries the highest cost.</p>
+    </div>
+    <div class="image-wrap">
+      <img src="./images/landcover_cost_raster.png" alt="Land Cover Cost Raster">
+      <p>Land cover classification and corresponding movement cost raster. Tree cover across the island interior carries very high movement cost.</p>
+    </div>
+  </div>
+
+  <img src="./images/road_proximity_cost_raster.png" alt="Road Proximity Cost Raster" class="project-image">
+  <p class="image-caption">Euclidean distance from the road network (left) and corresponding reclassified road proximity cost raster (right). Very low costs follow road corridors closely.</p>
+
+  <h3>Weighted Cost Surface & Distance Accumulation</h3>
+  <div class="image-row">
+    <div class="image-wrap">
+      <img src="./images/weighted_cost_surface.png" alt="Weighted Evacuation Cost Surface">
+      <p>Weighted evacuation movement cost surface. Lighter areas indicate greater movement difficulty; darker areas indicate easier movement.</p>
+    </div>
+    <div class="image-wrap">
+      <img src="./images/distance_accumulation.png" alt="Distance Accumulation Raster">
+      <p>Cumulative evacuation cost to the nearest dock. Green = lowest cost near coast; pink/white = highest cost in central interior.</p>
+    </div>
+  </div>
+
+  <h3>Least Cost Evacuation Paths</h3>
+  <img src="./images/least_cost_paths.png" alt="Least Cost Evacuation Paths" class="project-image">
+  <p class="image-caption">Optimal least cost evacuation paths from all residential structures to evacuation docks on Mudge Island, delineated using the Optimal Path as Line tool in ArcGIS Pro</p>
+
+  <h2>Key Findings</h2>
+  <ul>
+    <li>Road proximity was the dominant factor structuring evacuation routes, with most paths aligning closely with existing road corridors</li>
+    <li>Tree cover dominated nearly the entire island surface, making high-cost forested terrain unavoidable for most evacuation routes</li>
+    <li>Slope had a localised influence concentrated along the steep southern and eastern coastal margins, with minimal effect across the flat interior</li>
+    <li>Coastal residents near docks faced significantly lower cumulative evacuation costs than interior residents, revealing a clear spatial disparity in evacuation accessibility</li>
+    <li>The central island interior emerged as the most challenging zone for evacuation, with cumulative costs three to five times higher than coastal areas near docks</li>
+  </ul>
+
+  <h2>Skills Demonstrated</h2>
+  <ul>
+    <li>Raster pre-processing including clipping, reprojection, and slope derivation in ArcGIS Pro</li>
+    <li>Manual feature digitizing to address road network completeness issues</li>
+    <li>Multi-criteria weighted cost surface construction using the Raster Calculator</li>
+    <li>Distance accumulation and least cost path analysis using ArcGIS Pro Spatial Analyst</li>
+    <li>Cartographic layout design and map export in ArcGIS Pro</li>
+    <li>Spatial interpretation of evacuation movement patterns across a complex island landscape</li>
+  </ul>
+
+</div>
+
+<script>
+  document.addEventListener('mousemove', (e) => {
+    document.getElementById('cursor-glow').style.setProperty('--x', e.clientX + 'px');
+    document.getElementById('cursor-glow').style.setProperty('--y', e.clientY + 'px');
+  });
+  const canvas = document.getElementById('hex-canvas');
+  const ctx = canvas.getContext('2d');
+  function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; drawHex(); }
+  function drawHex() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const size = 30, w = size * 2, h = Math.sqrt(3) * size;
+    ctx.strokeStyle = 'rgba(167,139,250,0.6)'; ctx.lineWidth = 0.5;
+    for (let row = -1; row < canvas.height / h + 1; row++) {
+      for (let col = -1; col < canvas.width / w + 1; col++) {
+        const x = col * w * 0.75, y = row * h + (col % 2 === 0 ? 0 : h / 2);
+        ctx.beginPath();
+        for (let i = 0; i < 6; i++) {
+          const angle = (Math.PI / 180) * (60 * i - 30);
+          const px = x + size * Math.cos(angle), py = y + size * Math.sin(angle);
+          i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+        }
+        ctx.closePath(); ctx.stroke();
+      }
+    }
+  }
+  window.addEventListener('resize', resize); resize();
+</script>
+</body>
+</html>
