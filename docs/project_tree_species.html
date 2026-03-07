@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mapping Dominant Tree Species in the Petawawa Research Forest | Agness Chisale</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-cdbc1b868453ca64f53715862e8134a1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="dark">
+<link rel="stylesheet" href="styles.css">
+<style>
+  body { background-color: #0f1923 !important; color: #e8eaf0 !important; }
+  #quarto-content { max-width: 900px !important; margin: 0 auto !important; padding: 2rem !important; float: none !important; }
+  .page-title { font-size: clamp(1.5rem, 3vw, 2.5rem); font-weight: 800; background: linear-gradient(90deg, #a78bfa, #60a5fa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 1.5rem; line-height: 1.2; }
+  .back-link { display: inline-flex; align-items: center; gap: 0.4rem; color: #a78bfa; text-decoration: none; font-size: 0.9rem; margin-bottom: 1.5rem; }
+  .back-link:hover { color: #ffffff; }
+  h2 { color: #a78bfa !important; font-size: 1.2rem; font-weight: 700; margin-top: 2rem; margin-bottom: 0.8rem; border-bottom: 1px solid #ffffff15; padding-bottom: 0.4rem; }
+  p, li { color: #c8cdd8 !important; line-height: 1.7; }
+  ul { padding-left: 1.5rem; }
+  li { margin-bottom: 0.3rem; }
+  .project-image { width: 100%; border-radius: 12px; margin: 1rem 0; border: 1px solid #ffffff15; }
+  .image-caption { font-size: 0.8rem; color: #8899aa !important; text-align: center; margin-top: -0.5rem; margin-bottom: 1.5rem; }
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.88rem; }
+  th { background: #1a2535; color: #a78bfa !important; padding: 0.7rem 1rem; text-align: left; border: 1px solid #ffffff15; }
+  td { padding: 0.6rem 1rem; border: 1px solid #ffffff15; color: #c8cdd8 !important; vertical-align: top; }
+  tr:nth-child(even) td { background: #1a2535; }
+  tr:nth-child(odd) td { background: #141e2c; }
+  code { background: #2e4a7a !important; color: #ffffff !important; padding: 2px 8px; border-radius: 6px; font-size: 0.85rem; }
+  a { color: #a78bfa !important; }
+  a:hover { color: #ffffff !important; }
+  .methodology-link { display: inline-flex; align-items: center; gap: 0.5rem; background: #1a2535; border: 1px solid #a78bfa; color: #a78bfa !important; padding: 0.5rem 1.2rem; border-radius: 8px; text-decoration: none !important; font-size: 0.9rem; margin: 1rem 0; }
+  .methodology-link:hover { background: #a78bfa; color: #ffffff !important; }
+  #hex-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 0; opacity: 0.15; }
+  #cursor-glow { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 1; background: radial-gradient(600px circle at var(--x, -999px) var(--y, -999px), rgba(167,139,250,0.15), transparent 70%); }
+</style>
+</head>
+<body>
+<div id="cursor-glow"></div>
+<canvas id="hex-canvas"></canvas>
+
+<div id="quarto-content" style="position:relative; z-index:2;">
+
+  <a href="./forest_ecosystem.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to Forest & Ecosystem Analysis</a>
+
+  <div class="page-title">Mapping Dominant Tree Species in the Petawawa Research Forest with LiDAR</div>
+
+  <h2>Overview</h2>
+  <p>This project investigates whether LiDAR-derived structural metrics alone can support dominant tree species classification in the Petawawa Research Forest, Ontario, as part of Ontario's transition to an Enhanced Forest Inventory (EFI). ALS metrics were extracted at ground plot locations, explored for species separability, and evaluated against a classification framework. The analysis focuses on three species — White Pine, Red Pine, and Red Oak — and provides recommendations to the Ontario Ministry of Natural Resources on the operational viability of LiDAR-only species mapping.</p>
+
+  <img src="./images/petatawa_studysite.png" alt="Petawawa Research Forest Study Site" class="project-image">
+  <p class="image-caption">Study site map showing the Petawawa Research Forest boundary in Ontario, Canada</p>
+
+  <h2>Objectives</h2>
+  <ul>
+    <li>Extract and process LiDAR (ALS) metrics at field plot locations</li>
+    <li>Explore species distribution and data quality across the study area</li>
+    <li>Identify the most informative ALS features for species classification using mutual information</li>
+    <li>Evaluate whether LiDAR alone is sufficient for operational EFI species mapping</li>
+    <li>Provide recommendations on integrating multispectral data if needed</li>
+  </ul>
+
+  <h2>Data Sources & Tools</h2>
+  <table>
+    <tr><th>Layer</th><th>Description</th></tr>
+    <tr><td><code>als_metrics.tif</code></td><td>2018 wall-to-wall ALS metrics raster — 67 bands at 25 m resolution</td></tr>
+    <tr><td><code>plot_locations.gpkg</code></td><td>Ground plot locations across the Petawawa Research Forest</td></tr>
+    <tr><td><code>plot_data.xlsx</code></td><td>Dominant species recorded at each ground plot</td></tr>
+    <tr><td><code>sp_codes.csv</code></td><td>Species name and code lookup table</td></tr>
+  </table>
+
+  <img src="./images/airborne_2018.png" alt="2018 Airborne LiDAR Data Coverage" class="project-image">
+  <p class="image-caption">2018 airborne LiDAR data coverage across the Petawawa Research Forest</p>
+
+  <img src="./images/species_distribution.png" alt="Ground Plot Species Distribution" class="project-image">
+  <p class="image-caption">Spatial distribution of dominant tree species across ground plot locations in the study area</p>
+
+  <table>
+    <tr><th>Library</th><th>Purpose</th></tr>
+    <tr><td><code>geopandas</code></td><td>Reading and handling spatial plot location data</td></tr>
+    <tr><td><code>pandas</code></td><td>Data wrangling and tabular analysis</td></tr>
+    <tr><td><code>numpy</code></td><td>Numerical operations and array handling</td></tr>
+    <tr><td><code>rasterio</code></td><td>Reading multi-band ALS raster metrics</td></tr>
+    <tr><td><code>matplotlib</code></td><td>Data visualization</td></tr>
+    <tr><td><code>scikit-learn</code></td><td>Mutual information feature selection</td></tr>
+  </table>
+
+  <h2>Methods</h2>
+  <p>ALS metrics were extracted at each ground plot location by reading the 67-band raster and aligning it with plot coordinates. Plots with missing LiDAR data were removed. Species with fewer than 15 observations were filtered out, leaving White Pine, Red Pine, and Red Oak for analysis. Mutual information scoring (<code>mutual_info_classif</code>) was used to rank ALS features by their correlation with species class labels. Box plots were generated for the top-ranking features to visually assess class separability. Results were interpreted in the context of EFI operational requirements.</p>
+
+  <img src="./images/bar_graph_petatawa.png" alt="Number of Sites per Dominant Species" class="project-image">
+  <p class="image-caption">Bar chart showing the number of ground plots per dominant species across the full dataset</p>
+
+  <a href="./methodology_petawawa.html" class="methodology-link"><i class="fa-solid fa-code"></i> For the code used in this analysis, click here</a>
+
+  <h2>Outputs</h2>
+  <img src="./images/box_plot_petatawa.png" alt="Box Plot of LiDAR Metrics by Species" class="project-image">
+  <p class="image-caption">Box plots of top LiDAR metrics (d32_34, p10, d26_28, vci_0.5bin) comparing class distributions across White Pine, Red Pine, and Red Oak</p>
+
+  <h2>Key Findings</h2>
+  <ul>
+    <li>Many species had insufficient plot observations for robust model training, limiting classification to three species</li>
+    <li>Mutual information analysis identified a small subset of ALS metrics with meaningful correlation to dominant species</li>
+    <li>LiDAR alone showed limited species separability, suggesting multispectral data integration would improve classification accuracy for an operational EFI workflow</li>
+  </ul>
+
+  <h2>Skills Learned</h2>
+  <ul>
+    <li>Reading and extracting values from multi-band rasters using <code>rasterio</code></li>
+    <li>Spatial data handling with <code>geopandas</code></li>
+    <li>Data cleaning including NaN filtering and class frequency filtering</li>
+    <li>Feature selection using mutual information (<code>scikit-learn</code>)</li>
+    <li>Visualizing class distributions with box plots and bar charts using <code>matplotlib</code></li>
+    <li>Interpreting LiDAR structural metrics in a forest inventory context</li>
+  </ul>
+
+</div>
+
+<script>
+  document.addEventListener('mousemove', (e) => {
+    document.getElementById('cursor-glow').style.setProperty('--x', e.clientX + 'px');
+    document.getElementById('cursor-glow').style.setProperty('--y', e.clientY + 'px');
+  });
+  const canvas = document.getElementById('hex-canvas');
+  const ctx = canvas.getContext('2d');
+  function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; drawHex(); }
+  function drawHex() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const size = 30, w = size * 2, h = Math.sqrt(3) * size;
+    ctx.strokeStyle = 'rgba(167,139,250,0.6)'; ctx.lineWidth = 0.5;
+    for (let row = -1; row < canvas.height / h + 1; row++) {
+      for (let col = -1; col < canvas.width / w + 1; col++) {
+        const x = col * w * 0.75, y = row * h + (col % 2 === 0 ? 0 : h / 2);
+        ctx.beginPath();
+        for (let i = 0; i < 6; i++) {
+          const angle = (Math.PI / 180) * (60 * i - 30);
+          const px = x + size * Math.cos(angle), py = y + size * Math.sin(angle);
+          i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+        }
+        ctx.closePath(); ctx.stroke();
+      }
+    }
+  }
+  window.addEventListener('resize', resize); resize();
+</script>
+</body>
+</html>
