@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spatial Interpolation and Visualization of LiDAR Data | Agness Chisale</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-cdbc1b868453ca64f53715862e8134a1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="dark">
+<link rel="stylesheet" href="styles.css">
+<style>
+  body { background-color: #0f1923 !important; color: #e8eaf0 !important; }
+  #quarto-content { max-width: 900px !important; margin: 0 auto !important; padding: 2rem !important; float: none !important; }
+  .page-title { font-size: clamp(1.5rem, 3vw, 2.5rem); font-weight: 800; background: linear-gradient(90deg, #a78bfa, #60a5fa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 1.5rem; line-height: 1.2; }
+  .back-link { display: inline-flex; align-items: center; gap: 0.4rem; color: #a78bfa; text-decoration: none; font-size: 0.9rem; margin-bottom: 1.5rem; }
+  .back-link:hover { color: #ffffff; }
+  h2 { color: #a78bfa !important; font-size: 1.2rem; font-weight: 700; margin-top: 2rem; margin-bottom: 0.8rem; border-bottom: 1px solid #ffffff15; padding-bottom: 0.4rem; }
+  p, li { color: #c8cdd8 !important; line-height: 1.7; }
+  ul { padding-left: 1.5rem; }
+  li { margin-bottom: 0.3rem; }
+  .project-image { width: 100%; border-radius: 12px; margin: 1rem 0; border: 1px solid #ffffff15; }
+  .image-caption { font-size: 0.8rem; color: #8899aa !important; text-align: center; margin-top: -0.5rem; margin-bottom: 1rem; }
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.88rem; }
+  th { background: #1a2535; color: #a78bfa !important; padding: 0.7rem 1rem; text-align: left; border: 1px solid #ffffff15; }
+  td { padding: 0.6rem 1rem; border: 1px solid #ffffff15; color: #c8cdd8 !important; vertical-align: top; }
+  tr:nth-child(even) td { background: #1a2535; }
+  tr:nth-child(odd) td { background: #141e2c; }
+  code { background: #2e4a7a !important; color: #ffffff !important; padding: 2px 8px; border-radius: 6px; font-size: 0.85rem; }
+  a { color: #a78bfa !important; }
+  a:hover { color: #ffffff !important; }
+  #hex-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 0; opacity: 0.15; }
+  #cursor-glow { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 1; background: radial-gradient(600px circle at var(--x, -999px) var(--y, -999px), rgba(167,139,250,0.15), transparent 70%); }
+</style>
+</head>
+<body>
+<div id="cursor-glow"></div>
+<canvas id="hex-canvas"></canvas>
+
+<div id="quarto-content" style="position:relative; z-index:2;">
+
+  <a href="./forest_ecosystem.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to Forest & Ecosystem Analysis</a>
+
+  <div class="page-title">Spatial Interpolation and Visualization of LiDAR Data</div>
+
+  <h2>Overview</h2>
+  <p>This project uses LiDAR data collected over the UBC Malcolm Knapp Research Forest (MKRF) in Maple Ridge, British Columbia, to generate and evaluate Digital Elevation Models (DEMs) using multiple spatial interpolation approaches. Ground return points were extracted, filtered, and processed using PDAL, and three interpolation methods — Natural Neighbor, Inverse Distance Weighting (IDW), and Spline — were compared against a binned reference DEM using zonal statistics across elevation and slope classes.</p>
+
+  <h2>Objectives</h2>
+  <ul>
+    <li>Preprocess a LiDAR point cloud using PDAL pipelines</li>
+    <li>Visualize point cloud data in 2D and 3D in QGIS and ArcGIS Pro</li>
+    <li>Generate a reference DEM using binning from a full-density point cloud</li>
+    <li>Apply and compare three spatial interpolation methods on a thinned point cloud</li>
+    <li>Evaluate interpolation accuracy across elevation and slope zones using zonal statistics</li>
+  </ul>
+
+  <h2>Data Sources & Tools</h2>
+  <table>
+    <tr><th>Layer</th><th>Description</th><th>Source</th></tr>
+    <tr><td><code>UBC_MKRF_LiDAR_2016</code> (16 tiles)</td><td>LiDAR point cloud tiles over MKRF, collected 2016</td><td>MGEM Data Store</td></tr>
+    <tr><td><code>tile_index.geojson</code></td><td>Spatial tile index for the LiDAR collection</td><td>MGEM Data Store</td></tr>
+  </table>
+  <table>
+    <tr><th>Tool</th><th>Purpose</th></tr>
+    <tr><td>PDAL</td><td>Point cloud filtering, cropping, merging, and thinning</td></tr>
+    <tr><td>QGIS</td><td>Tile selection, point cloud visualization, and 3D mapping</td></tr>
+    <tr><td>ArcGIS Pro</td><td>DEM generation, interpolation, zonal statistics, and 3D scene visualization</td></tr>
+  </table>
+
+  <h2>Methods</h2>
+  <p>Sixteen LiDAR tiles covering the AOI were identified using a spatial tile index and downloaded from the MGEM Data Store. A PDAL pipeline was used to filter ground returns, crop to the AOI, and merge tiles into a single LAS file. A thinned point cloud was also created by sampling one point per 5 m radius sphere. In ArcGIS Pro, a reference DEM was generated using binning at 1 m resolution. Three interpolation methods (Natural Neighbor, IDW, Spline) were applied to the thinned point cloud and difference rasters were computed against the reference DEM. Zonal statistics were calculated across reclassified elevation and slope zones to quantitatively evaluate each method.</p>
+
+  <h2>Outputs</h2>
+  <img src="./images/spatial_map.png" alt="Comparison of IDW, Natural Neighbour and Spline Spatial Interpolation Methods" class="project-image">
+  <p class="image-caption">Panel map showing all three interpolated DEMs (shaded relief) and their difference rasters compared to the binned reference DEM</p>
+
+  <img src="./images/zonalstats_table.png" alt="Zonal Statistics Table" class="project-image">
+  <p class="image-caption">Zonal statistics showing mean error and standard deviation of difference rasters across elevation and slope zones for each interpolation method</p>
+
+  <h2>Key Findings</h2>
+  <ul>
+    <li>The three interpolation methods produced visibly different surfaces, particularly in areas of steep terrain</li>
+    <li>Difference rasters revealed that interpolation error was generally higher in high-slope zones than in low-slope zones</li>
+    <li>The binning approach using full-density LiDAR served as the most reliable reference surface</li>
+  </ul>
+
+  <h2>Skills Learned</h2>
+  <ul>
+    <li>Reading and interpreting LiDAR metadata and tile indexes</li>
+    <li>Writing and executing PDAL pipelines for point cloud processing</li>
+    <li>Filtering, cropping, merging, and thinning LiDAR point clouds</li>
+    <li>Visualizing point clouds in 2D and 3D in QGIS</li>
+    <li>Creating LAS Datasets and generating DEMs in ArcGIS Pro</li>
+    <li>Applying Natural Neighbor, IDW, and Spline interpolation methods</li>
+    <li>Computing difference rasters using the Raster Calculator</li>
+    <li>Reclassifying rasters and running zonal statistics</li>
+    <li>Visualizing interpolated surfaces in a 3D ArcGIS Pro Local Scene</li>
+  </ul>
+
+</div>
+
+<script>
+  document.addEventListener('mousemove', (e) => {
+    document.getElementById('cursor-glow').style.setProperty('--x', e.clientX + 'px');
+    document.getElementById('cursor-glow').style.setProperty('--y', e.clientY + 'px');
+  });
+  const canvas = document.getElementById('hex-canvas');
+  const ctx = canvas.getContext('2d');
+  function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; drawHex(); }
+  function drawHex() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const size = 30, w = size * 2, h = Math.sqrt(3) * size;
+    ctx.strokeStyle = 'rgba(167,139,250,0.6)'; ctx.lineWidth = 0.5;
+    for (let row = -1; row < canvas.height / h + 1; row++) {
+      for (let col = -1; col < canvas.width / w + 1; col++) {
+        const x = col * w * 0.75, y = row * h + (col % 2 === 0 ? 0 : h / 2);
+        ctx.beginPath();
+        for (let i = 0; i < 6; i++) {
+          const angle = (Math.PI / 180) * (60 * i - 30);
+          const px = x + size * Math.cos(angle), py = y + size * Math.sin(angle);
+          i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+        }
+        ctx.closePath(); ctx.stroke();
+      }
+    }
+  }
+  window.addEventListener('resize', resize); resize();
+</script>
+</body>
+</html>
