@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Raster Analysis and Least Cost Path Modelling for Grizzly Bear Habitat | Agness Chisale</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-cdbc1b868453ca64f53715862e8134a1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="dark">
+<link rel="stylesheet" href="styles.css">
+<style>
+  body { background-color: #0f1923 !important; color: #e8eaf0 !important; }
+  #quarto-content { max-width: 900px !important; margin: 0 auto !important; padding: 2rem !important; float: none !important; }
+  .page-title { font-size: clamp(1.5rem, 3vw, 2.5rem); font-weight: 800; background: linear-gradient(90deg, #a78bfa, #60a5fa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 1.5rem; line-height: 1.2; }
+  .back-link { display: inline-flex; align-items: center; gap: 0.4rem; color: #a78bfa; text-decoration: none; font-size: 0.9rem; margin-bottom: 1.5rem; }
+  .back-link:hover { color: #ffffff; }
+  h2 { color: #a78bfa !important; font-size: 1.2rem; font-weight: 700; margin-top: 2rem; margin-bottom: 0.8rem; border-bottom: 1px solid #ffffff15; padding-bottom: 0.4rem; }
+  p, li { color: #c8cdd8 !important; line-height: 1.7; }
+  ul { padding-left: 1.5rem; }
+  li { margin-bottom: 0.3rem; }
+  .project-image { width: 100%; border-radius: 12px; margin: 1rem 0; border: 1px solid #ffffff15; }
+  .image-caption { font-size: 0.8rem; color: #8899aa !important; text-align: center; margin-top: -0.5rem; margin-bottom: 1rem; }
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.88rem; }
+  th { background: #1a2535; color: #a78bfa !important; padding: 0.7rem 1rem; text-align: left; border: 1px solid #ffffff15; }
+  td { padding: 0.6rem 1rem; border: 1px solid #ffffff15; color: #c8cdd8 !important; vertical-align: top; }
+  tr:nth-child(even) td { background: #1a2535; }
+  tr:nth-child(odd) td { background: #141e2c; }
+  code { background: #2e4a7a !important; color: #ffffff !important; padding: 2px 8px; border-radius: 6px; font-size: 0.85rem; }
+  a { color: #a78bfa !important; }
+  a:hover { color: #ffffff !important; }
+  #hex-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 0; opacity: 0.15; }
+  #cursor-glow { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 1; background: radial-gradient(600px circle at var(--x, -999px) var(--y, -999px), rgba(167,139,250,0.15), transparent 70%); }
+</style>
+</head>
+<body>
+<div id="cursor-glow"></div>
+<canvas id="hex-canvas"></canvas>
+
+<div id="quarto-content" style="position:relative; z-index:2;">
+
+  <a href="./hydrology_wildlife.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to Hydrology & Wildlife</a>
+
+  <div class="page-title">Raster Analysis and Least Cost Path Modelling for Grizzly Bear Habitat</div>
+
+  <h2>Overview</h2>
+  <p>This project models Grizzly Bear movement across the Yellowhead Bear Management Area (BMA) in the Rocky Mountain foothills of western Alberta, Canada. Using raster analysis tools in GDAL, QGIS, and ArcGIS Pro, a cost surface was built from terrain, land cover, and road proximity data. A least cost path was then derived to identify the most feasible movement corridor between core and secondary Grizzly Bear habitat.</p>
+
+  <h2>Objectives</h2>
+  <ul>
+    <li>Define a raster area of interest from a vector boundary</li>
+    <li>Mosaic and reproject elevation raster tiles</li>
+    <li>Derive cost rasters from slope, land cover, and distance to roads</li>
+    <li>Combine cost layers into a weighted cost surface</li>
+    <li>Perform a least cost path analysis between source and target habitat areas</li>
+  </ul>
+
+  <h2>Data Sources & Tools</h2>
+  <table>
+    <tr><th>Layer</th><th>Description</th><th>Source</th></tr>
+    <tr><td><code>grizzlybearmanagementareas</code></td><td>Grizzly Bear population units / BMAs in Alberta</td><td>Alberta Open Government License via UBC PostgreSQL</td></tr>
+    <tr><td><code>astgtmv003</code> (14 tiles)</td><td>ASTER Digital Elevation Models</td><td>NASA Earth Science Data Systems via UBC PostgreSQL</td></tr>
+    <tr><td><code>ca_forest_vlce2_2019</code></td><td>National land cover dataset for Canada (2019)</td><td>UBC PostgreSQL Server</td></tr>
+    <tr><td><code>yellowhead_roads</code></td><td>Road network within the Yellowhead BMA</td><td>UBC PostgreSQL Server</td></tr>
+    <tr><td><code>grizzly_bear_core_access_management_area</code></td><td>Core Grizzly Bear habitat polygons</td><td>UBC PostgreSQL Server</td></tr>
+    <tr><td><code>grizzly_bear_secondary_access_management_area</code></td><td>Secondary Grizzly Bear habitat polygons</td><td>UBC PostgreSQL Server</td></tr>
+  </table>
+  <table>
+    <tr><th>Tool</th><th>Purpose</th></tr>
+    <tr><td>GDAL (<code>gdal_rasterize</code>, <code>gdalwarp</code>)</td><td>Raster creation, reprojection, and clipping</td></tr>
+    <tr><td>QGIS</td><td>Raster calculations, slope derivation, proximity analysis</td></tr>
+    <tr><td>ArcGIS Pro</td><td>Distance accumulation and least cost path analysis</td></tr>
+    <tr><td>Python (QGIS console)</td><td>Setting PostgreSQL environment variables</td></tr>
+  </table>
+
+  <h2>Methods</h2>
+  <p>The Yellowhead BMA boundary was rasterized at 20 m resolution to define the area of interest. ASTER DEM tiles were mosaicked and reprojected to NAD83 UTM Zone 11N, then clipped to the AOI. Three cost layers were derived — normalized slope, reclassified land cover, and inverse distance to roads — and combined into a single weighted cost surface. A least cost path was then traced in ArcGIS Pro from the centroid of core Grizzly Bear habitat to a randomly selected point in the secondary habitat zone.</p>
+
+  <h2>Outputs</h2>
+  <img src="./images/least_cost_map.png" alt="Least Cost Path for Grizzly Bear Movement in the Yellowhead BMA" class="project-image">
+  <p class="image-caption">Map showing the least cost path overlaid on the cost-distance surface, roads, and terrain across the Yellowhead Bear Management Area</p>
+
+  <h2>Key Findings</h2>
+  <ul>
+    <li>The least cost path reflects the combined influence of slope, land cover, and road proximity based on chosen weightings</li>
+    <li>Roads represented the highest movement cost and had a strong influence on path routing</li>
+    <li>The path avoided steep terrain and high-cost land cover classes where possible, revealing likely natural movement corridors for Grizzly Bears</li>
+  </ul>
+
+  <h2>Skills Learned</h2>
+  <ul>
+    <li>Rasterizing vector data using GDAL (<code>gdal_rasterize</code>)</li>
+    <li>Mosaicking raster tiles and reprojecting using <code>gdalwarp</code></li>
+    <li>Deriving slope from a DEM</li>
+    <li>Reclassifying rasters by value table</li>
+    <li>Calculating proximity rasters (distance to roads)</li>
+    <li>Building a weighted cost surface from multiple raster inputs</li>
+    <li>Performing least cost path analysis using Distance Accumulation and Optimal Path tools in ArcGIS Pro</li>
+    <li>Interpreting backlink rasters and accumulated cost-distance surfaces</li>
+  </ul>
+
+</div>
+
+<script>
+  document.addEventListener('mousemove', (e) => {
+    document.getElementById('cursor-glow').style.setProperty('--x', e.clientX + 'px');
+    document.getElementById('cursor-glow').style.setProperty('--y', e.clientY + 'px');
+  });
+  const canvas = document.getElementById('hex-canvas');
+  const ctx = canvas.getContext('2d');
+  function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; drawHex(); }
+  function drawHex() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const size = 30, w = size * 2, h = Math.sqrt(3) * size;
+    ctx.strokeStyle = 'rgba(167,139,250,0.6)'; ctx.lineWidth = 0.5;
+    for (let row = -1; row < canvas.height / h + 1; row++) {
+      for (let col = -1; col < canvas.width / w + 1; col++) {
+        const x = col * w * 0.75, y = row * h + (col % 2 === 0 ? 0 : h / 2);
+        ctx.beginPath();
+        for (let i = 0; i < 6; i++) {
+          const angle = (Math.PI / 180) * (60 * i - 30);
+          const px = x + size * Math.cos(angle), py = y + size * Math.sin(angle);
+          i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+        }
+        ctx.closePath(); ctx.stroke();
+      }
+    }
+  }
+  window.addEventListener('resize', resize); resize();
+</script>
+</body>
+</html>
