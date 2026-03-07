@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cartographic Modelling of Old Growth Forests | Agness Chisale</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-cdbc1b868453ca64f53715862e8134a1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="dark">
+<link rel="stylesheet" href="styles.css">
+<style>
+  body { background-color: #0f1923 !important; color: #e8eaf0 !important; }
+  #quarto-content { max-width: 900px !important; margin: 0 auto !important; padding: 2rem !important; float: none !important; }
+  .page-title { font-size: clamp(1.5rem, 3vw, 2.5rem); font-weight: 800; background: linear-gradient(90deg, #a78bfa, #60a5fa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 1.5rem; line-height: 1.2; }
+  .back-link { display: inline-flex; align-items: center; gap: 0.4rem; color: #a78bfa; text-decoration: none; font-size: 0.9rem; margin-bottom: 1.5rem; }
+  .back-link:hover { color: #ffffff; }
+  h2 { color: #a78bfa !important; font-size: 1.2rem; font-weight: 700; margin-top: 2rem; margin-bottom: 0.8rem; border-bottom: 1px solid #ffffff15; padding-bottom: 0.4rem; }
+  p, li { color: #c8cdd8 !important; line-height: 1.7; }
+  ul { padding-left: 1.5rem; }
+  li { margin-bottom: 0.3rem; }
+  .project-image { width: 100%; border-radius: 12px; margin: 1rem 0; border: 1px solid #ffffff15; }
+  .image-caption { font-size: 0.8rem; color: #8899aa !important; text-align: center; margin-top: -0.5rem; margin-bottom: 1rem; }
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.88rem; }
+  th { background: #1a2535; color: #a78bfa !important; padding: 0.7rem 1rem; text-align: left; border: 1px solid #ffffff15; }
+  td { padding: 0.6rem 1rem; border: 1px solid #ffffff15; color: #c8cdd8 !important; vertical-align: top; }
+  tr:nth-child(even) td { background: #1a2535; }
+  tr:nth-child(odd) td { background: #141e2c; }
+  code { background: #2e4a7a !important; color: #ffffff !important; padding: 2px 8px; border-radius: 6px; font-size: 0.85rem; }
+  a { color: #a78bfa !important; }
+  a:hover { color: #ffffff !important; }
+
+  #hex-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 0; opacity: 0.15; }
+  #cursor-glow { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 1; background: radial-gradient(600px circle at var(--x, -999px) var(--y, -999px), rgba(167,139,250,0.15), transparent 70%); }
+</style>
+</head>
+<body>
+<div id="cursor-glow"></div>
+<canvas id="hex-canvas"></canvas>
+
+<div id="quarto-content" style="position:relative; z-index:2;">
+
+  <a href="./gis_cartography.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to GIS & Cartography</a>
+
+  <div class="page-title">Cartographic Modelling of Old Growth Forests on Vancouver Island</div>
+
+  <h2>Overview</h2>
+  <p>This project analyses the distribution of old growth forests across Vancouver Island, British Columbia, using forest inventory data and the BC Cumulative Effects Framework (CEF). The analysis identifies crown forest land, classifies stands by seral stage, and compares calculated old growth percentages against provincial targets by Landscape Unit and BEC subzone. Results are visualized as a cartographic map showing where forests fall short of, meet, or exceed old growth targets.</p>
+
+  <h2>Objectives</h2>
+  <ul>
+    <li>Query and extract forest inventory data from a remote PostgreSQL server</li>
+    <li>Prepare and clean spatial layers for old growth analysis</li>
+    <li>Classify forest stands by seral stage using BEC zone age thresholds</li>
+    <li>Calculate old growth area and percentage by Landscape Unit and BEC subzone</li>
+    <li>Compare results against provincial old growth targets</li>
+    <li>Produce a map communicating old growth distribution across Vancouver Island</li>
+  </ul>
+
+  <h2>Data Sources & Tools</h2>
+  <table>
+    <tr><th>Layer</th><th>Description</th><th>Source</th></tr>
+    <tr><td><code>vancouver_island_vri</code></td><td>Vegetation Resource Inventory 2024</td><td>BC Data Catalogue</td></tr>
+    <tr><td><code>vancouver_island_own</code></td><td>Generalized Forest Cover Ownership</td><td>BC Data Catalogue</td></tr>
+    <tr><td><code>vancouver_island_human_disturbance</code></td><td>CEF Human Disturbance (current)</td><td>BC Data Catalogue</td></tr>
+    <tr><td><code>vancouver_island_landscape_units</code></td><td>Landscape Units of BC (current)</td><td>BC Data Catalogue</td></tr>
+  </table>
+  <table>
+    <tr><th>Tool</th><th>Purpose</th></tr>
+    <tr><td>ArcGIS Pro</td><td>Spatial analysis, field calculations, and map production</td></tr>
+    <tr><td>PostgreSQL / SQL</td><td>Querying and extracting data from the remote server</td></tr>
+    <tr><td>Python (ArcGIS Field Calculator)</td><td>Classifying seral stages and calculating old growth targets</td></tr>
+  </table>
+
+  <h2>Methods</h2>
+  <p>Forest inventory data was queried from the UBC PostgreSQL server and filtered to managed crown forests on Vancouver Island. Stands were classified into seral stages (Early, Mid, Mature, Old) using BEC zone-specific age thresholds. Human-disturbed areas were identified and reclassified as Early seral. Old growth area and total forest area were summarized by Landscape Unit and BEC subzone combination, and the percentage of old growth was calculated. A difference field was computed to show how each unit compares to the provincial high old growth threshold, and results were visualized as a graduated colour map.</p>
+
+  <h2>Outputs</h2>
+  <img src="./images/Map_layout.jpg" alt="Old Growth Forest Map - Vancouver Island" class="project-image">
+  <p class="image-caption">Map showing the difference between calculated old growth percentage and provincial high targets, by Landscape Unit and BEC subzone</p>
+
+  <img src="./images/Table_old_growth.png" alt="Summary Table" class="project-image">
+  <p class="image-caption">Summary table showing Total Area, Old Growth Area, Percentage Old Growth, and Difference from High Threshold</p>
+
+  <h2>Key Findings</h2>
+  <ul>
+    <li>Old growth forest distribution varies significantly across Landscape Units and BEC subzones on Vancouver Island</li>
+    <li>Many units fall below the provincial high old growth threshold, particularly in heavily disturbed areas</li>
+    <li>The CEF framework reveals spatial patterns of old growth deficit that reflect historical logging pressure</li>
+  </ul>
+
+  <h2>Skills Learned</h2>
+  <ul>
+    <li>Querying a remote PostgreSQL database from ArcGIS Pro using SQL</li>
+    <li>Filtering and exporting spatial layers using Select by Attributes and Pairwise Intersect</li>
+    <li>Writing Python expressions in the ArcGIS Field Calculator</li>
+    <li>Classifying forest stands by seral stage using BEC zone age thresholds</li>
+    <li>Dissolving polygons and summarizing area statistics</li>
+    <li>Joining attribute tables using Join Field</li>
+    <li>Calculating percentage fields and difference metrics</li>
+    <li>Producing a professional map layout in ArcGIS Pro</li>
+  </ul>
+
+</div>
+
+<script>
+  document.addEventListener('mousemove', (e) => {
+    document.getElementById('cursor-glow').style.setProperty('--x', e.clientX + 'px');
+    document.getElementById('cursor-glow').style.setProperty('--y', e.clientY + 'px');
+  });
+  const canvas = document.getElementById('hex-canvas');
+  const ctx = canvas.getContext('2d');
+  function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; drawHex(); }
+  function drawHex() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const size = 30, w = size * 2, h = Math.sqrt(3) * size;
+    ctx.strokeStyle = 'rgba(167,139,250,0.6)'; ctx.lineWidth = 0.5;
+    for (let row = -1; row < canvas.height / h + 1; row++) {
+      for (let col = -1; col < canvas.width / w + 1; col++) {
+        const x = col * w * 0.75, y = row * h + (col % 2 === 0 ? 0 : h / 2);
+        ctx.beginPath();
+        for (let i = 0; i < 6; i++) {
+          const angle = (Math.PI / 180) * (60 * i - 30);
+          const px = x + size * Math.cos(angle), py = y + size * Math.sin(angle);
+          i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+        }
+        ctx.closePath(); ctx.stroke();
+      }
+    }
+  }
+  window.addEventListener('resize', resize); resize();
+</script>
+</body>
+</html>
