@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Geocoding and Spatial Data Creation in Vancouver | Agness Chisale</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-cdbc1b868453ca64f53715862e8134a1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="dark">
+<link rel="stylesheet" href="styles.css">
+<style>
+  body { background-color: #0f1923 !important; color: #e8eaf0 !important; }
+  #quarto-content { max-width: 900px !important; margin: 0 auto !important; padding: 2rem !important; float: none !important; }
+  .page-title { font-size: clamp(1.5rem, 3vw, 2.5rem); font-weight: 800; background: linear-gradient(90deg, #a78bfa, #60a5fa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 1.5rem; line-height: 1.2; }
+  .back-link { display: inline-flex; align-items: center; gap: 0.4rem; color: #a78bfa; text-decoration: none; font-size: 0.9rem; margin-bottom: 1.5rem; }
+  .back-link:hover { color: #ffffff; }
+  h2 { color: #a78bfa !important; font-size: 1.2rem; font-weight: 700; margin-top: 2rem; margin-bottom: 0.8rem; border-bottom: 1px solid #ffffff15; padding-bottom: 0.4rem; }
+  p, li { color: #c8cdd8 !important; line-height: 1.7; }
+  ul { padding-left: 1.5rem; }
+  li { margin-bottom: 0.3rem; }
+  .project-image { width: 100%; border-radius: 12px; margin: 1rem 0; border: 1px solid #ffffff15; }
+  .image-caption { font-size: 0.8rem; color: #8899aa !important; text-align: center; margin-top: -0.5rem; margin-bottom: 1rem; }
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.88rem; }
+  th { background: #1a2535; color: #a78bfa !important; padding: 0.7rem 1rem; text-align: left; border: 1px solid #ffffff15; }
+  td { padding: 0.6rem 1rem; border: 1px solid #ffffff15; color: #c8cdd8 !important; vertical-align: top; }
+  tr:nth-child(even) td { background: #1a2535; }
+  tr:nth-child(odd) td { background: #141e2c; }
+  code { background: #2e4a7a !important; color: #ffffff !important; padding: 2px 8px; border-radius: 6px; font-size: 0.85rem; }
+  a { color: #a78bfa !important; }
+  a:hover { color: #ffffff !important; }
+  #hex-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 0; opacity: 0.15; }
+  #cursor-glow { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 1; background: radial-gradient(600px circle at var(--x, -999px) var(--y, -999px), rgba(167,139,250,0.15), transparent 70%); }
+</style>
+</head>
+<body>
+<div id="cursor-glow"></div>
+<canvas id="hex-canvas"></canvas>
+
+<div id="quarto-content" style="position:relative; z-index:2;">
+
+  <a href="./gis_cartography.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to GIS & Cartography</a>
+
+  <div class="page-title">Geocoding and Spatial Data Creation in Vancouver</div>
+
+  <h2>Overview</h2>
+  <p>This project focuses on converting non-spatial data into geospatial datasets using ArcGIS Pro. Street tree addresses from a Vancouver neighbourhood were geocoded using a custom address locator built from a regional road network. Park tree coordinates were converted from tabular data into a spatial layer, and tree density was calculated per park across the City of Vancouver. Results were visualized on a final map showing geocoded trees, park tree density, and road infrastructure.</p>
+
+  <h2>Objectives</h2>
+  <ul>
+    <li>Download and prepare open data from the City of Vancouver Open Data Portal</li>
+    <li>Build a custom address locator from a road network dataset</li>
+    <li>Geocode a table of street tree addresses and evaluate match quality</li>
+    <li>Convert tabular coordinate data into a spatial point layer</li>
+    <li>Calculate tree density by park using spatial joins and field calculations</li>
+  </ul>
+
+  <h2>Data Sources & Tools</h2>
+  <table>
+    <tr><th>Layer</th><th>Description</th><th>Source</th></tr>
+    <tr><td><code>neighborhood_trees</code></td><td>Street trees for a single Vancouver neighbourhood</td><td>City of Vancouver Open Data Portal</td></tr>
+    <tr><td><code>parks_polygon_representation</code></td><td>Park boundaries in Vancouver (polygon)</td><td>City of Vancouver Open Data Portal</td></tr>
+    <tr><td><code>gvrd_roads</code></td><td>Road network for the Greater Vancouver Regional District</td><td>UBC PostgreSQL Server</td></tr>
+    <tr><td><code>parktrees</code></td><td>Tabular dataset of trees in Vancouver parks with coordinates</td><td>UBC PostgreSQL Server</td></tr>
+  </table>
+  <table>
+    <tr><th>Tool</th><th>Purpose</th></tr>
+    <tr><td>ArcGIS Pro</td><td>Geocoding, spatial joins, field calculations, mapping</td></tr>
+    <tr><td>City of Vancouver Open Data Portal</td><td>Downloading street tree and parks data</td></tr>
+    <tr><td>UBC PostgreSQL Server</td><td>Accessing road network and park tree data</td></tr>
+  </table>
+
+  <h2>Methods</h2>
+  <p>Street tree data was downloaded for the neighbourhood with the highest tree count and an Address field was created by concatenating civic number and street name. A custom address locator was built from the GVRD road network and used to geocode the neighbourhood tree addresses. Match scores were reviewed to assess geocoding quality. Park tree data was loaded from the PostgreSQL server as a table with UTM coordinates and converted to a spatial point layer. A spatial join linked park trees to park polygons, and tree density (trees per hectare) was calculated for all parks over 1 ha in size.</p>
+
+  <h2>Outputs</h2>
+  <img src="./images/map_geocoding.jpeg" alt="Spatial Distribution of Street Trees and Park Tree Density" class="project-image">
+  <p class="image-caption">Map showing the neighbourhood, parks symbolized by tree density, geocoded and coordinate-created points, roads, and a satellite basemap</p>
+
+  <h2>Key Findings</h2>
+  <ul>
+    <li>Geocoded addresses showed varying match scores, reflecting inconsistencies in address formatting in the source dataset</li>
+    <li>Coordinate-based points and geocoded points showed spatial differences, illustrating the limitations of address-based location</li>
+    <li>Tree density varied considerably across Vancouver parks, with some smaller parks having disproportionately high densities</li>
+  </ul>
+
+  <h2>Skills Learned</h2>
+  <ul>
+    <li>Downloading and filtering open data from a municipal open data portal</li>
+    <li>Concatenating fields using Python expressions in ArcGIS Field Calculator</li>
+    <li>Building a custom address locator from a road network</li>
+    <li>Geocoding a table of addresses and evaluating match quality</li>
+    <li>Converting tabular coordinate data (XY) into a spatial point layer</li>
+    <li>Performing spatial joins to associate point counts with polygon features</li>
+    <li>Calculating tree density using Select by Attributes and Calculate Field</li>
+    <li>Symbolizing continuous data using unclassed graduated colours</li>
+  </ul>
+
+</div>
+
+<script>
+  document.addEventListener('mousemove', (e) => {
+    document.getElementById('cursor-glow').style.setProperty('--x', e.clientX + 'px');
+    document.getElementById('cursor-glow').style.setProperty('--y', e.clientY + 'px');
+  });
+  const canvas = document.getElementById('hex-canvas');
+  const ctx = canvas.getContext('2d');
+  function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; drawHex(); }
+  function drawHex() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const size = 30, w = size * 2, h = Math.sqrt(3) * size;
+    ctx.strokeStyle = 'rgba(167,139,250,0.6)'; ctx.lineWidth = 0.5;
+    for (let row = -1; row < canvas.height / h + 1; row++) {
+      for (let col = -1; col < canvas.width / w + 1; col++) {
+        const x = col * w * 0.75, y = row * h + (col % 2 === 0 ? 0 : h / 2);
+        ctx.beginPath();
+        for (let i = 0; i < 6; i++) {
+          const angle = (Math.PI / 180) * (60 * i - 30);
+          const px = x + size * Math.cos(angle), py = y + size * Math.sin(angle);
+          i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+        }
+        ctx.closePath(); ctx.stroke();
+      }
+    }
+  }
+  window.addEventListener('resize', resize); resize();
+</script>
+</body>
+</html>
