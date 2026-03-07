@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Methodology: Mangrove Deforestation Analysis | Agness Chisale</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-cdbc1b868453ca64f53715862e8134a1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="dark">
+<link rel="stylesheet" href="styles.css">
+<style>
+  body { background-color: #0f1923 !important; color: #e8eaf0 !important; }
+  #quarto-content { max-width: 900px !important; margin: 0 auto !important; padding: 2rem !important; float: none !important; }
+  .page-title { font-size: clamp(1.3rem, 3vw, 2rem); font-weight: 800; background: linear-gradient(90deg, #a78bfa, #60a5fa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.5rem; line-height: 1.2; }
+  .page-subtitle { color: #8899aa !important; font-size: 0.9rem; margin-bottom: 1.5rem; }
+  .back-link { display: inline-flex; align-items: center; gap: 0.4rem; color: #a78bfa; text-decoration: none; font-size: 0.9rem; margin-bottom: 1.5rem; }
+  .back-link:hover { color: #ffffff; }
+  h2 { color: #a78bfa !important; font-size: 1.1rem; font-weight: 700; margin-top: 2rem; margin-bottom: 0.8rem; border-bottom: 1px solid #ffffff15; padding-bottom: 0.4rem; }
+  p, li { color: #c8cdd8 !important; line-height: 1.7; }
+  ul { padding-left: 1.5rem; }
+  li { margin-bottom: 0.3rem; }
+  a { color: #a78bfa !important; }
+  a:hover { color: #ffffff !important; }
+  pre { background: #0d1b2a !important; border: 1px solid #ffffff15; border-radius: 10px; padding: 1.2rem; overflow-x: auto; margin: 1rem 0; }
+  code { font-family: 'Courier New', monospace; font-size: 0.85rem; color: #e8eaf0 !important; background: transparent !important; }
+  .inline-code { background: #2e4a7a !important; color: #ffffff !important; padding: 2px 8px; border-radius: 6px; font-size: 0.85rem; font-family: 'Courier New', monospace; }
+  .step-number { display: inline-block; background: #a78bfa; color: #0f1923; font-weight: 800; font-size: 0.8rem; border-radius: 50%; width: 24px; height: 24px; line-height: 24px; text-align: center; margin-right: 0.5rem; }
+  #hex-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 0; opacity: 0.15; }
+  #cursor-glow { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 1; background: radial-gradient(600px circle at var(--x, -999px) var(--y, -999px), rgba(167,139,250,0.15), transparent 70%); }
+</style>
+</head>
+<body>
+<div id="cursor-glow"></div>
+<canvas id="hex-canvas"></canvas>
+
+<div id="quarto-content" style="position:relative; z-index:2;">
+
+  <a href="./project_mangrove.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to Project</a>
+
+  <div class="page-title">Methodology: Mangrove Deforestation Analysis in Madagascar's Ambanja and Ambaro Bays</div>
+  <p class="page-subtitle">Detailed code and steps used in the analysis</p>
+
+  <h2><span class="step-number">1</span> Environment Setup</h2>
+  <p>Imported required libraries and checked out the Spatial Analyst extension. Created a scratch geodatabase for intermediate outputs.</p>
+  <pre><code>import arcpy
+import pandas as pd
+import os
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Check out Spatial Analyst extension
+arcpy.CheckOutExtension("Spatial")
+
+# Set up scratch geodatabase
+scratch_gdb = r"C:\path\to\scratch.gdb"
+if not arcpy.Exists(scratch_gdb):
+    arcpy.management.CreateFileGDB(os.path.dirname(scratch_gdb),
+                                   os.path.basename(scratch_gdb))
+arcpy.env.workspace = scratch_gdb</code></pre>
+
+  <h2><span class="step-number">2</span> Raster to Vector Conversion</h2>
+  <p>Converted the <span class="inline-code">Murray_Mangrove_Loss_Year.tif</span> raster to a polygon feature class using <span class="inline-code">arcpy.conversion.RasterToPolygon</span>. Used <span class="inline-code">NO_SIMPLIFY</span> to preserve geometry and mapped the <span class="inline-code">Value</span> field to retain loss year values.</p>
+  <pre><code>input_raster = r"C:\path\to\Murray_Mangrove_Loss_Year.tif"
+output_polygons = os.path.join(scratch_gdb, "mangrove_loss_polygons")
+
+arcpy.conversion.RasterToPolygon(
+    in_raster=input_raster,
+    out_polygon_features=output_polygons,
+    simplify="NO_SIMPLIFY",
+    raster_field="Value"
+)</code></pre>
+
+  <h2><span class="step-number">3</span> Data Cleaning</h2>
+  <p>Renamed the <span class="inline-code">gridcode</span> field to <span class="inline-code">loss_year</span> and removed all zero-value (no-data) polygons using an <span class="inline-code">UpdateCursor</span>.</p>
+  <pre><code># Rename gridcode to loss_year
+fields = [f.name for f in arcpy.ListFields(output_polygons)]
+if "gridcode" in fields:
+    arcpy.management.AlterField(output_polygons, "gridcode",
+                                 "loss_year", "loss_year")
+
+# Remove zero-value records
+with arcpy.da.UpdateCursor(output_polygons, ["loss_year"]) as cursor:
+    for row in cursor:
+        if row[0] == 0:
+            cursor.deleteRow()
+
+# Validate removal
+count = sum(1 for row in arcpy.da.SearchCursor(
+    output_polygons, ["loss_year"]) if row[0] == 0)
+print(f"Zero-value records remaining: {count}")</code></pre>
+
+  <h2><span class="step-number">4</span> Temporal Trend Visualization</h2>
+  <p>Extracted the attribute table into a <span class="inline-code">pandas</span> DataFrame and generated a <span class="inline-code">seaborn</span> histogram to visualize deforestation trends over time.</p>
+  <pre><code># Extract to DataFrame
+df = pd.DataFrame.spatial.from_featureclass(output_polygons)
+
+# Plot histogram
+plt.figure(figsize=(10, 5))
+sns.histplot(data=df, x="loss_year", bins=20, color="#2e7d32")
+plt.title("Mangrove Loss Year — Ambanja and Ambaro Bays")
+plt.xlabel("Year of Loss")
+plt.ylabel("Count")
+plt.tight_layout()
+plt.savefig("mangrove_histogram.png", dpi=150)
+plt.show()</code></pre>
+
+  <h2><span class="step-number">5</span> Quantifying Loss by Administrative Unit</h2>
+  <p>Copied commune and fokontany boundaries from the AAB geodatabase, performed spatial intersections, calculated area in km², and summarized by administrative unit.</p>
+  <pre><code">aab_gdb = r"C:\path\to\AAB.gdb"
+
+for admin_layer, name_field in [("commune", "COMMUNE"), ("fokontany", "FOKONTANY")]:
+    src = os.path.join(aab_gdb, admin_layer)
+    dst = os.path.join(scratch_gdb, admin_layer)
+    arcpy.management.CopyFeatures(src, dst)
+
+    # Spatial intersection
+    intersect_out = os.path.join(scratch_gdb, f"loss_{admin_layer}")
+    arcpy.analysis.Intersect([output_polygons, dst], intersect_out)
+
+    # Calculate area in km²
+    arcpy.management.CalculateGeometryAttributes(
+        intersect_out, [["area_km2", "AREA"]], area_unit="SQUARE_KILOMETERS")
+
+    # Summarize
+    stats_out = os.path.join(scratch_gdb, f"stats_{admin_layer}")
+    arcpy.analysis.Statistics(
+        intersect_out, stats_out,
+        [["area_km2", "SUM"], ["loss_year", "MEAN"]],
+        case_field=name_field)
+
+    # Export to Excel
+    arcpy.conversion.TableToExcel(stats_out, f"loss_by_{admin_layer}.xlsx")</code></pre>
+
+  <h2><span class="step-number">6</span> Buffer Analysis — Proximity to Paths and Rivers</h2>
+  <p>Created multiple ring buffers at 1,000 m, 2,000 m, and 5,000 m around permanent rivers and paths, then intersected with mangrove loss polygons to quantify loss per distance band.</p>
+  <pre><code">for feature, label in [("permanent_rivers", "rivers"), ("paths", "paths")]:
+    src = os.path.join(aab_gdb, feature)
+    dst = os.path.join(scratch_gdb, feature)
+    arcpy.management.CopyFeatures(src, dst)
+
+    # Multiple ring buffers
+    buffer_out = os.path.join(scratch_gdb, f"buffer_{label}")
+    arcpy.analysis.MultipleRingBuffer(
+        dst, buffer_out,
+        distances=[1000, 2000, 5000],
+        distance_unit="Meters",
+        buffer_unit="Meters",
+        outside_polygons_only="FULL")
+
+    # Intersect with loss polygons
+    loss_buffer = os.path.join(scratch_gdb, f"loss_buffer_{label}")
+    arcpy.analysis.Intersect([output_polygons, buffer_out], loss_buffer)
+
+    # Calculate area
+    arcpy.management.CalculateGeometryAttributes(
+        loss_buffer, [["area_km2", "AREA"]], area_unit="SQUARE_KILOMETERS")
+
+    # Summarize by buffer ring
+    stats_out = os.path.join(scratch_gdb, f"stats_buffer_{label}")
+    arcpy.analysis.Statistics(
+        loss_buffer, stats_out,
+        [["area_km2", "SUM"]], case_field="distance")</code></pre>
+
+</div>
+
+<script>
+  document.addEventListener('mousemove', (e) => {
+    document.getElementById('cursor-glow').style.setProperty('--x', e.clientX + 'px');
+    document.getElementById('cursor-glow').style.setProperty('--y', e.clientY + 'px');
+  });
+  const canvas = document.getElementById('hex-canvas');
+  const ctx = canvas.getContext('2d');
+  function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; drawHex(); }
+  function drawHex() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const size = 30, w = size * 2, h = Math.sqrt(3) * size;
+    ctx.strokeStyle = 'rgba(167,139,250,0.6)'; ctx.lineWidth = 0.5;
+    for (let row = -1; row < canvas.height / h + 1; row++) {
+      for (let col = -1; col < canvas.width / w + 1; col++) {
+        const x = col * w * 0.75, y = row * h + (col % 2 === 0 ? 0 : h / 2);
+        ctx.beginPath();
+        for (let i = 0; i < 6; i++) {
+          const angle = (Math.PI / 180) * (60 * i - 30);
+          const px = x + size * Math.cos(angle), py = y + size * Math.sin(angle);
+          i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+        }
+        ctx.closePath(); ctx.stroke();
+      }
+    }
+  }
+  window.addEventListener('resize', resize); resize();
+</script>
+</body>
+</html>

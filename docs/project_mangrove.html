@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mangrove Deforestation Analysis in Madagascar | Agness Chisale</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-cdbc1b868453ca64f53715862e8134a1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="dark">
+<link rel="stylesheet" href="styles.css">
+<style>
+  body { background-color: #0f1923 !important; color: #e8eaf0 !important; }
+  #quarto-content { max-width: 900px !important; margin: 0 auto !important; padding: 2rem !important; float: none !important; }
+  .page-title { font-size: clamp(1.5rem, 3vw, 2.5rem); font-weight: 800; background: linear-gradient(90deg, #a78bfa, #60a5fa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 1.5rem; line-height: 1.2; }
+  .back-link { display: inline-flex; align-items: center; gap: 0.4rem; color: #a78bfa; text-decoration: none; font-size: 0.9rem; margin-bottom: 1.5rem; }
+  .back-link:hover { color: #ffffff; }
+  h2 { color: #a78bfa !important; font-size: 1.2rem; font-weight: 700; margin-top: 2rem; margin-bottom: 0.8rem; border-bottom: 1px solid #ffffff15; padding-bottom: 0.4rem; }
+  p, li { color: #c8cdd8 !important; line-height: 1.7; }
+  ul { padding-left: 1.5rem; }
+  li { margin-bottom: 0.3rem; }
+  .project-image { width: 100%; border-radius: 12px; margin: 1rem 0; border: 1px solid #ffffff15; }
+  .image-caption { font-size: 0.8rem; color: #8899aa !important; text-align: center; margin-top: -0.5rem; margin-bottom: 1.5rem; }
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.88rem; }
+  th { background: #1a2535; color: #a78bfa !important; padding: 0.7rem 1rem; text-align: left; border: 1px solid #ffffff15; }
+  td { padding: 0.6rem 1rem; border: 1px solid #ffffff15; color: #c8cdd8 !important; vertical-align: top; }
+  tr:nth-child(even) td { background: #1a2535; }
+  tr:nth-child(odd) td { background: #141e2c; }
+  code { background: #2e4a7a !important; color: #ffffff !important; padding: 2px 8px; border-radius: 6px; font-size: 0.85rem; }
+  a { color: #a78bfa !important; }
+  a:hover { color: #ffffff !important; }
+  .methodology-link { display: inline-flex; align-items: center; gap: 0.5rem; background: #1a2535; border: 1px solid #a78bfa; color: #a78bfa !important; padding: 0.5rem 1.2rem; border-radius: 8px; text-decoration: none !important; font-size: 0.9rem; margin: 1rem 0; }
+  .methodology-link:hover { background: #a78bfa; color: #ffffff !important; }
+  #hex-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 0; opacity: 0.15; }
+  #cursor-glow { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 1; background: radial-gradient(600px circle at var(--x, -999px) var(--y, -999px), rgba(167,139,250,0.15), transparent 70%); }
+</style>
+</head>
+<body>
+<div id="cursor-glow"></div>
+<canvas id="hex-canvas"></canvas>
+
+<div id="quarto-content" style="position:relative; z-index:2;">
+
+  <a href="./python_scripting.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to Python & Geospatial Scripting</a>
+
+  <div class="page-title">Mangrove Deforestation Analysis in Madagascar's Ambanja and Ambaro Bays</div>
+
+  <h2>Overview</h2>
+  <p>This project analyses mangrove forest loss in the Ambanja and Ambaro Bays (AAB) region of Madagascar using the Murray Global Tidal Wetland Change dataset. Deforestation raster data was converted to vector format, cleaned, and analysed using <code>arcpy</code> to quantify mangrove loss by administrative unit and proximity to roads and rivers. The project situates the analysis within the broader context of REDD+ conservation goals and Enhanced Forest Inventory frameworks.</p>
+
+  <h2>Objectives</h2>
+  <ul>
+    <li>Convert and clean a mangrove loss raster into a usable vector format using <code>arcpy</code></li>
+    <li>Quantify mangrove loss area and average loss year by commune and fokontany</li>
+    <li>Analyse the relationship between mangrove loss and proximity to paths and permanent rivers</li>
+    <li>Visualize temporal trends in mangrove deforestation</li>
+  </ul>
+
+  <h2>Data Sources & Tools</h2>
+  <table>
+    <tr><th>File</th><th>Description</th></tr>
+    <tr><td><code>Murray_Mangrove_Loss_Year.tif</code></td><td>Murray Global Tidal Wetland Change raster — mangrove loss year 1999–2019</td></tr>
+    <tr><td><code>AAB.gdb</code></td><td>Geodatabase containing commune, fokontany, paths, and permanent river features for the AAB region</td></tr>
+  </table>
+  <table>
+    <tr><th>Library</th><th>Purpose</th></tr>
+    <tr><td><code>arcpy</code></td><td>Raster-to-vector conversion, spatial analysis, cursors, and field management</td></tr>
+    <tr><td><code>pandas</code></td><td>Tabular data handling and export</td></tr>
+    <tr><td><code>seaborn</code></td><td>Histogram visualization of temporal loss trends</td></tr>
+  </table>
+
+  <h2>Methods</h2>
+  <p>The Murray mangrove loss raster was converted to polygons using <code>arcpy.conversion.RasterToPolygon</code>. The <code>gridcode</code> field was renamed to <code>loss_year</code> and zero-value (no-data) polygons were removed using an <code>UpdateCursor</code>. A histogram of loss year was generated to visualize temporal trends. Spatial intersections with commune and fokontany boundaries were used to calculate total lost area (km²) and average loss year per administrative unit, exported as Excel files. Multiple ring buffers at 1,000 m, 2,000 m, and 5,000 m were created around permanent rivers and paths, and mangrove loss within each buffer ring was quantified separately to assess distance-decay relationships.</p>
+
+  <a href="./methodology_mangrove.html" class="methodology-link"><i class="fa-solid fa-code"></i> For the code used in this analysis, click here</a>
+
+  <h2>Outputs</h2>
+  <img src="./images/mangrove_histogram.png" alt="Mangrove Loss Year Histogram" class="project-image">
+  <p class="image-caption">Histogram showing temporal trends in mangrove deforestation across the Ambanja and Ambaro Bays region (1999–2019)</p>
+
+  <h2>Key Findings</h2>
+  <ul>
+    <li>Mangrove loss steadily increased over time, peaking around 2016 before slightly declining</li>
+    <li>The commune of Antsakoamanondro and fokontany of Ambodimanga Sud had the largest total mangrove loss area</li>
+    <li>Mangrove loss was concentrated closer to paths and rivers, indicating strong links between human access and deforestation patterns</li>
+  </ul>
+
+  <h2>Skills Learned</h2>
+  <ul>
+    <li>Converting raster data to vector polygon format using <code>arcpy</code></li>
+    <li>Renaming fields and deleting records using <code>arcpy</code> cursors (<code>UpdateCursor</code>, <code>SearchCursor</code>)</li>
+    <li>Extracting attribute tables from feature classes into <code>pandas</code> DataFrames</li>
+    <li>Visualizing temporal distributions using <code>seaborn</code> histograms</li>
+    <li>Performing spatial intersections to summarize loss by administrative boundary</li>
+    <li>Creating multiple ring buffers and intersecting them with loss polygons</li>
+    <li>Exporting summary statistics to Excel using <code>arcpy</code></li>
+    <li>Working with ArcGIS geodatabases and scratch environments in Python</li>
+  </ul>
+
+</div>
+
+<script>
+  document.addEventListener('mousemove', (e) => {
+    document.getElementById('cursor-glow').style.setProperty('--x', e.clientX + 'px');
+    document.getElementById('cursor-glow').style.setProperty('--y', e.clientY + 'px');
+  });
+  const canvas = document.getElementById('hex-canvas');
+  const ctx = canvas.getContext('2d');
+  function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; drawHex(); }
+  function drawHex() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const size = 30, w = size * 2, h = Math.sqrt(3) * size;
+    ctx.strokeStyle = 'rgba(167,139,250,0.6)'; ctx.lineWidth = 0.5;
+    for (let row = -1; row < canvas.height / h + 1; row++) {
+      for (let col = -1; col < canvas.width / w + 1; col++) {
+        const x = col * w * 0.75, y = row * h + (col % 2 === 0 ? 0 : h / 2);
+        ctx.beginPath();
+        for (let i = 0; i < 6; i++) {
+          const angle = (Math.PI / 180) * (60 * i - 30);
+          const px = x + size * Math.cos(angle), py = y + size * Math.sin(angle);
+          i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+        }
+        ctx.closePath(); ctx.stroke();
+      }
+    }
+  }
+  window.addEventListener('resize', resize); resize();
+</script>
+</body>
+</html>
