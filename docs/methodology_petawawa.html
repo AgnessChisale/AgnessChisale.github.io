@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Methodology: Mapping Tree Species in Petawawa | Agness Chisale</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-cdbc1b868453ca64f53715862e8134a1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="dark">
+<link rel="stylesheet" href="styles.css">
+<style>
+  body { background-color: #0f1923 !important; color: #e8eaf0 !important; }
+  #quarto-content { max-width: 900px !important; margin: 0 auto !important; padding: 2rem !important; float: none !important; }
+  .page-title { font-size: clamp(1.3rem, 3vw, 2rem); font-weight: 800; background: linear-gradient(90deg, #a78bfa, #60a5fa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.5rem; line-height: 1.2; }
+  .page-subtitle { color: #8899aa !important; font-size: 0.9rem; margin-bottom: 1.5rem; }
+  .back-link { display: inline-flex; align-items: center; gap: 0.4rem; color: #a78bfa; text-decoration: none; font-size: 0.9rem; margin-bottom: 1.5rem; }
+  .back-link:hover { color: #ffffff; }
+  h2 { color: #a78bfa !important; font-size: 1.1rem; font-weight: 700; margin-top: 2rem; margin-bottom: 0.8rem; border-bottom: 1px solid #ffffff15; padding-bottom: 0.4rem; }
+  p, li { color: #c8cdd8 !important; line-height: 1.7; }
+  ul { padding-left: 1.5rem; }
+  li { margin-bottom: 0.3rem; }
+  a { color: #a78bfa !important; }
+  a:hover { color: #ffffff !important; }
+  pre { background: #0d1b2a !important; border: 1px solid #ffffff15; border-radius: 10px; padding: 1.2rem; overflow-x: auto; margin: 1rem 0; }
+  code { font-family: 'Courier New', monospace; font-size: 0.85rem; color: #e8eaf0 !important; background: transparent !important; }
+  .inline-code { background: #2e4a7a !important; color: #ffffff !important; padding: 2px 8px; border-radius: 6px; font-size: 0.85rem; font-family: 'Courier New', monospace; }
+  .step-number { display: inline-block; background: #a78bfa; color: #0f1923; font-weight: 800; font-size: 0.8rem; border-radius: 50%; width: 24px; height: 24px; line-height: 24px; text-align: center; margin-right: 0.5rem; }
+  #hex-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 0; opacity: 0.15; }
+  #cursor-glow { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 1; background: radial-gradient(600px circle at var(--x, -999px) var(--y, -999px), rgba(167,139,250,0.15), transparent 70%); }
+</style>
+</head>
+<body>
+<div id="cursor-glow"></div>
+<canvas id="hex-canvas"></canvas>
+
+<div id="quarto-content" style="position:relative; z-index:2;">
+
+  <a href="./project_tree_species.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to Project</a>
+
+  <div class="page-title">Methodology: Mapping Dominant Tree Species in the Petawawa Research Forest with LiDAR</div>
+  <p class="page-subtitle">Detailed code and steps used in the analysis</p>
+
+  <h2><span class="step-number">1</span> Data Loading and Preparation</h2>
+  <p>Loaded plot locations from a GeoPackage using <span class="inline-code">geopandas</span>, dropping unnecessary columns. Species codes were loaded from a CSV and plot-level dominant species data from an Excel file. The 67-band ALS metrics raster was opened using <span class="inline-code">rasterio</span> and metric values extracted at each plot location.</p>
+  <pre><code>import geopandas as gpd
+import pandas as pd
+import numpy as np
+import rasterio
+from rasterio.transform import rowcol
+import matplotlib.pyplot as plt
+from sklearn.feature_selection import mutual_info_classif
+
+# Load plot locations
+plots = gpd.read_file("plot_locations.gpkg")
+plots = plots.drop(columns=["Source", "Date"])
+
+# Load species codes
+sp_codes = pd.read_csv("sp_codes.csv")
+sp_codes = sp_codes.rename(columns={"Name": "Species", "MNR Code": "Code"})
+
+# Load plot-level dominant species data
+plot_data = pd.read_excel("plot_data.xlsx")
+
+# Open ALS raster and extract values at plot locations
+with rasterio.open("als_metrics.tif") as src:
+    transform = src.transform
+    crs = src.crs
+    bands = src.count
+    band_names = [src.descriptions[i] for i in range(bands)]
+
+    lidar_values = []
+    for _, row in plots.iterrows():
+        x, y = row.geometry.x, row.geometry.y
+        r, c = rowcol(transform, x, y)
+        try:
+            vals = src.read(window=((r, r+1), (c, c+1))).flatten()
+        except Exception:
+            vals = np.full(bands, np.nan)
+        lidar_values.append(vals)
+
+lidar_df = pd.DataFrame(lidar_values, columns=band_names)</code></pre>
+
+  <h2><span class="step-number">2</span> Data Cleaning</h2>
+  <p>Rows with missing LiDAR values were identified using <span class="inline-code">isnull()</span> and removed from both the plot data and LiDAR dataframes. Species with fewer than 15 observations were filtered out, retaining only White Pine, Red Pine, and Red Oak.</p>
+  <pre><code># Identify and remove missing LiDAR values
+valid_mask = ~lidar_df.isnull().any(axis=1)
+lidar_df = lidar_df[valid_mask].reset_index(drop=True)
+plot_data = plot_data[valid_mask].reset_index(drop=True)
+
+# Merge plot data with species codes
+merged = plot_data.merge(sp_codes, on="Code", how="left")
+
+# Filter species with fewer than 15 observations
+species_counts = merged["Species"].value_counts()
+valid_species = species_counts[species_counts >= 15].index
+filtered = merged[merged["Species"].isin(valid_species)].reset_index(drop=True)
+lidar_filtered = lidar_df[merged["Species"].isin(valid_species)].reset_index(drop=True)
+
+print(f"Retained species: {list(valid_species)}")
+print(f"Total plots after filtering: {len(filtered)}")</code></pre>
+
+  <h2><span class="step-number">3</span> Feature Selection</h2>
+  <p>Species classes were encoded numerically for use with <span class="inline-code">scikit-learn</span>. <span class="inline-code">mutual_info_classif</span> was applied to rank all 67 ALS metrics by their correlation with species class labels. The top 5 most informative features were printed.</p>
+  <pre><code>from sklearn.preprocessing import LabelEncoder
+
+# Encode species labels
+le = LabelEncoder()
+y = le.fit_transform(filtered["Species"])
+X = lidar_filtered.values
+
+# Compute mutual information scores
+mi_scores = mutual_info_classif(X, y, random_state=42)
+mi_series = pd.Series(mi_scores, index=lidar_filtered.columns)
+mi_series = mi_series.sort_values(ascending=False)
+
+print("Top 5 most informative ALS features:")
+print(mi_series.head(5))</code></pre>
+
+  <h2><span class="step-number">4</span> Data Exploration and Visualization</h2>
+  <p>A bar chart was generated showing the number of ground plots per dominant species. Box plot panels were created for the top 3 mutual information features plus Vertical Complexity Index (<span class="inline-code">vci_0.5bin</span>) to visually assess class separability.</p>
+  <pre><code># Bar chart: number of sites per dominant species
+all_species_counts = merged["Species"].value_counts()
+plt.figure(figsize=(12, 5))
+all_species_counts.plot(kind="bar", color="#1f77b4")
+plt.title("Number of Sites per Dominant Species")
+plt.xlabel("")
+plt.ylabel("Count")
+plt.xticks(rotation=45, ha="right")
+plt.tight_layout()
+plt.savefig("bar_graph_petawawa.png", dpi=150)
+plt.show()
+
+# Box plots for top features + vci_0.5bin
+top_features = list(mi_series.head(3).index) + ["vci_0.5bin"]
+fig, axes = plt.subplots(2, 2, figsize=(10, 8))
+fig.suptitle("Box plot of LiDAR metrics for each species")
+
+for ax, feat in zip(axes.flatten(), top_features):
+    groups = [lidar_filtered[feat][filtered["Species"] == sp].values
+              for sp in le.classes_]
+    ax.boxplot(groups, labels=le.classes_, patch_artist=True,
+               medianprops=dict(color="orange"))
+    ax.set_title(feat)
+
+plt.tight_layout()
+plt.savefig("box_plot_petawawa.png", dpi=150)
+plt.show()</code></pre>
+
+  <h2><span class="step-number">5</span> Conclusions and Recommendations</h2>
+  <ul>
+    <li>Many species had insufficient plot counts for robust model training — additional field data collection is recommended before full model development</li>
+    <li>Mutual information scores revealed only a small subset of ALS metrics with meaningful correlation to dominant species class</li>
+    <li>LiDAR structural metrics alone showed limited species separability across the three retained classes</li>
+    <li>Integration of multispectral imagery is recommended to improve classification accuracy for an operational EFI workflow</li>
+  </ul>
+
+</div>
+
+<script>
+  document.addEventListener('mousemove', (e) => {
+    document.getElementById('cursor-glow').style.setProperty('--x', e.clientX + 'px');
+    document.getElementById('cursor-glow').style.setProperty('--y', e.clientY + 'px');
+  });
+  const canvas = document.getElementById('hex-canvas');
+  const ctx = canvas.getContext('2d');
+  function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; drawHex(); }
+  function drawHex() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const size = 30, w = size * 2, h = Math.sqrt(3) * size;
+    ctx.strokeStyle = 'rgba(167,139,250,0.6)'; ctx.lineWidth = 0.5;
+    for (let row = -1; row < canvas.height / h + 1; row++) {
+      for (let col = -1; col < canvas.width / w + 1; col++) {
+        const x = col * w * 0.75, y = row * h + (col % 2 === 0 ? 0 : h / 2);
+        ctx.beginPath();
+        for (let i = 0; i < 6; i++) {
+          const angle = (Math.PI / 180) * (60 * i - 30);
+          const px = x + size * Math.cos(angle), py = y + size * Math.sin(angle);
+          i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+        }
+        ctx.closePath(); ctx.stroke();
+      }
+    }
+  }
+  window.addEventListener('resize', resize); resize();
+</script>
+</body>
+</html>
