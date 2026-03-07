@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Methodology: Maple Tree Farming Suitability Analysis | Agness Chisale</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-cdbc1b868453ca64f53715862e8134a1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="dark">
+<link rel="stylesheet" href="styles.css">
+<style>
+  body { background-color: #0f1923 !important; color: #e8eaf0 !important; }
+  #quarto-content { max-width: 900px !important; margin: 0 auto !important; padding: 2rem !important; float: none !important; }
+  .page-title { font-size: clamp(1.3rem, 3vw, 2rem); font-weight: 800; background: linear-gradient(90deg, #a78bfa, #60a5fa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.5rem; line-height: 1.2; }
+  .page-subtitle { color: #8899aa !important; font-size: 0.9rem; margin-bottom: 1.5rem; }
+  .back-link { display: inline-flex; align-items: center; gap: 0.4rem; color: #a78bfa; text-decoration: none; font-size: 0.9rem; margin-bottom: 1.5rem; }
+  .back-link:hover { color: #ffffff; }
+  h2 { color: #a78bfa !important; font-size: 1.1rem; font-weight: 700; margin-top: 2rem; margin-bottom: 0.8rem; border-bottom: 1px solid #ffffff15; padding-bottom: 0.4rem; }
+  p, li { color: #c8cdd8 !important; line-height: 1.7; }
+  ul { padding-left: 1.5rem; }
+  li { margin-bottom: 0.3rem; }
+  a { color: #a78bfa !important; }
+  a:hover { color: #ffffff !important; }
+  pre { background: #0d1b2a !important; border: 1px solid #ffffff15; border-radius: 10px; padding: 1.2rem; overflow-x: auto; margin: 1rem 0; }
+  code { font-family: 'Courier New', monospace; font-size: 0.85rem; color: #e8eaf0 !important; background: transparent !important; }
+  .inline-code { background: #2e4a7a !important; color: #ffffff !important; padding: 2px 8px; border-radius: 6px; font-size: 0.85rem; font-family: 'Courier New', monospace; }
+  .step-number { display: inline-block; background: #a78bfa; color: #0f1923; font-weight: 800; font-size: 0.8rem; border-radius: 50%; width: 24px; height: 24px; line-height: 24px; text-align: center; margin-right: 0.5rem; }
+  #hex-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 0; opacity: 0.15; }
+  #cursor-glow { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 1; background: radial-gradient(600px circle at var(--x, -999px) var(--y, -999px), rgba(167,139,250,0.15), transparent 70%); }
+</style>
+</head>
+<body>
+<div id="cursor-glow"></div>
+<canvas id="hex-canvas"></canvas>
+
+<div id="quarto-content" style="position:relative; z-index:2;">
+
+  <a href="./project_maple.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to Project</a>
+
+  <div class="page-title">Methodology: Raster-Based Suitability Analysis for Maple Tree Farming in BC</div>
+  <p class="page-subtitle">Detailed code and steps used in the analysis</p>
+
+  <h2><span class="step-number">1</span> Environment Setup</h2>
+  <p>Installed <span class="inline-code">rasterio</span> and <span class="inline-code">gdal</span> via pip within the Jupyter Notebook environment. Imported all required libraries for raster processing and visualization.</p>
+  <pre><code>import numpy as np
+import rasterio
+import rasterio.plot
+import matplotlib.pyplot as plt
+import os</code></pre>
+
+  <h2><span class="step-number">2</span> Reading Raster Data and Applying Suitability Criteria</h2>
+  <p>Each input raster was opened using <span class="inline-code">rasterio</span> and evaluated against suitability thresholds to produce binary masks. Criteria included elevation between 300–700 m, road proximity, canopy height, area quality, hydrolines, cutblocks, MKRF bounds, and MGVI.</p>
+  <pre><code># Read DEM and apply elevation criterion
+with rasterio.open("dem.tif") as dem_src:
+    dem = dem_src.read(1).astype(float)
+    profile = dem_src.profile
+    dem[dem == dem_src.nodata] = np.nan
+
+elevation_mask = (dem >= 300) & (dem <= 700)
+
+# Read roads buffer and apply proximity criterion
+with rasterio.open("RoadsBuff.tif") as roads_src:
+    roads = roads_src.read(1)
+
+roads_mask = (roads == 1)
+
+# Combine all binary masks using logical AND
+suitability = (elevation_mask & roads_mask
+               & canopy_mask & area_mask
+               & hydro_mask & cutblock_mask
+               & mkrf_mask & mgvi_mask).astype("uint8")</code></pre>
+
+  <h2><span class="step-number">3</span> Visualization — Multi-Panel Input Plot</h2>
+  <p>A multi-panel <span class="inline-code">matplotlib</span> figure was created to display each input raster after applying suitability criteria. Yellow = suitable, purple = not suitable.</p>
+  <pre><code>fig, axes = plt.subplots(2, 4, figsize=(16, 8))
+fig.suptitle("Constraints for Maple Location", fontsize=14)
+
+layers = {
+    "Elevation": elevation_mask,
+    "Roads": roads_mask,
+    "Cutblocks": cutblock_mask,
+    "Hydrolines": hydro_mask,
+    "Area Quality": area_mask,
+    "Canopy Height": canopy_mask,
+    "MKRF Bounds": mkrf_mask,
+    "MGVI": mgvi_mask
+}
+
+for ax, (title, layer) in zip(axes.flatten(), layers.items()):
+    im = ax.imshow(layer, cmap="plasma")
+    ax.set_title(title)
+
+fig.colorbar(im, ax=axes[:, -1], label="Suitable")
+plt.tight_layout()
+plt.savefig("maple_constraints.png", dpi=150)
+plt.show()</code></pre>
+
+  <h2><span class="step-number">4</span> Visualization — Final Suitability Map</h2>
+  <p>The final combined binary suitability raster was plotted using <span class="inline-code">plt.imshow</span> with a colorbar indicating suitable vs. not suitable areas.</p>
+  <pre><code>plt.figure(figsize=(6, 10))
+plt.imshow(suitability, cmap="plasma")
+cbar = plt.colorbar(label="Suitable")
+cbar.set_ticks([0, 1])
+cbar.set_ticklabels(["0", "1"])
+plt.title("Suitable Maple Plantation Locations")
+plt.savefig("maple_suitability.png", dpi=150)
+plt.show()</code></pre>
+
+  <h2><span class="step-number">5</span> Exporting the Output Raster</h2>
+  <p>The boolean output array was cast to <span class="inline-code">uint8</span> format. The raster profile was updated and the output written to a GeoTiff file.</p>
+  <pre><code>output_profile = profile.copy()
+output_profile.update(dtype="uint8", count=1, nodata=0)
+
+with rasterio.open("maple-farm-locations.tif", "w", **output_profile) as dst:
+    dst.write(suitability, 1)</code></pre>
+
+  <h2><span class="step-number">6</span> Overlay on True-Colour Satellite Image</h2>
+  <p>The SPOT true-colour image was read and displayed using <span class="inline-code">rasterio.plot.show</span>. The suitability layer was masked so that non-suitable cells were transparent, then overlaid with 50% opacity.</p>
+  <pre><code>with rasterio.open("Spot_data.tif") as spot_src:
+    spot = spot_src.read()
+    spot_transform = spot_src.transform
+
+# Mask non-suitable cells
+masked_suit = np.ma.masked_where(suitability == 0, suitability)
+
+fig, ax = plt.subplots(figsize=(8, 14))
+rasterio.plot.show(spot, transform=spot_transform, ax=ax)
+ax.imshow(masked_suit, cmap="YlGn", alpha=0.5,
+          extent=[...])  # extent from raster bounds
+ax.set_title("Suitable Maple Plantation Locations")
+plt.legend(handles=[plt.Rectangle((0,0),1,1, color="#9acd32", label="Viable Locations")])
+plt.savefig("maple_overlay.png", dpi=150)
+plt.show()</code></pre>
+
+</div>
+
+<script>
+  document.addEventListener('mousemove', (e) => {
+    document.getElementById('cursor-glow').style.setProperty('--x', e.clientX + 'px');
+    document.getElementById('cursor-glow').style.setProperty('--y', e.clientY + 'px');
+  });
+  const canvas = document.getElementById('hex-canvas');
+  const ctx = canvas.getContext('2d');
+  function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; drawHex(); }
+  function drawHex() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const size = 30, w = size * 2, h = Math.sqrt(3) * size;
+    ctx.strokeStyle = 'rgba(167,139,250,0.6)'; ctx.lineWidth = 0.5;
+    for (let row = -1; row < canvas.height / h + 1; row++) {
+      for (let col = -1; col < canvas.width / w + 1; col++) {
+        const x = col * w * 0.75, y = row * h + (col % 2 === 0 ? 0 : h / 2);
+        ctx.beginPath();
+        for (let i = 0; i < 6; i++) {
+          const angle = (Math.PI / 180) * (60 * i - 30);
+          const px = x + size * Math.cos(angle), py = y + size * Math.sin(angle);
+          i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+        }
+        ctx.closePath(); ctx.stroke();
+      }
+    }
+  }
+  window.addEventListener('resize', resize); resize();
+</script>
+</body>
+</html>

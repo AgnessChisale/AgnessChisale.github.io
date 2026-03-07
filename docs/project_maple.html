@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Raster-Based Suitability Analysis for Maple Tree Farming in BC | Agness Chisale</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-cdbc1b868453ca64f53715862e8134a1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="dark">
+<link rel="stylesheet" href="styles.css">
+<style>
+  body { background-color: #0f1923 !important; color: #e8eaf0 !important; }
+  #quarto-content { max-width: 900px !important; margin: 0 auto !important; padding: 2rem !important; float: none !important; }
+  .page-title { font-size: clamp(1.5rem, 3vw, 2.5rem); font-weight: 800; background: linear-gradient(90deg, #a78bfa, #60a5fa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 1.5rem; line-height: 1.2; }
+  .back-link { display: inline-flex; align-items: center; gap: 0.4rem; color: #a78bfa; text-decoration: none; font-size: 0.9rem; margin-bottom: 1.5rem; }
+  .back-link:hover { color: #ffffff; }
+  h2 { color: #a78bfa !important; font-size: 1.2rem; font-weight: 700; margin-top: 2rem; margin-bottom: 0.8rem; border-bottom: 1px solid #ffffff15; padding-bottom: 0.4rem; }
+  p, li { color: #c8cdd8 !important; line-height: 1.7; }
+  ul { padding-left: 1.5rem; }
+  li { margin-bottom: 0.3rem; }
+  .project-image { width: 100%; border-radius: 12px; margin: 1rem 0; border: 1px solid #ffffff15; }
+  .image-caption { font-size: 0.8rem; color: #8899aa !important; text-align: center; margin-top: -0.5rem; margin-bottom: 1.5rem; }
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.88rem; }
+  th { background: #1a2535; color: #a78bfa !important; padding: 0.7rem 1rem; text-align: left; border: 1px solid #ffffff15; }
+  td { padding: 0.6rem 1rem; border: 1px solid #ffffff15; color: #c8cdd8 !important; vertical-align: top; }
+  tr:nth-child(even) td { background: #1a2535; }
+  tr:nth-child(odd) td { background: #141e2c; }
+  code { background: #2e4a7a !important; color: #ffffff !important; padding: 2px 8px; border-radius: 6px; font-size: 0.85rem; }
+  a { color: #a78bfa !important; }
+  a:hover { color: #ffffff !important; }
+  .methodology-link { display: inline-flex; align-items: center; gap: 0.5rem; background: #1a2535; border: 1px solid #a78bfa; color: #a78bfa !important; padding: 0.5rem 1.2rem; border-radius: 8px; text-decoration: none !important; font-size: 0.9rem; margin: 1rem 0; }
+  .methodology-link:hover { background: #a78bfa; color: #ffffff !important; }
+  #hex-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 0; opacity: 0.15; }
+  #cursor-glow { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 1; background: radial-gradient(600px circle at var(--x, -999px) var(--y, -999px), rgba(167,139,250,0.15), transparent 70%); }
+</style>
+</head>
+<body>
+<div id="cursor-glow"></div>
+<canvas id="hex-canvas"></canvas>
+
+<div id="quarto-content" style="position:relative; z-index:2;">
+
+  <a href="./python_scripting.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to Python & Geospatial Scripting</a>
+
+  <div class="page-title">Raster-Based Suitability Analysis for Maple Tree Farming in BC</div>
+
+  <h2>Overview</h2>
+  <p>This project uses Python to perform a raster-based suitability analysis to identify optimal locations for a maple tree farm in British Columbia. Environmental criteria including elevation, road proximity, canopy height, area quality, hydrolines, cutblocks, MKRF bounds, and MGVI were applied as binary masks to input rasters and combined into a final suitability layer. Results were visualized as a multi-panel plot and overlaid transparently on a true-colour SPOT satellite image.</p>
+
+  <h2>Objectives</h2>
+  <ul>
+    <li>Read, process, and write raster data using <code>rasterio</code> and <code>numpy</code></li>
+    <li>Apply environmental suitability criteria as binary raster masks</li>
+    <li>Combine multiple criteria layers into a single output suitability raster</li>
+    <li>Visualize input rasters, the final suitability layer, and an overlay on satellite imagery</li>
+  </ul>
+
+  <h2>Data Sources & Tools</h2>
+  <table>
+    <tr><th>File</th><th>Description</th></tr>
+    <tr><td><code>dem.tif</code></td><td>Digital Elevation Model of the study area</td></tr>
+    <tr><td><code>RoadsBuff.tif</code></td><td>Raster buffer layer around road network</td></tr>
+    <tr><td><code>Spot_data.tif</code></td><td>True-colour SPOT satellite imagery</td></tr>
+  </table>
+  <table>
+    <tr><th>Library</th><th>Purpose</th></tr>
+    <tr><td><code>rasterio</code></td><td>Reading, writing, and displaying raster data</td></tr>
+    <tr><td><code>numpy</code></td><td>Array operations and binary mask creation</td></tr>
+    <tr><td><code>matplotlib</code></td><td>Multi-panel plotting and visualization</td></tr>
+  </table>
+
+  <h2>Methods</h2>
+  <p>Each input raster was read using <code>rasterio</code> and evaluated against suitability thresholds to produce a binary mask (1 = suitable, 0 = not suitable). Criteria included elevation between 300–700 m, proximity to roads, canopy height, area quality, hydrolines, cutblocks, MKRF bounds, and MGVI. Binary masks were combined using logical AND operations to produce a final suitability raster. The output was cast to <code>uint8</code>, saved as a GeoTiff, and visualized in three ways: a multi-panel plot of all input masks, a standalone binary suitability map, and a transparent overlay on the SPOT true-colour image.</p>
+
+  <a href="./methodology_maple.html" class="methodology-link"><i class="fa-solid fa-code"></i> For the code used in this analysis, click here</a>
+
+  <h2>Outputs</h2>
+  <img src="./images/maple_constraints.png" alt="Constraints for Maple Location" class="project-image">
+  <p class="image-caption">Multi-panel plot showing each input raster after applying suitability criteria — yellow = suitable, purple = not suitable</p>
+
+  <img src="./images/maple_suitability.png" alt="Suitable Maple Plantation Locations" class="project-image">
+  <p class="image-caption">Final binary suitability map showing locations meeting all combined criteria</p>
+
+  <img src="./images/maple_overlay.png" alt="Suitable Maple Plantation Locations overlaid on SPOT imagery" class="project-image">
+  <p class="image-caption">Suitable maple plantation locations (yellow) overlaid transparently on SPOT true-colour satellite imagery</p>
+
+  <h2>Key Findings</h2>
+  <ul>
+    <li>Suitable maple farm locations were constrained to areas within the 300–700 m elevation range and within the road buffer zone</li>
+    <li>Binary masking allowed multiple environmental criteria to be combined efficiently using numpy array operations</li>
+    <li>The SPOT overlay clearly showed that suitable areas align with accessible, lower-relief forested land</li>
+  </ul>
+
+  <h2>Skills Learned</h2>
+  <ul>
+    <li>Reading and writing raster data with <code>rasterio</code></li>
+    <li>Accessing and interpreting raster metadata (profile, CRS, dimensions)</li>
+    <li>Creating binary masks from raster arrays using <code>numpy</code> comparison operators</li>
+    <li>Combining multiple binary masks using logical AND operations</li>
+    <li>Casting array data types and updating raster profiles for export</li>
+    <li>Creating multi-panel plots with <code>matplotlib</code></li>
+    <li>Overlaying masked raster data transparently on satellite imagery using <code>rasterio.plot.show</code></li>
+  </ul>
+
+</div>
+
+<script>
+  document.addEventListener('mousemove', (e) => {
+    document.getElementById('cursor-glow').style.setProperty('--x', e.clientX + 'px');
+    document.getElementById('cursor-glow').style.setProperty('--y', e.clientY + 'px');
+  });
+  const canvas = document.getElementById('hex-canvas');
+  const ctx = canvas.getContext('2d');
+  function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; drawHex(); }
+  function drawHex() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const size = 30, w = size * 2, h = Math.sqrt(3) * size;
+    ctx.strokeStyle = 'rgba(167,139,250,0.6)'; ctx.lineWidth = 0.5;
+    for (let row = -1; row < canvas.height / h + 1; row++) {
+      for (let col = -1; col < canvas.width / w + 1; col++) {
+        const x = col * w * 0.75, y = row * h + (col % 2 === 0 ? 0 : h / 2);
+        ctx.beginPath();
+        for (let i = 0; i < 6; i++) {
+          const angle = (Math.PI / 180) * (60 * i - 30);
+          const px = x + size * Math.cos(angle), py = y + size * Math.sin(angle);
+          i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+        }
+        ctx.closePath(); ctx.stroke();
+      }
+    }
+  }
+  window.addEventListener('resize', resize); resize();
+</script>
+</body>
+</html>
