@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Time Series Analysis of NDVI and Land Cover Change | Agness Chisale</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-cdbc1b868453ca64f53715862e8134a1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="dark">
+<link rel="stylesheet" href="styles.css">
+<style>
+  body { background-color: #0f1923 !important; color: #e8eaf0 !important; }
+  #quarto-content { max-width: 900px !important; margin: 0 auto !important; padding: 2rem !important; float: none !important; }
+  .page-title { font-size: clamp(1.5rem, 3vw, 2.5rem); font-weight: 800; background: linear-gradient(90deg, #a78bfa, #60a5fa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 1.5rem; line-height: 1.2; }
+  .back-link { display: inline-flex; align-items: center; gap: 0.4rem; color: #a78bfa; text-decoration: none; font-size: 0.9rem; margin-bottom: 1.5rem; }
+  .back-link:hover { color: #ffffff; }
+  h2 { color: #a78bfa !important; font-size: 1.2rem; font-weight: 700; margin-top: 2rem; margin-bottom: 0.8rem; border-bottom: 1px solid #ffffff15; padding-bottom: 0.4rem; }
+  p, li { color: #c8cdd8 !important; line-height: 1.7; }
+  ul { padding-left: 1.5rem; }
+  li { margin-bottom: 0.3rem; }
+  .project-image { width: 100%; border-radius: 12px; margin: 1rem 0; border: 1px solid #ffffff15; }
+  .image-caption { font-size: 0.8rem; color: #8899aa !important; text-align: center; margin-top: -0.5rem; margin-bottom: 1.5rem; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.88rem; }
+  th { background: #1a2535; color: #a78bfa !important; padding: 0.7rem 1rem; text-align: left; border: 1px solid #ffffff15; }
+  td { padding: 0.6rem 1rem; border: 1px solid #ffffff15; color: #c8cdd8 !important; vertical-align: top; }
+  tr:nth-child(even) td { background: #1a2535; }
+  tr:nth-child(odd) td { background: #141e2c; }
+  code { background: #2e4a7a !important; color: #ffffff !important; padding: 2px 8px; border-radius: 6px; font-size: 0.85rem; }
+  a { color: #a78bfa !important; }
+  a:hover { color: #ffffff !important; }
+  .methodology-link { display: inline-flex; align-items: center; gap: 0.5rem; background: #1a2535; border: 1px solid #a78bfa; color: #a78bfa !important; padding: 0.5rem 1.2rem; border-radius: 8px; text-decoration: none !important; font-size: 0.9rem; margin: 1rem 0; }
+  .methodology-link:hover { background: #a78bfa; color: #ffffff !important; }
+  #hex-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 0; opacity: 0.15; }
+  #cursor-glow { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 1; background: radial-gradient(600px circle at var(--x, -999px) var(--y, -999px), rgba(167,139,250,0.15), transparent 70%); }
+</style>
+</head>
+<body>
+<div id="cursor-glow"></div>
+<canvas id="hex-canvas"></canvas>
+
+<div id="quarto-content" style="position:relative; z-index:2;">
+
+  <a href="./remote_sensing.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to Remote Sensing & Earth Observation</a>
+
+  <div class="page-title">Time Series Analysis of NDVI and Land Cover Change</div>
+
+  <h2>Overview</h2>
+  <p>This project performs two complementary time series analyses in R. The first uses MODIS NDVI data (MOD13Q1) over Yellowhead Country, Alberta to detect vegetation change breakpoints using the BFAST algorithm. The second analyses a 33-year Landsat-derived land cover time series near Williams Lake, BC to quantify annual forest gain, loss, and net change between 1984 and 2016.</p>
+
+  <h2>Objectives</h2>
+  <ul>
+    <li>Process and summarize a 20-year MODIS NDVI time series</li>
+    <li>Extract and analyse NDVI at two regions of interest</li>
+    <li>Apply the BFAST change detection algorithm to identify vegetation disturbance events</li>
+    <li>Reclassify a multi-class land cover time series into binary forested/non-forested categories</li>
+    <li>Quantify annual forest gain and loss in hectares using lagged raster differencing</li>
+    <li>Visualize temporal trends using <code>ggplot2</code></li>
+  </ul>
+
+  <h2>Data Sources & Tools</h2>
+  <table>
+    <tr><th>File</th><th>Description</th></tr>
+    <tr><td><code>MOD13Q1_TS/</code></td><td>460-layer MODIS NDVI time series (2001–2020), 250 m resolution, 16-day composites</td></tr>
+    <tr><td><code>roi_MOD13Q1.shp</code></td><td>Two point regions of interest (ROI A and ROI B) in Yellowhead Country, Alberta</td></tr>
+    <tr><td><code>VLCE_TS/</code></td><td>33-layer VLCE land cover time series (1984–2016), 30 m resolution, near Williams Lake, BC</td></tr>
+    <tr><td><code>lc_reclassification.csv</code></td><td>Lookup table for reclassifying VLCE land cover classes to binary forested/non-forested</td></tr>
+  </table>
+  <table>
+    <tr><th>Package</th><th>Purpose</th></tr>
+    <tr><td><code>terra</code></td><td>Reading, processing, and analysing raster time series</td></tr>
+    <tr><td><code>sf</code></td><td>Reading and handling vector ROI data</td></tr>
+    <tr><td><code>bfast</code></td><td>Break detection in NDVI time series (<code>bfastmonitor</code>)</td></tr>
+    <tr><td><code>dplyr</code>, <code>tidyr</code></td><td>Data wrangling and reshaping</td></tr>
+    <tr><td><code>lubridate</code>, <code>stringr</code></td><td>Date parsing and string extraction from filenames</td></tr>
+    <tr><td><code>ggplot2</code></td><td>Time series and bar chart visualization</td></tr>
+    <tr><td><code>readr</code></td><td>Reading CSV files</td></tr>
+  </table>
+
+  <h2>Methods</h2>
+  <p>MODIS NDVI filenames were parsed to extract Julian dates, converted to R <code>Date</code> objects, and loaded as a <code>SpatRaster</code>. Median NDVI was calculated per pixel across the full time series. NDVI was extracted at two ROIs and filtered to May–September for monthly summary. The BFAST monitor algorithm was applied to both ROIs using stable history periods to detect deviations from expected seasonal NDVI patterns. For the land cover analysis, 33 annual VLCE rasters were loaded and reclassified to binary forested/non-forested using a lookup table. Lagged raster differencing identified annual gain (+1) and loss (−1) pixels, which were converted to hectares and summarized into a <code>forest_change</code> data frame. Results were visualized as a net change line plot and a stacked gain/loss bar chart.</p>
+
+  <a href="./GEM520_Lab7_Time_Series.pdf" class="methodology-link" target="_blank"><i class="fa-solid fa-file-pdf"></i> For the full report including all plots and written answers, click here</a>
+
+  <h2>Outputs</h2>
+
+  <img src="./images/median_ndvi_raster.png" alt="Median NDVI Raster 2001–2020" class="project-image">
+  <p class="image-caption">Median NDVI raster map over Yellowhead Country, Alberta (2001–2020)</p>
+
+  <img src="./images/monthly_ndvi_scatter.png" alt="Monthly NDVI Average May–September" class="project-image">
+  <p class="image-caption">Connected scatter plot of monthly mean NDVI (May–September) averaged across both ROIs for 2001–2006</p>
+
+  <div class="two-col">
+    <div>
+      <img src="./images/bfast_plots_roi_a.png" alt="BFAST ROI A" class="project-image">
+      <p class="image-caption">BFAST monitor output for ROI A — break detected at 2011, consistent with a stand-level disturbance</p>
+    </div>
+    <div>
+      <img src="./images/bfast_plots_roi_b.png" alt="BFAST ROI B" class="project-image">
+      <p class="image-caption">BFAST monitor output for ROI B — break detected at 2008, consistent with vegetation recovery</p>
+    </div>
+  </div>
+
+  <img src="./images/net_forest_line_plot.png" alt="Net Annual Change in Forest Cover" class="project-image">
+  <p class="image-caption">Net annual forest change line plot showing gain and loss trends near Williams Lake, BC (1985–2016)</p>
+
+  <img src="./images/forest_gain.png" alt="Yearly Forest Area Gain and Loss" class="project-image">
+  <p class="image-caption">Annual forest gain and loss bar chart (1985–2016) showing stacked gain and loss in hectares</p>
+
+  <h2>Key Findings</h2>
+  <ul>
+    <li>July had the highest average NDVI across both ROIs for the 2001–2006 period</li>
+    <li>BFAST detected an NDVI decrease at ROI A in 2011, consistent with a stand-level disturbance such as clearcutting</li>
+    <li>BFAST detected an NDVI increase at ROI B in 2008, consistent with vegetation recovery after a prior disturbance</li>
+    <li>Coniferous forest showed the largest decline in the Williams Lake area between 1984 and 2016, replaced primarily by herbs and shrubland</li>
+    <li>Forest loss peaked around 2004–2006, likely reflecting a period of intensive harvesting activity</li>
+  </ul>
+
+  <h2>Skills Learned</h2>
+  <ul>
+    <li>Parsing dates from raster filenames using <code>stringr</code> and <code>lubridate</code></li>
+    <li>Loading and naming multi-layer raster time series with <code>terra</code></li>
+    <li>Extracting raster values at point locations using <code>terra::extract</code></li>
+    <li>Reshaping data between wide and long formats using <code>tidyr::pivot_longer</code></li>
+    <li>Filtering and summarizing time series data with <code>dplyr</code></li>
+    <li>Converting NDVI data to <code>ts</code> objects and applying BFAST change detection</li>
+    <li>Reclassifying rasters using a lookup matrix with <code>terra::classify</code></li>
+    <li>Computing lagged raster differences with <code>terra::diff</code></li>
+    <li>Calculating pixel counts and converting to area in hectares using <code>terra::global</code></li>
+    <li>Producing publication-quality time series plots with <code>ggplot2</code></li>
+  </ul>
+
+</div>
+
+<script>
+  document.addEventListener('mousemove', (e) => {
+    document.getElementById('cursor-glow').style.setProperty('--x', e.clientX + 'px');
+    document.getElementById('cursor-glow').style.setProperty('--y', e.clientY + 'px');
+  });
+  const canvas = document.getElementById('hex-canvas');
+  const ctx = canvas.getContext('2d');
+  function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; drawHex(); }
+  function drawHex() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const size = 30, w = size * 2, h = Math.sqrt(3) * size;
+    ctx.strokeStyle = 'rgba(167,139,250,0.6)'; ctx.lineWidth = 0.5;
+    for (let row = -1; row < canvas.height / h + 1; row++) {
+      for (let col = -1; col < canvas.width / w + 1; col++) {
+        const x = col * w * 0.75, y = row * h + (col % 2 === 0 ? 0 : h / 2);
+        ctx.beginPath();
+        for (let i = 0; i < 6; i++) {
+          const angle = (Math.PI / 180) * (60 * i - 30);
+          const px = x + size * Math.cos(angle), py = y + size * Math.sin(angle);
+          i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+        }
+        ctx.closePath(); ctx.stroke();
+      }
+    }
+  }
+  window.addEventListener('resize', resize); resize();
+</script>
+</body>
+</html>
